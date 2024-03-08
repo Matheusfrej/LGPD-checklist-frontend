@@ -9,7 +9,7 @@ export const ButtonContainer = styled.div<ButtonProps>`
   align-items: center;
   justify-content: center;
   padding: 6px;
-  font-size: ${({ theme }) => theme.fonts.sizes.xxsmall};
+  font-size: 0.9rem;
   border: 1px solid
     ${({ theme, variant }) =>
       variant === 'default'

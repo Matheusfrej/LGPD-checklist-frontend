@@ -5,8 +5,8 @@ export const HeaderContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  background: ${({ theme }) => theme.colors['header-backgroud']};
-  padding: 2rem 10rem;
+  background: ${({ theme }) => theme.colors['header-background']};
+  padding: 1rem 10rem;
 
   h2 {
     font-weight: 500;

@@ -3,14 +3,14 @@ import { ThemeInterface } from './themeInterface'
 export const darkTheme: ThemeInterface = {
   colors: {
     'base-background': '#191b27',
-    'header-backgroud': '#24252d',
+    'header-background': '#24252d',
     contrast: '#c0c4eb',
     'strong-contrast': '#787da6',
     'base-text': '#FFFFFF',
     title: '#FFFFFF',
-    border: '#2c2c2c',
     span: '#666666',
     white: '#FFFFFF',
+    red: '#CE3B3B',
   },
   fonts: {
     family: 'Roboto',

@@ -1,14 +1,14 @@
 export interface ThemeInterface {
   colors: {
     'base-background': string
-    'header-backgroud': string
+    'header-background': string
     contrast: string
     'strong-contrast': string
     'base-text': string
     title: string
     span: string
-    border: string
     white: '#FFFFFF'
+    red: '#CE3B3B'
   }
   fonts: {
     family: 'Roboto'

@@ -3,14 +3,14 @@ import { ThemeInterface } from './themeInterface'
 export const lightTheme: ThemeInterface = {
   colors: {
     'base-background': '#eceef8',
-    'header-backgroud': '#FFFFFF',
+    'header-background': '#FFFFFF',
     contrast: '#3f51b5',
     'strong-contrast': '#004080',
     'base-text': '#000001',
     title: '#000010',
-    border: '#FCFCFC',
     span: '#AAAAAA',
     white: '#FFFFFF',
+    red: '#CE3B3B',
   },
   fonts: {
     family: 'Roboto',

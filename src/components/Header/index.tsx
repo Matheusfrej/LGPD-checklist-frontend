@@ -14,7 +14,7 @@ export function Header({ changeTheme }: HeaderProps) {
         icon={<Palette size={24} />}
         action={() => changeTheme()}
         text="Mudar tema"
-        variant="default"
+        variant="outline"
       />
     </S.HeaderContainer>
   )

@@ -1,4 +1,6 @@
+import { Palette } from 'phosphor-react'
 import * as S from './styles'
+import { ButtonComponent } from '../ButtonComponent'
 
 interface HeaderProps {
   changeTheme: () => void
@@ -7,8 +9,13 @@ interface HeaderProps {
 export function Header({ changeTheme }: HeaderProps) {
   return (
     <S.HeaderContainer>
-      <span>Header</span>
-      <button onClick={() => changeTheme()}>Change Theme</button>
+      <h2>Checklist LGPD</h2>
+      <ButtonComponent
+        icon={<Palette size={24} />}
+        action={() => changeTheme()}
+        text="Mudar tema"
+        variant="default"
+      />
     </S.HeaderContainer>
   )
 }

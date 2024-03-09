@@ -1,14 +1,5 @@
 import styled from 'styled-components'
 
-export const InputContainer = styled.div`
-  width: 100%;
-  margin: auto;
-  background: ${({ theme }) => theme.colors['header-background']};
-  border-radius: 10px;
-  padding: 8px 16px;
-  padding-bottom: 16px;
-`
-
 export const TextArea = styled.textarea`
   background: ${({ theme }) => theme.colors['header-background']};
   border-width: 0;

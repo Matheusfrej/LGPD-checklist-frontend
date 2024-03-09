@@ -1,6 +1,7 @@
 import { CSSProperties, useEffect, useRef } from 'react'
 import * as S from './styles'
 import { LabelComponent } from '../LabelComponent'
+import { SectionComponent } from '../SectionComponent'
 
 interface InputComponentProps {
   errorMessage?: string
@@ -9,6 +10,7 @@ interface InputComponentProps {
   onChangeValue: (value: string) => void
   isRequired?: boolean
   isTextArea?: boolean
+  hasHeader?: boolean
   style?: CSSProperties
 }
 
@@ -18,6 +20,7 @@ export function InputComponent({
   value,
   isRequired,
   isTextArea,
+  hasHeader,
   style,
   onChangeValue,
 }: InputComponentProps) {
@@ -32,7 +35,7 @@ export function InputComponent({
   }, [value, isTextArea])
 
   return (
-    <S.InputContainer style={style}>
+    <SectionComponent style={style} hasHeader={hasHeader}>
       {labelText && <LabelComponent text={labelText} isRequired={isRequired} />}
 
       {isTextArea ? (
@@ -52,6 +55,6 @@ export function InputComponent({
       {!!errorMessage && (
         <S.ErrorMessageText>{errorMessage}</S.ErrorMessageText>
       )}
-    </S.InputContainer>
+    </SectionComponent>
   )
 }

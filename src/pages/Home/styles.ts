@@ -5,10 +5,8 @@ export const HomeContainer = styled.div`
   padding: 2rem 10rem;
 `
 
-export const Main = styled.div`
-  width: 80%;
-  margin: auto;
+export const MainFooter = styled.div`
+  width: 100%;
   display: flex;
-  flex-direction: column;
-  gap: 20px;
+  justify-content: flex-end;
 `

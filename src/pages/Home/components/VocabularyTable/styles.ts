@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-export const TableContainer = styled.table`
+export const TableContainer = styled.div`
   background-color: ${({ theme }) => theme.colors['header-background']};
 `
 

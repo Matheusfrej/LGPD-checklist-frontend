@@ -1,10 +1,12 @@
-import { CSSProperties, useEffect, useRef, useState } from 'react'
+import { CSSProperties, useEffect, useRef } from 'react'
 import * as S from './styles'
 import { LabelComponent } from '../LabelComponent'
 
 interface InputComponentProps {
   errorMessage?: string
   labelText?: string
+  value: string
+  onChangeValue: (value: string) => void
   isRequired?: boolean
   isTextArea?: boolean
   style?: CSSProperties
@@ -13,21 +15,21 @@ interface InputComponentProps {
 export function InputComponent({
   errorMessage,
   labelText,
+  value,
   isRequired,
   isTextArea,
   style,
+  onChangeValue,
 }: InputComponentProps) {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const textareaRef = useRef<any>()
-  const [currentValue, setCurrentValue] = useState('') // you can manage data with it
+  const textareaRef = useRef<HTMLTextAreaElement>(null)
 
   useEffect(() => {
-    if (textareaRef.current) {
+    if (textareaRef && textareaRef.current && isTextArea) {
       textareaRef.current.style.height = '0px'
       const scrollHeight = textareaRef.current.scrollHeight
       textareaRef.current.style.height = scrollHeight + 'px'
     }
-  }, [currentValue])
+  }, [value, isTextArea])
 
   return (
     <S.InputContainer style={style}>
@@ -36,11 +38,15 @@ export function InputComponent({
       {isTextArea ? (
         <S.TextArea
           ref={textareaRef}
-          value={currentValue}
-          onChange={(e) => setCurrentValue(e.target.value)}
+          value={value}
+          onChange={(e) => onChangeValue(e.target.value)}
         />
       ) : (
-        <S.Input type="text" />
+        <S.Input
+          type="text"
+          value={value}
+          onChange={(e) => onChangeValue(e.target.value)}
+        />
       )}
 
       {!!errorMessage && (

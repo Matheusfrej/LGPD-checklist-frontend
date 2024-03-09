@@ -10,6 +10,6 @@ export const Label = styled.h3`
   gap: 4px;
 `
 
-export const After = styled.h3`
+export const After = styled.span`
   color: ${(props) => props.theme.colors.red};
 `

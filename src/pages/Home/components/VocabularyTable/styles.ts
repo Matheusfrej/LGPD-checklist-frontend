@@ -1,9 +1,5 @@
 import styled from 'styled-components'
 
-export const TableContainer = styled.div`
-  background-color: ${({ theme }) => theme.colors['header-background']};
-`
-
 export const Table = styled.table`
   padding: 8px 16px;
   padding-bottom: 16px;

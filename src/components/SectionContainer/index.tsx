@@ -1,17 +1,17 @@
 import { CSSProperties, ReactNode } from 'react'
 import * as S from './styles'
 
-interface SectionComponentProps {
+interface SectionContainerProps {
   style?: CSSProperties
   children: ReactNode
   hasHeader?: boolean
 }
 
-export function SectionComponent({
+export function SectionContainer({
   children,
   style,
   hasHeader = false,
-}: SectionComponentProps) {
+}: SectionContainerProps) {
   return (
     <S.Section hasHeader={hasHeader} style={style}>
       {children}

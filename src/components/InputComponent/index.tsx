@@ -1,7 +1,7 @@
 import { CSSProperties, useEffect, useRef } from 'react'
 import * as S from './styles'
 import { LabelComponent } from '../LabelComponent'
-import { SectionComponent } from '../SectionComponent'
+import { SectionContainer } from '../SectionContainer'
 
 interface InputComponentProps {
   errorMessage?: string
@@ -35,7 +35,7 @@ export function InputComponent({
   }, [value, isTextArea])
 
   return (
-    <SectionComponent style={style} hasHeader={hasHeader}>
+    <SectionContainer style={style} hasHeader={hasHeader}>
       {labelText && <LabelComponent text={labelText} isRequired={isRequired} />}
 
       {isTextArea ? (
@@ -55,6 +55,6 @@ export function InputComponent({
       {!!errorMessage && (
         <S.ErrorMessageText>{errorMessage}</S.ErrorMessageText>
       )}
-    </SectionComponent>
+    </SectionContainer>
   )
 }

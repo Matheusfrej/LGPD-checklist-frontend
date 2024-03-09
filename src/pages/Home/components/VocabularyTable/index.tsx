@@ -1,3 +1,4 @@
+import { SectionContainer } from '../../../../components/SectionContainer'
 import * as S from './styles'
 
 export function VocabularyTable() {
@@ -37,7 +38,7 @@ export function VocabularyTable() {
     ],
   ]
   return (
-    <S.TableContainer>
+    <SectionContainer>
       <S.Table>
         <thead>
           <tr>
@@ -58,6 +59,6 @@ export function VocabularyTable() {
           })}
         </tbody>
       </S.Table>
-    </S.TableContainer>
+    </SectionContainer>
   )
 }

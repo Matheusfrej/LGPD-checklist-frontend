@@ -1,10 +1,10 @@
 import { LineComponent } from '../../../../components/LineComponent'
-import { SectionComponent } from '../../../../components/SectionComponent'
+import { SectionContainer } from '../../../../components/SectionContainer'
 import * as S from './styles'
 
 export function Instructions() {
   return (
-    <SectionComponent hasHeader>
+    <SectionContainer hasHeader>
       <S.InstructionsTitle>Instruções Gerais</S.InstructionsTitle>
       <LineComponent />
       <S.InstructionsParagraph>
@@ -46,6 +46,6 @@ export function Instructions() {
         inspeção.
       </S.InstructionsParagraph>
       <LineComponent />
-    </SectionComponent>
+    </SectionContainer>
   )
 }

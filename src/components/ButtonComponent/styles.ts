@@ -8,8 +8,9 @@ export const ButtonContainer = styled.div<ButtonProps>`
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 10px;
+  padding: 0.6rem 0.5rem;
   font-size: 0.9rem;
+  min-width: 5rem;
   border: 1px solid
     ${({ theme, variant }) =>
       variant === 'default'

@@ -3,12 +3,16 @@ export interface ThemeInterface {
     'base-background': string
     'header-background': string
     contrast: string
+    'weak-contrast': string
     'strong-contrast': string
     'base-text': string
     title: string
     span: string
     white: '#FFFFFF'
+    black: '#000000'
     red: '#CE3B3B'
+    green: 'green'
+    wheat: 'wheat'
   }
   fonts: {
     family: 'Roboto'

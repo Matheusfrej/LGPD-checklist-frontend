@@ -1,27 +1,12 @@
-import { useState } from 'react'
 import { InputComponent } from '../../../../components/InputComponent'
 import * as S from './styles'
+import { UserType, useUsers } from '../../../../contexts/UsersContext'
 
 export function UserForm() {
-  const [name, setName] = useState<string>('')
-  const [office, setOffice] = useState<string>('')
-  const [systemName, setSystemName] = useState<string>('')
-  const [systemDesc, setSystemDesc] = useState<string>('')
+  const { user, onUserUpdate } = useUsers()
 
-  const onChangeName = (value: string) => {
-    setName(value)
-  }
-
-  const onChangeOffice = (value: string) => {
-    setOffice(value)
-  }
-
-  const onChangeSystemName = (value: string) => {
-    setSystemName(value)
-  }
-
-  const onChangeSystemDesc = (value: string) => {
-    setSystemDesc(value)
+  const onChangeUser = (value: string, key: keyof UserType) => {
+    onUserUpdate({ ...user, [key]: value })
   }
 
   return (
@@ -29,27 +14,27 @@ export function UserForm() {
       <InputComponent
         labelText="Nome do avaliador"
         isRequired
-        value={name}
-        onChangeValue={onChangeName}
+        value={user.name}
+        onChangeValue={(val) => onChangeUser(val, 'name')}
       />
       <InputComponent
         labelText="Cargo ou função"
         isRequired
-        value={office}
-        onChangeValue={onChangeOffice}
+        value={user.office}
+        onChangeValue={(val) => onChangeUser(val, 'office')}
       />
       <InputComponent
         labelText="Nome do sistema"
         isRequired
-        value={systemName}
-        onChangeValue={onChangeSystemName}
+        value={user.systemName}
+        onChangeValue={(val) => onChangeUser(val, 'systemName')}
       />
       <InputComponent
         labelText="Descrição do sistema"
         isRequired
         isTextArea
-        value={systemDesc}
-        onChangeValue={onChangeSystemDesc}
+        value={user.systemDesc}
+        onChangeValue={(val) => onChangeUser(val, 'systemDesc')}
       />
     </S.FormContainer>
   )

@@ -9,6 +9,8 @@ import { BrowserRouter } from 'react-router-dom'
 
 import { useState } from 'react'
 import { Router } from './Router'
+import { UsersContextProvider } from './contexts/UsersContext'
+import { ChecklistsContextProvider } from './contexts/ChecklistsContext'
 
 export function Wrapper() {
   const [theme, setTheme] = useState<string>('light')
@@ -19,7 +21,11 @@ export function Wrapper() {
   return (
     <ThemeProvider theme={theme === 'light' ? lightTheme : darkTheme}>
       <BrowserRouter>
-        <Router changeTheme={changeTheme} />
+        <UsersContextProvider>
+          <ChecklistsContextProvider>
+            <Router changeTheme={changeTheme} />
+          </ChecklistsContextProvider>
+        </UsersContextProvider>
         <GlobalStyle />
       </BrowserRouter>
     </ThemeProvider>

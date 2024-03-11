@@ -1,24 +1,26 @@
+import { useNavigate } from 'react-router-dom'
 import { ButtonComponent } from '../../components/ButtonComponent'
 import { MainContainer } from '../../components/MainContainer'
 import { Instructions } from './components/Instructions'
 import { UserForm } from './components/UserForm'
 import { VocabularyTable } from './components/VocabularyTable'
-import * as S from './styles'
+import { ActionsFooterContainer } from '../../components/ActionsFooterContainer'
 
 export function Home() {
+  const navigate = useNavigate()
+
   return (
-    <S.HomeContainer>
-      <MainContainer>
-        <Instructions />
-        <UserForm />
-        <VocabularyTable />
-        <S.MainFooter>
-          <ButtonComponent
-            text="Começar"
-            action={() => console.log('clicou')}
-          />
-        </S.MainFooter>
-      </MainContainer>
-    </S.HomeContainer>
+    <MainContainer>
+      <Instructions />
+      <UserForm />
+      <VocabularyTable />
+      <ActionsFooterContainer>
+        <div />
+        <ButtonComponent
+          text="Começar"
+          action={() => navigate('/checklist-families')}
+        />
+      </ActionsFooterContainer>
+    </MainContainer>
   )
 }

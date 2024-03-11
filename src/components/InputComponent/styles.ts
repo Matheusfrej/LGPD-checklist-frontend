@@ -5,7 +5,7 @@ export const TextArea = styled.textarea`
   border-width: 0;
   border-bottom-width: 1px;
   width: 60%;
-  padding: 2px;
+  padding: 0.1rem;
   resize: none;
   overflow: hidden;
 

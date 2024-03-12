@@ -13,7 +13,7 @@ export function MainContainer({
   style,
 }: MainContainerProps) {
   return (
-    <S.Main style={style} hasTable={hasTable}>
+    <S.Main style={style} $hasTable={hasTable}>
       {children}
     </S.Main>
   )

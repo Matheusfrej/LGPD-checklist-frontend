@@ -33,7 +33,7 @@ export function ItemsTablePageComponent({
       </SectionContainer>
       {classifications.map((item) => {
         return (
-          <SectionContainer key={item.tag}>
+          <SectionContainer key={item.tag + isMandatory}>
             <S.ItemsContainer>
               <S.ItemsSubtitle>{item.name}</S.ItemsSubtitle>
               <ItemsTableComponent isMandatory={isMandatory} tag={item.tag} />

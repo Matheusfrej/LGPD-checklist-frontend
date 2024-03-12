@@ -33,16 +33,16 @@ export function ItemsTableComponent({
           if (
             row.mandatory === isMandatory &&
             row.code.startsWith(tag) &&
-            familiesSelected.includes(row.type)
+            familiesSelected[row.type]
           ) {
             return (
-              <tr key={row.code + idx}>
+              <tr key={row.code + idx + row.mandatory}>
                 <td>{row.code}</td>
                 <td>{row.itemDesc}</td>
                 <td>
                   <S.Select
                     value={row.answer}
-                    variant={row.answer}
+                    $variant={row.answer}
                     onChange={(e) =>
                       updateChecklistRow(
                         { ...row, answer: e.target.value as AnswerType },
@@ -90,7 +90,7 @@ export function ItemsTableComponent({
               </tr>
             )
           }
-          return <></>
+          return <tr key={idx}></tr>
         })}
       </tbody>
     </S.Table>

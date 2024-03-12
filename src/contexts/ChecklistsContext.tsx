@@ -5,11 +5,14 @@ export type AnswerType = 'Sim' | 'Não' | 'Não se aplica'
 
 export type SeverityDegreeType = 'Leve' | 'Grave' | 'Catastrófico'
 
-export type ChecklistFamiliesOptions = 'general' | 'IoT'
+export type ChecklistFamiliesOptions = {
+  general: boolean
+  IoT: boolean
+}
 
 export type ChecklistItemType = {
   mandatory: boolean
-  type: ChecklistFamiliesOptions
+  type: keyof ChecklistFamiliesOptions
   code: string
   itemDesc: string
   answer?: AnswerType
@@ -20,12 +23,10 @@ export type ChecklistItemType = {
 
 export interface ChecklistsContextType {
   checklist: ChecklistItemType[]
-  familiesSelected: ChecklistFamiliesOptions[]
+  familiesSelected: ChecklistFamiliesOptions
   onChecklistUpdate: (checklist: ChecklistItemType[]) => void
   updateChecklistRow: (checklist: ChecklistItemType, index: number) => void
-  onFamiliesSelectedUpdate: (
-    familiesSelected: ChecklistFamiliesOptions[],
-  ) => void
+  onFamiliesSelectedUpdate: (familiesSelected: ChecklistFamiliesOptions) => void
 }
 
 const ChecklistsContext = createContext({} as ChecklistsContextType)
@@ -38,9 +39,11 @@ export function ChecklistsContextProvider({
   children,
 }: ChecklistsContextProviderProps) {
   const [checklist, setChecklist] = useState<ChecklistItemType[]>(initialItems)
-  const [familiesSelected, setFamiliesSelected] = useState<
-    ChecklistFamiliesOptions[]
-  >(['general'])
+  const [familiesSelected, setFamiliesSelected] =
+    useState<ChecklistFamiliesOptions>({
+      general: true,
+      IoT: false,
+    })
 
   const onChecklistUpdate = (checklist: ChecklistItemType[]) => {
     setChecklist(checklist)
@@ -53,7 +56,7 @@ export function ChecklistsContextProvider({
   }
 
   const onFamiliesSelectedUpdate = (
-    familiesSelected: ChecklistFamiliesOptions[],
+    familiesSelected: ChecklistFamiliesOptions,
   ) => {
     setFamiliesSelected(familiesSelected)
   }

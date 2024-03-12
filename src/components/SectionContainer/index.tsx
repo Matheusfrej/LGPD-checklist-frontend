@@ -13,7 +13,7 @@ export function SectionContainer({
   hasHeader = false,
 }: SectionContainerProps) {
   return (
-    <S.Section hasHeader={hasHeader} style={style}>
+    <S.Section $hasHeader={hasHeader} style={style}>
       {children}
     </S.Section>
   )

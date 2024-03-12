@@ -46,24 +46,24 @@ export const Table = styled.table`
 `
 
 interface SelectProps {
-  variant?: 'Sim' | 'Não' | 'Não se aplica'
+  $variant?: 'Sim' | 'Não' | 'Não se aplica'
 }
 
 export const Select = styled.select<SelectProps>`
   height: 10rem;
   text-align: center;
-  background: ${({ theme, variant }) =>
-    variant === 'Sim'
+  background: ${({ theme, $variant }) =>
+    $variant === 'Sim'
       ? theme.colors.green
-      : variant === 'Não'
+      : $variant === 'Não'
         ? theme.colors.red
-        : variant === 'Não se aplica'
+        : $variant === 'Não se aplica'
           ? theme.colors.wheat
           : theme.colors['header-background']};
-  color: ${({ theme, variant }) =>
-    !variant
+  color: ${({ theme, $variant }) =>
+    !$variant
       ? theme.colors['base-text']
-      : variant === 'Não se aplica'
+      : $variant === 'Não se aplica'
         ? theme.colors.black
         : theme.colors.white};
 `

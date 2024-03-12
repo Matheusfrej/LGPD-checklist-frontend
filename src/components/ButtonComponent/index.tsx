@@ -17,7 +17,11 @@ export function ButtonComponent({
   style,
 }: ButtonProps) {
   return (
-    <S.ButtonContainer onClick={() => action()} variant={variant} style={style}>
+    <S.ButtonContainer
+      onClick={() => action()}
+      $variant={variant}
+      style={style}
+    >
       {icon}
       {text}
     </S.ButtonContainer>

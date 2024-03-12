@@ -20,7 +20,7 @@ export function InputComponent({
   value,
   isRequired,
   isTextArea,
-  hasHeader,
+  hasHeader = false,
   style,
   onChangeValue,
 }: InputComponentProps) {

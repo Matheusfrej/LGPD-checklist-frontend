@@ -13,17 +13,13 @@ export function ChecklistFamilies() {
   const { familiesSelected, onFamiliesSelectedUpdate } = useChecklists()
   const navigate = useNavigate()
 
-  const IoTInputValue = 'IoT'
+  const IoTInputValue: keyof ChecklistFamiliesOptions = 'IoT'
 
-  const updateFamiliesSelected = (
-    val: ChecklistFamiliesOptions,
-    added: boolean,
-  ) => {
-    if (added) {
-      onFamiliesSelectedUpdate([...familiesSelected, val])
-    } else {
-      onFamiliesSelectedUpdate([...familiesSelected].filter((f) => f !== val))
-    }
+  const updateFamiliesSelected = (val: keyof ChecklistFamiliesOptions) => {
+    onFamiliesSelectedUpdate({
+      ...familiesSelected,
+      [val]: !familiesSelected[val],
+    })
   }
 
   return (
@@ -41,11 +37,10 @@ export function ChecklistFamilies() {
                 type="checkbox"
                 itemID="IoT"
                 value={IoTInputValue}
-                checked={familiesSelected.includes(IoTInputValue)}
+                checked={familiesSelected[IoTInputValue]}
                 onChange={(e) =>
                   updateFamiliesSelected(
-                    e.target.value as ChecklistFamiliesOptions,
-                    !familiesSelected.includes(IoTInputValue),
+                    e.target.value as keyof ChecklistFamiliesOptions,
                   )
                 }
               />

@@ -108,6 +108,78 @@ const initialItems: ChecklistItemType[] = [
     recomendations:
       'Armazenar no banco de dados os registros de consentimento do titular para comprovação.',
   },
+  {
+    code: 'S-01',
+    itemDesc:
+      'O sistema utiliza boas práticas de proteção de privacidade, como privacy by design?',
+    mandatory: false,
+    answer: undefined,
+    severityDegree: undefined,
+    userComment: '',
+    type: 'general',
+    recomendations:
+      'Como boa prática para o desenvolvimento e adequação do sistema, implementar a metodologia privacy by design.',
+  },
+  {
+    code: 'S-02',
+    itemDesc:
+      'O sistema realiza o mapeamento dos dados pessoais e mantém em segurança?',
+    mandatory: false,
+    answer: undefined,
+    severityDegree: undefined,
+    userComment: '',
+    type: 'general',
+    recomendations:
+      'Organizar os locais onde os dados são coletados e armazenados.',
+  },
+  {
+    code: 'S-03',
+    itemDesc:
+      'O sistema fornece a confidencialidade, usando medidas técnicas apropriadas?',
+    mandatory: false,
+    answer: undefined,
+    severityDegree: undefined,
+    userComment: '',
+    type: 'general',
+    recomendations:
+      'Realizar a proteção contra acesso não autorizado, no uso de dados pessoais armazenados ou em transição, como exemplos realizar a autenticação e controle de acesso.',
+  },
+  {
+    code: 'R-01',
+    itemDesc:
+      'A organização registra as atividades realizadas pelo DPO, para possíveis comprovações legais?',
+    mandatory: false,
+    answer: undefined,
+    severityDegree: undefined,
+    userComment: '',
+    type: 'general',
+    recomendations:
+      'Armazene e documente o histórico de atividades do encarregado DPO.',
+  },
+  {
+    code: 'R-02',
+    itemDesc:
+      'A organização realiza capacitação para seus funcionários sobre a aderência à LGPD?',
+    mandatory: false,
+    answer: undefined,
+    severityDegree: undefined,
+    userComment: '',
+    type: 'general',
+    recomendations:
+      'Capacite os funcionários e colaboradores sobre as informações que a LGPD determina. Exemplo: Através de treinamentos, cursos e palestras, certificações e etc.',
+  },
+  {
+    code: 'R-03',
+    itemDesc:
+      'São realizadas capacitações para os funcionários que utilizam os dispositivos?',
+    mandatory: false,
+    answer: undefined,
+    severityDegree: undefined,
+    userComment: '',
+    type: 'IoT',
+    recomendations:
+      'Realizar capacitações com os funcionários para garantir a qualidade e eficiência de todo o processo.',
+  },
 ]
 
 export { initialItems }

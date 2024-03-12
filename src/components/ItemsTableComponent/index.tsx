@@ -14,7 +14,7 @@ export function ItemsTableComponent({
   isMandatory,
   tag,
 }: ItemsTableComponentProps) {
-  const { checklist, updateChecklistRow } = useChecklists()
+  const { checklist, familiesSelected, updateChecklistRow } = useChecklists()
 
   return (
     <S.Table>
@@ -30,7 +30,11 @@ export function ItemsTableComponent({
       </thead>
       <tbody>
         {checklist.map((row, idx) => {
-          if (row.mandatory === isMandatory && row.code.startsWith(tag)) {
+          if (
+            row.mandatory === isMandatory &&
+            row.code.startsWith(tag) &&
+            familiesSelected.includes(row.type)
+          ) {
             return (
               <tr key={row.code + idx}>
                 <td>{row.code}</td>

@@ -4,9 +4,27 @@ import { MainContainer } from '../../components/MainContainer'
 import { SectionContainer } from '../../components/SectionContainer'
 import * as S from './styles'
 import { ActionsFooterContainer } from '../../components/ActionsFooterContainer'
+import {
+  ChecklistFamiliesOptions,
+  useChecklists,
+} from '../../contexts/ChecklistsContext'
 
 export function ChecklistFamilies() {
+  const { familiesSelected, onFamiliesSelectedUpdate } = useChecklists()
   const navigate = useNavigate()
+
+  const IoTInputValue = 'IoT'
+
+  const updateFamiliesSelected = (
+    val: ChecklistFamiliesOptions,
+    added: boolean,
+  ) => {
+    if (added) {
+      onFamiliesSelectedUpdate([...familiesSelected, val])
+    } else {
+      onFamiliesSelectedUpdate([...familiesSelected].filter((f) => f !== val))
+    }
+  }
 
   return (
     <MainContainer>
@@ -19,7 +37,18 @@ export function ChecklistFamilies() {
           <form>
             <div>
               <label htmlFor="IoT">Checklist IoT</label>
-              <input type="checkbox" itemID="IoT" />
+              <input
+                type="checkbox"
+                itemID="IoT"
+                value={IoTInputValue}
+                checked={familiesSelected.includes(IoTInputValue)}
+                onChange={(e) =>
+                  updateFamiliesSelected(
+                    e.target.value as ChecklistFamiliesOptions,
+                    !familiesSelected.includes(IoTInputValue),
+                  )
+                }
+              />
             </div>
           </form>
         </S.ChecklistFamiliesContainer>

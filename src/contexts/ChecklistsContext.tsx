@@ -5,9 +5,11 @@ export type AnswerType = 'Sim' | 'Não' | 'Não se aplica'
 
 export type SeverityDegreeType = 'Leve' | 'Grave' | 'Catastrófico'
 
+export type ChecklistFamiliesOptions = 'general' | 'IoT'
+
 export type ChecklistItemType = {
   mandatory: boolean
-  type: 'general' | 'IoT'
+  type: ChecklistFamiliesOptions
   code: string
   itemDesc: string
   answer?: AnswerType
@@ -15,8 +17,6 @@ export type ChecklistItemType = {
   userComment: string
   recomendations: string
 }
-
-type ChecklistFamiliesOptions = 'IoT'
 
 export interface ChecklistsContextType {
   checklist: ChecklistItemType[]
@@ -40,7 +40,7 @@ export function ChecklistsContextProvider({
   const [checklist, setChecklist] = useState<ChecklistItemType[]>(initialItems)
   const [familiesSelected, setFamiliesSelected] = useState<
     ChecklistFamiliesOptions[]
-  >([])
+  >(['general'])
 
   const onChecklistUpdate = (checklist: ChecklistItemType[]) => {
     setChecklist(checklist)

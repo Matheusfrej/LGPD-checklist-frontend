@@ -16,3 +16,9 @@ export const ItemsSubtitle = styled.h3`
   font-weight: 500;
   color: ${({ theme }) => theme.colors.title};
 `
+
+export const ChartsContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+`

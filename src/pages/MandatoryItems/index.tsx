@@ -1,19 +1,10 @@
 import { useNavigate } from 'react-router-dom'
 import { ItemsTablePageComponent } from '../../components/ItemsTablePageComponent'
+import { useChecklists } from '../../contexts/ChecklistsContext'
 
 export function MandatoryItems() {
+  const { mandatoryItemsClassifications } = useChecklists()
   const navigate = useNavigate()
-
-  const mandatoryItemsClassifications = [
-    {
-      name: 'Sobre transparência de Dados (T)',
-      tag: 'T',
-    },
-    {
-      name: 'Sobre Consentimento do Titular (C)',
-      tag: 'C',
-    },
-  ]
 
   return (
     <ItemsTablePageComponent

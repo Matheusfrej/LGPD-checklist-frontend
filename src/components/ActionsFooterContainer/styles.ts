@@ -1,8 +1,13 @@
 import styled from 'styled-components'
 
-export const FooterContainer = styled.div`
+interface FooterContainerProps {
+  $inverted: boolean
+}
+
+export const FooterContainer = styled.div<FooterContainerProps>`
   display: flex;
-  flex-direction: column;
+  flex-direction: ${({ $inverted }) =>
+    $inverted ? 'column-reverse' : 'column'};
   gap: 0.5rem;
 `
 

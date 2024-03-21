@@ -1,5 +1,4 @@
-import { SectionContainer } from '../../../../components/SectionContainer'
-import * as S from './styles'
+import { RegularTableComponent } from '../../../../components/RegularTableComponent'
 
 export function VocabularyTable() {
   const header = ['Vocabulário da LGPD', 'Descrição']
@@ -37,28 +36,5 @@ export function VocabularyTable() {
        que está realizando`,
     ],
   ]
-  return (
-    <SectionContainer>
-      <S.Table>
-        <thead>
-          <tr>
-            {header.map((h, idx) => {
-              return <th key={idx}>{h}</th>
-            })}
-          </tr>
-        </thead>
-        <tbody>
-          {body.map((row, idx) => {
-            return (
-              <tr key={idx}>
-                {row.map((column, idx2) => {
-                  return <td key={idx + idx2}>{column}</td>
-                })}
-              </tr>
-            )
-          })}
-        </tbody>
-      </S.Table>
-    </SectionContainer>
-  )
+  return <RegularTableComponent header={header} body={body} />
 }

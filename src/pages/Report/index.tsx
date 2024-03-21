@@ -1,3 +1,20 @@
+import { usePDF } from 'react-to-pdf'
+import { MainContainer } from '../../components/MainContainer'
+import { ReportActions } from './components/ReportActions'
+import { ReportContent } from './components/ReportContent'
+import { ReportHeader } from './components/ReportHeader'
+import * as S from './styles'
+
 export function Report() {
-  return <div>Report</div>
+  const { toPDF, targetRef } = usePDF({ filename: 'RelatorioLGPD.pdf' })
+
+  return (
+    <MainContainer hasTable>
+      <ReportActions action={toPDF} />
+      <S.ReportMainContent ref={targetRef}>
+        <ReportHeader />
+        <ReportContent />
+      </S.ReportMainContent>
+    </MainContainer>
+  )
 }

@@ -1,12 +1,12 @@
 import { useNavigate } from 'react-router-dom'
 import { ActionsFooterContainer } from '../ActionsFooterContainer'
 import { ButtonComponent } from '../ButtonComponent'
-import { ItemsTableComponent } from '../ItemsTableComponent'
 import { MainContainer } from '../MainContainer'
 import { SectionContainer } from '../SectionContainer'
-import * as S from './styles'
 import { useTheme } from 'styled-components'
 import { ChartsContainer } from '../ChartsContainer'
+import { SectionTitleComponent } from '../SectionTitleComponent'
+import { SectionWithItemsTableComponent } from '../SectionWithItemsTableComponent'
 
 interface ItemsTablePageComponentProps {
   text: string
@@ -37,21 +37,14 @@ export function ItemsTablePageComponent({
   return (
     <MainContainer hasTable>
       <SectionContainer hasHeader>
-        <S.ItemsContainer>
-          <S.ItemsTitle>{text}</S.ItemsTitle>
-        </S.ItemsContainer>
+        <SectionTitleComponent text={text} />
+
         <ChartsContainer isMandatory={isMandatory} colors={colors} />
       </SectionContainer>
-      {classifications.map((item) => {
-        return (
-          <SectionContainer key={item.tag + isMandatory}>
-            <S.ItemsContainer>
-              <S.ItemsSubtitle>{item.name}</S.ItemsSubtitle>
-              <ItemsTableComponent isMandatory={isMandatory} tag={item.tag} />
-            </S.ItemsContainer>
-          </SectionContainer>
-        )
-      })}
+      <SectionWithItemsTableComponent
+        isMandatory={isMandatory}
+        classifications={classifications}
+      />
       <ActionsFooterContainer hasMessage>
         <ButtonComponent text="Voltar" action={() => navigate(-1)} />
         <ButtonComponent text="Continuar" action={action} />

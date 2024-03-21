@@ -10,6 +10,11 @@ export type ChecklistFamiliesOptions = {
   IoT: boolean
 }
 
+export type ItemClassification = {
+  name: string
+  tag: string
+}
+
 export type ChecklistItemType = {
   mandatory: boolean
   type: keyof ChecklistFamiliesOptions
@@ -24,6 +29,8 @@ export type ChecklistItemType = {
 export interface ChecklistsContextType {
   checklist: ChecklistItemType[]
   familiesSelected: ChecklistFamiliesOptions
+  mandatoryItemsClassifications: ItemClassification[]
+  nonMandatoryItemsClassifications: ItemClassification[]
   onChecklistUpdate: (checklist: ChecklistItemType[]) => void
   updateChecklistRow: (checklist: ChecklistItemType, index: number) => void
   onFamiliesSelectedUpdate: (familiesSelected: ChecklistFamiliesOptions) => void
@@ -47,6 +54,28 @@ export function ChecklistsContextProvider({
       general: true,
       IoT: false,
     })
+
+  const mandatoryItemsClassifications: ItemClassification[] = [
+    {
+      name: 'Sobre transparência de Dados (T)',
+      tag: 'T',
+    },
+    {
+      name: 'Sobre Consentimento do Titular (C)',
+      tag: 'C',
+    },
+  ]
+
+  const nonMandatoryItemsClassifications: ItemClassification[] = [
+    {
+      name: 'Sobre Segurança de Dados (S)',
+      tag: 'S',
+    },
+    {
+      name: 'Sobre Responsabilidade do Controlador (R)',
+      tag: 'R',
+    },
+  ]
 
   const onChecklistUpdate = (checklist: ChecklistItemType[]) => {
     setChecklist(checklist)
@@ -214,6 +243,8 @@ export function ChecklistsContextProvider({
       value={{
         checklist,
         familiesSelected,
+        mandatoryItemsClassifications,
+        nonMandatoryItemsClassifications,
         onChecklistUpdate,
         updateChecklistRow,
         onFamiliesSelectedUpdate,

@@ -20,10 +20,11 @@ interface UsersContextProviderProps {
 
 export function UsersContextProvider({ children }: UsersContextProviderProps) {
   const [user, setUser] = useState<UserType>({
-    name: '',
-    office: '',
-    systemName: '',
-    systemDesc: '',
+    name: 'Matheus Frej Lemos Cavalcanti',
+    office: 'Engenheiro de Software',
+    systemName: 'Polvo Analytics',
+    systemDesc:
+      'Uma plataforma que gera gráficos personalizados com dados em tempo real',
   })
 
   const onUserUpdate = (user: UserType) => {

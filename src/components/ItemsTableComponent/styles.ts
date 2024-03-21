@@ -73,3 +73,27 @@ export const Select = styled.select<SelectProps>`
     cursor: no-drop;
   }
 `
+
+export const AnswerInReport = styled.div<SelectProps>`
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: ${({ theme, $variant }) =>
+    $variant === 'Sim'
+      ? theme.colors.green
+      : $variant === 'Não'
+        ? theme.colors.red
+        : $variant === 'Não se aplica'
+          ? theme.colors.wheat
+          : theme.colors['header-background']};
+  color: ${({ theme, $variant }) =>
+    !$variant
+      ? theme.colors['base-text']
+      : $variant === 'Não se aplica'
+        ? theme.colors.black
+        : theme.colors.white};
+`

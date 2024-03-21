@@ -5,6 +5,7 @@ export const ProgressBarContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-left: -2rem;
 
   h3 {
     font-weight: normal;

@@ -51,7 +51,7 @@ export function ProgressBarChartComponent({
           className="progress-label"
           fill={theme.colors['base-text']}
         >
-          {data[0].value}%
+          {data[0].value.toFixed(0)}%
         </text>
       </RadialBarChart>
     </S.ProgressBarContainer>

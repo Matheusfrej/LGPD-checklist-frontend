@@ -52,6 +52,8 @@ interface SelectProps {
 export const Select = styled.select<SelectProps>`
   height: 10rem;
   text-align: center;
+  min-width: 10rem;
+  width: 100%;
   background: ${({ theme, $variant }) =>
     $variant === 'Sim'
       ? theme.colors.green
@@ -66,4 +68,8 @@ export const Select = styled.select<SelectProps>`
       : $variant === 'Não se aplica'
         ? theme.colors.black
         : theme.colors.white};
+
+  &:disabled {
+    cursor: no-drop;
+  }
 `

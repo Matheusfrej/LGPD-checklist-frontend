@@ -5,9 +5,8 @@ import { ItemsTableComponent } from '../ItemsTableComponent'
 import { MainContainer } from '../MainContainer'
 import { SectionContainer } from '../SectionContainer'
 import * as S from './styles'
-import { PieChartComponent } from '../PieChartComponent'
 import { useTheme } from 'styled-components'
-import { ProgressBarChartComponent } from '../ProgressBarChartComponent'
+import { ChartsContainer } from '../ChartsContainer'
 
 interface ItemsTablePageComponentProps {
   text: string
@@ -28,20 +27,6 @@ export function ItemsTablePageComponent({
   const navigate = useNavigate()
   const theme = useTheme()
 
-  const progressData = [
-    {
-      name: '',
-      value: 25,
-    },
-  ]
-
-  const data = [
-    { name: 'Taxa de Adequação', value: 400 },
-    { name: 'Defeito/Problema', value: 300 },
-    { name: 'Não se aplica', value: 300 },
-    { name: 'Não preenchido', value: 200 },
-  ]
-
   const colors = [
     theme.colors.green,
     theme.colors.red,
@@ -55,14 +40,7 @@ export function ItemsTablePageComponent({
         <S.ItemsContainer>
           <S.ItemsTitle>{text}</S.ItemsTitle>
         </S.ItemsContainer>
-        <S.ChartsContainer>
-          <ProgressBarChartComponent title="Progresso" data={progressData} />
-          <PieChartComponent
-            title="Itens Obrigatórios"
-            data={data}
-            colors={colors}
-          />
-        </S.ChartsContainer>
+        <ChartsContainer isMandatory={isMandatory} colors={colors} />
       </SectionContainer>
       {classifications.map((item) => {
         return (

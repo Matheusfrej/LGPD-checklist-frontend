@@ -37,20 +37,30 @@ export function ItemsTableComponent({
           ) {
             return (
               <tr key={row.code + idx + row.mandatory}>
-                <td>{row.code}</td>
+                {row.type !== 'general' ? (
+                  <td>
+                    {row.code} <br /> {row.type}
+                  </td>
+                ) : (
+                  <td>{row.code}</td>
+                )}
                 <td>{row.itemDesc}</td>
                 <td>
                   <S.Select
                     value={row.answer}
                     $variant={row.answer}
-                    onChange={(e) =>
+                    onChange={(e) => {
+                      let selectedValue: string | undefined = e.target.value
+                      if (selectedValue === '') {
+                        selectedValue = undefined
+                      }
                       updateChecklistRow(
                         { ...row, answer: e.target.value as AnswerType },
                         idx,
                       )
-                    }
+                    }}
                   >
-                    <option value={undefined}>Escolha uma opção</option>
+                    <option value={''}>Escolha uma opção</option>
                     <option value="Sim">Sim</option>
                     <option value="Não">Não</option>
                     <option value="Não se aplica">Não se aplica</option>
@@ -59,7 +69,11 @@ export function ItemsTableComponent({
                 <td>
                   <S.Select
                     value={row.severityDegree}
-                    onChange={(e) =>
+                    onChange={(e) => {
+                      let selectedValue: string | undefined = e.target.value
+                      if (selectedValue === '') {
+                        selectedValue = undefined
+                      }
                       updateChecklistRow(
                         {
                           ...row,
@@ -67,7 +81,8 @@ export function ItemsTableComponent({
                         },
                         idx,
                       )
-                    }
+                    }}
+                    disabled={row.answer !== 'Não'}
                   >
                     <option value={undefined}>Escolha uma opção</option>
                     <option value="Leve">Leve</option>

@@ -1,40 +1,99 @@
-import { InputComponent } from '../../../../components/InputComponent'
 import * as S from './styles'
-import { UserType, useUsers } from '../../../../contexts/UsersContext'
+import { useUsers } from '../../../../contexts/UsersContext'
+import * as z from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm } from 'react-hook-form'
+import { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { InputComponent } from '../../../../components/InputComponent'
 
-export function UserForm() {
+const userFormSchema = z.object({
+  name: z
+    .string({ required_error: 'O nome é obrigatório' })
+    .min(1, { message: 'O nome é obrigatório' }),
+  office: z
+    .string({ required_error: 'O cargo/função é obrigatório' })
+    .min(1, { message: 'O cargo/função é obrigatório' }),
+  systemName: z
+    .string({ required_error: 'O nome do sistema é obrigatório' })
+    .min(1, { message: 'O nome do sistema é obrigatório' }),
+  systemDesc: z
+    .string({
+      required_error: 'A descrição do sistema é obrigatória',
+    })
+    .min(1, { message: 'A descrição do sistema é obrigatória' }),
+})
+
+type UserFormInputs = z.infer<typeof userFormSchema>
+
+interface UserFormProps {
+  submitted: number
+}
+
+export function UserForm({ submitted }: UserFormProps) {
   const { user, onUserUpdate } = useUsers()
+  const navigate = useNavigate()
 
-  const onChangeUser = (value: string, key: keyof UserType) => {
-    onUserUpdate({ ...user, [key]: value })
+  const handleUserSubmit = (data: UserFormInputs) => {
+    onUserUpdate(data)
+    navigate('/checklist-families')
   }
 
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<UserFormInputs>({
+    resolver: zodResolver(userFormSchema),
+    defaultValues: {
+      name: user.name,
+      office: user.office,
+      systemName: user.systemName,
+      systemDesc: user.systemDesc,
+    },
+    resetOptions: {
+      keepValues: true,
+      keepDefaultValues: true,
+    },
+  })
+
+  useEffect(() => {
+    if (submitted > 0) {
+      handleSubmit(handleUserSubmit)()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [submitted])
+
   return (
-    <S.FormContainer>
+    <S.FormContainer id="my-form" onSubmit={handleSubmit(handleUserSubmit)}>
       <InputComponent
         labelText="Nome do avaliador"
         isRequired
-        value={user.name}
-        onChangeValue={(val) => onChangeUser(val, 'name')}
+        name="name"
+        register={register}
+        errorMessage={errors.name?.message}
       />
       <InputComponent
         labelText="Cargo ou função"
         isRequired
-        value={user.office}
-        onChangeValue={(val) => onChangeUser(val, 'office')}
+        name="office"
+        register={register}
+        errorMessage={errors.office?.message}
       />
       <InputComponent
         labelText="Nome do sistema"
         isRequired
-        value={user.systemName}
-        onChangeValue={(val) => onChangeUser(val, 'systemName')}
+        name="systemName"
+        register={register}
+        errorMessage={errors.systemName?.message}
       />
       <InputComponent
         labelText="Descrição do sistema"
+        name="systemDesc"
         isRequired
         isTextArea
-        value={user.systemDesc}
-        onChangeValue={(val) => onChangeUser(val, 'systemDesc')}
+        register={register}
+        errorMessage={errors.systemDesc?.message}
       />
     </S.FormContainer>
   )

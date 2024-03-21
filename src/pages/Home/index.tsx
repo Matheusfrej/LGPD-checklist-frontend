@@ -1,24 +1,26 @@
-import { useNavigate } from 'react-router-dom'
 import { ButtonComponent } from '../../components/ButtonComponent'
 import { MainContainer } from '../../components/MainContainer'
 import { Instructions } from './components/Instructions'
 import { UserForm } from './components/UserForm'
 import { VocabularyTable } from './components/VocabularyTable'
 import { ActionsFooterContainer } from '../../components/ActionsFooterContainer'
+import { useState } from 'react'
 
 export function Home() {
-  const navigate = useNavigate()
+  const [pressed, setPressed] = useState(0)
 
   return (
     <MainContainer>
       <Instructions />
-      <UserForm />
+      <UserForm submitted={pressed} />
       <VocabularyTable />
       <ActionsFooterContainer>
         <div />
         <ButtonComponent
           text="Começar"
-          action={() => navigate('/checklist-families')}
+          action={() => {
+            setPressed((state) => state + 1)
+          }}
         />
       </ActionsFooterContainer>
     </MainContainer>

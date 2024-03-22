@@ -43,6 +43,8 @@ export function UserForm({ submitted }: UserFormProps) {
     register,
     handleSubmit,
     formState: { errors },
+    setValue,
+    getValues,
   } = useForm<UserFormInputs>({
     resolver: zodResolver(userFormSchema),
     defaultValues: {
@@ -63,6 +65,16 @@ export function UserForm({ submitted }: UserFormProps) {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [submitted])
+
+  useEffect(() => {
+    if (getValues('name') !== user.name) setValue('name', user.name)
+    if (getValues('office') !== user.office) setValue('office', user.office)
+    if (getValues('systemName') !== user.systemName)
+      setValue('systemName', user.systemName)
+    if (getValues('systemDesc') !== user.systemDesc)
+      setValue('systemDesc', user.systemDesc)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user])
 
   return (
     <S.FormContainer id="my-form" onSubmit={handleSubmit(handleUserSubmit)}>

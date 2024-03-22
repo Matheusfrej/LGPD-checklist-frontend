@@ -6,26 +6,38 @@ import { GlobalStyle } from './styles/global'
 
 // routes
 import { BrowserRouter } from 'react-router-dom'
-
-import { useState } from 'react'
 import { Router } from './Router'
+
+// contexts
 import { UsersContextProvider } from './contexts/UsersContext'
 import { ChecklistsContextProvider } from './contexts/ChecklistsContext'
+import { AllDataContextProvider } from './contexts/AllDataContext'
+import { ToastContextProvider } from './contexts/ToastContext'
+
+import { useState } from 'react'
+import { ThemeContextProvider, ThemeType } from './contexts/ThemeContext'
+import 'react-toastify/dist/ReactToastify.css'
 
 export function Wrapper() {
-  const [theme, setTheme] = useState<string>('light')
-  const changeTheme = () => {
-    theme === 'light' ? setTheme('dark') : setTheme('light')
+  const [theme, setTheme] = useState<ThemeType>('light')
+  const changeTheme = (theme: ThemeType) => {
+    setTheme(theme)
   }
 
   return (
     <ThemeProvider theme={theme === 'light' ? lightTheme : darkTheme}>
       <BrowserRouter>
-        <UsersContextProvider>
-          <ChecklistsContextProvider>
-            <Router changeTheme={changeTheme} />
-          </ChecklistsContextProvider>
-        </UsersContextProvider>
+        <ThemeContextProvider setThemeInput={changeTheme} themeInput={theme}>
+          <ToastContextProvider>
+            <UsersContextProvider>
+              <ChecklistsContextProvider>
+                <AllDataContextProvider>
+                  <Router />
+                </AllDataContextProvider>
+              </ChecklistsContextProvider>
+            </UsersContextProvider>
+          </ToastContextProvider>
+        </ThemeContextProvider>
         <GlobalStyle />
       </BrowserRouter>
     </ThemeProvider>

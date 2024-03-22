@@ -1,16 +1,14 @@
 import { Outlet } from 'react-router-dom'
 import { Header } from '../../components/Header'
 import * as S from './styles'
+import { ToastContainer } from 'react-toastify'
 
-interface DefaultLayoutProps {
-  changeTheme: () => void
-}
-
-export function DefaultLayout({ changeTheme }: DefaultLayoutProps) {
+export function DefaultLayout() {
   return (
     <S.DefaultLayoutContainer>
-      <Header changeTheme={changeTheme} />
+      <Header />
       <Outlet />
+      <ToastContainer />
     </S.DefaultLayoutContainer>
   )
 }

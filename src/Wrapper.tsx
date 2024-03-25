@@ -17,6 +17,7 @@ import { ToastContextProvider } from './contexts/ToastContext'
 import { useState } from 'react'
 import { ThemeContextProvider, ThemeType } from './contexts/ThemeContext'
 import 'react-toastify/dist/ReactToastify.css'
+import ScrollToTop from './utils/ScrollToTop'
 
 export function Wrapper() {
   const [theme, setTheme] = useState<ThemeType>('light')
@@ -32,6 +33,7 @@ export function Wrapper() {
             <UsersContextProvider>
               <ChecklistsContextProvider>
                 <AllDataContextProvider>
+                  <ScrollToTop />
                   <Router />
                 </AllDataContextProvider>
               </ChecklistsContextProvider>

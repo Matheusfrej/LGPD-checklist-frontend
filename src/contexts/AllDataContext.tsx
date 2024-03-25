@@ -6,6 +6,7 @@ import {
   useChecklists,
 } from './ChecklistsContext'
 import { useToast } from './ToastContext'
+import { initialItems } from '../utils/constants'
 
 export type AllDataType = {
   user: UserType
@@ -57,7 +58,11 @@ export function AllDataContextProvider({
     reader.onload = () => {
       try {
         const parsedData = JSON.parse(reader.result as string)
-        if (typeof parsedData === 'object' && isAllDataType(parsedData)) {
+        if (
+          typeof parsedData === 'object' &&
+          isAllDataType(parsedData) &&
+          parsedData.checklist.length === initialItems.length
+        ) {
           setAllData(parsedData)
           toastSuccess('Dados importados com sucesso')
         } else {

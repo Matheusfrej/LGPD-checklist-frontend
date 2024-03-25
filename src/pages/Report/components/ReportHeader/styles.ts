@@ -12,5 +12,9 @@ export const UserInfoContainer = styled.div`
       font-weight: 500;
       font-size: 1.2rem;
     }
+
+    p {
+      white-space: pre-line;
+    }
   }
 `

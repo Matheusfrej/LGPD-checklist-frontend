@@ -105,7 +105,7 @@ export function ItemsTableComponent({
                 </td>
                 <td>
                   {isReport ? (
-                    row.userComment
+                    <p>{row.userComment}</p>
                   ) : (
                     <textarea
                       value={row.userComment}

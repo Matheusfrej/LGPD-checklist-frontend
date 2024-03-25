@@ -8,7 +8,7 @@ export function Instructions() {
       <S.InstructionsTitle>Instruções Gerais</S.InstructionsTitle>
       <LineComponent />
       <S.InstructionsParagraph>
-        Este Checklist tem o objetivo de avaliar adequação dos sistemas à Lei
+        Este Checklist tem o objetivo de avaliar a adequação dos sistemas à Lei
         Geral de Proteção de Dados LGPD, e possui alguns itens adicionais
         específicos para IoT. O checklist está dividido em 2 partes:{' '}
         <strong>47 Itens Obrigatórios</strong> (exigidos pela Lei LGPD) e{' '}

@@ -15,6 +15,10 @@ export const Table = styled.table`
         padding: 0.1rem;
         background: ${(props) => props.theme.colors['header-background']};
       }
+
+      p {
+        white-space: pre-line;
+      }
     }
 
     td:first-child {

@@ -7,5 +7,4 @@ export const InstructionsTitle = styled.h2`
 
 export const InstructionsParagraph = styled.p`
   padding: 12px 0;
-  font-size: 0.8rem;
 `

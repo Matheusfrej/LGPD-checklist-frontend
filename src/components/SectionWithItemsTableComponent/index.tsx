@@ -3,6 +3,7 @@ import { ItemsTableComponent } from '../ItemsTableComponent'
 import { SectionContainer } from '../SectionContainer'
 import { SectionTitleComponent } from '../SectionTitleComponent'
 import * as S from './styles'
+import { useChecklists } from '../../contexts/ChecklistsContext'
 
 interface SectionWithItemsTableComponentProps {
   isMandatory: boolean
@@ -22,11 +23,24 @@ export function SectionWithItemsTableComponent({
   title,
   isReport = false,
 }: SectionWithItemsTableComponentProps) {
+  const { checklist, familiesSelected } = useChecklists()
+
+  const hasAnyItemInClassification = (tag: string) => {
+    return (
+      checklist.filter(
+        (item) =>
+          item.mandatory === isMandatory &&
+          item.code.startsWith(tag) &&
+          familiesSelected[item.type],
+      ).length > 0
+    )
+  }
+
   return (
     <S.SectionWithItemsTable $isReport={isReport}>
       {title && <SectionTitleComponent text={title} isSecondary />}
       {classifications.map((item) => {
-        return (
+        return hasAnyItemInClassification(item.tag) ? (
           <SectionContainer key={item.tag + isMandatory} style={style}>
             <S.ItemsContainer>
               <SectionTitleComponent text={item.name} isSecondary />
@@ -37,6 +51,8 @@ export function SectionWithItemsTableComponent({
               />
             </S.ItemsContainer>
           </SectionContainer>
+        ) : (
+          <></>
         )
       })}
     </S.SectionWithItemsTable>

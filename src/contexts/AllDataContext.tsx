@@ -6,7 +6,7 @@ import {
   useChecklists,
 } from './ChecklistsContext'
 import { useToast } from './ToastContext'
-import { initialItems } from '../utils/constants'
+import { initialItems } from '../utils/checklistInitial'
 
 export type AllDataType = {
   user: UserType

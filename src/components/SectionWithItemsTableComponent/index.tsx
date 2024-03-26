@@ -42,8 +42,8 @@ export function SectionWithItemsTableComponent({
       {classifications.map((item) => {
         return hasAnyItemInClassification(item.tag) ? (
           <SectionContainer key={item.tag + isMandatory} style={style}>
+            <SectionTitleComponent text={item.name} isSecondary />
             <S.ItemsContainer>
-              <SectionTitleComponent text={item.name} isSecondary />
               <ItemsTableComponent
                 isMandatory={isMandatory}
                 tag={item.tag}

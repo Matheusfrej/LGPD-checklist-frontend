@@ -1,5 +1,5 @@
 import { ReactNode, createContext, useContext, useState } from 'react'
-import { initialItems } from '../utils/constants'
+import { initialItems } from '../utils/checklistInitial'
 
 export type AnswerType = 'Sim' | 'Não' | 'Não se aplica' | undefined
 

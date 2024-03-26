@@ -6,8 +6,6 @@ interface ProgressTableProps {
 }
 
 export function ProgressTableComponent({ data }: ProgressTableProps) {
-  console.log(data)
-
   return (
     <S.ProgressTableContainer>
       <table>

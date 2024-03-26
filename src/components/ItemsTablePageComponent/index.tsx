@@ -38,7 +38,6 @@ export function ItemsTablePageComponent({
     <MainContainer hasTable>
       <SectionContainer hasHeader>
         <SectionTitleComponent text={text} />
-
         <ChartsContainer isMandatory={isMandatory} colors={colors} />
       </SectionContainer>
       <SectionWithItemsTableComponent

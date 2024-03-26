@@ -7,6 +7,10 @@ export const ProgressBarContainer = styled.div`
   align-items: center;
   margin-left: -2rem;
 
+  @media (max-width: 1000px) {
+    margin-left: 0;
+  }
+
   h3 {
     font-weight: normal;
     color: ${({ theme }) => theme.colors['base-text']};

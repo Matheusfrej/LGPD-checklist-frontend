@@ -11,4 +11,8 @@ export const Main = styled.div<MainProps>`
   flex-direction: column;
   gap: 20px;
   padding: ${(props) => (props.$hasTable ? '2rem' : '2rem 10rem')};
+
+  @media (max-width: 1000px) {
+    padding: 1rem 0;
+  }
 `

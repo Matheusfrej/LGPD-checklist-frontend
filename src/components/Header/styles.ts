@@ -8,6 +8,10 @@ export const HeaderContainer = styled.div`
   background: ${({ theme }) => theme.colors['header-background']};
   padding: 1rem 10rem;
 
+  @media (max-width: 1000px) {
+    padding: 1rem;
+  }
+
   h2 {
     font-weight: 500;
     font-size: ${({ theme }) => theme.fonts.sizes.medium};
@@ -17,6 +21,10 @@ export const HeaderContainer = styled.div`
     display: flex;
     align-items: center;
     gap: 2rem;
+
+    @media (max-width: 1000px) {
+      gap: 1rem;
+    }
 
     p {
       text-align: center;
@@ -30,6 +38,10 @@ export const HeaderContainer = styled.div`
         display: flex;
         justify-content: center;
         gap: 2rem;
+
+        @media (max-width: 1000px) {
+          gap: 0rem;
+        }
       }
     }
   }

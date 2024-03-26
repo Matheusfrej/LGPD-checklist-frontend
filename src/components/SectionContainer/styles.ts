@@ -5,6 +5,8 @@ interface SectionProps {
 }
 
 export const Section = styled.section<SectionProps>`
+  display: flex;
+  flex-direction: column;
   border: 1px solid ${({ theme }) => theme.colors.span};
   border-top: 10px solid
     ${({ theme, $hasHeader }) => ($hasHeader ? theme.colors.contrast : 'none')};

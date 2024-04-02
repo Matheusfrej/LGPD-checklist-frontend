@@ -18,6 +18,7 @@ import { useState } from 'react'
 import { ThemeContextProvider, ThemeType } from './contexts/ThemeContext'
 import 'react-toastify/dist/ReactToastify.css'
 import ScrollToTop from './utils/ScrollToTop'
+import { AuthContextProvider } from './contexts/AuthContext'
 
 export function Wrapper() {
   const [theme, setTheme] = useState<ThemeType>('light')
@@ -30,14 +31,16 @@ export function Wrapper() {
       <BrowserRouter>
         <ThemeContextProvider setThemeInput={changeTheme} themeInput={theme}>
           <ToastContextProvider>
-            <UsersContextProvider>
-              <ChecklistsContextProvider>
-                <AllDataContextProvider>
-                  <ScrollToTop />
-                  <Router />
-                </AllDataContextProvider>
-              </ChecklistsContextProvider>
-            </UsersContextProvider>
+            <AuthContextProvider>
+              <UsersContextProvider>
+                <ChecklistsContextProvider>
+                  <AllDataContextProvider>
+                    <ScrollToTop />
+                    <Router />
+                  </AllDataContextProvider>
+                </ChecklistsContextProvider>
+              </UsersContextProvider>
+            </AuthContextProvider>
           </ToastContextProvider>
         </ThemeContextProvider>
         <GlobalStyle />

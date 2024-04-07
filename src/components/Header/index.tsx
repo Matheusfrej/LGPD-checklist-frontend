@@ -4,6 +4,7 @@ import { ButtonComponent } from '../ButtonComponent'
 import { useTheme } from '../../contexts/ThemeContext'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthContext'
+import { ProfileComponent } from '../ProfileComponent'
 
 export function Header() {
   const { isLogged } = useAuth()
@@ -25,7 +26,7 @@ export function Header() {
           variant="outline"
           style={{ minWidth: 0, padding: '0.25rem 0.5rem' }}
         />
-        {!isLogged && !pathNamesToExclude.includes(location.pathname) && (
+        {!isLogged && !pathNamesToExclude.includes(location.pathname) ? (
           <ButtonComponent
             icon={<User size={24} />}
             action={() => navigate('/login')}
@@ -33,6 +34,8 @@ export function Header() {
             style={{ border: 0, gap: 4 }}
             variant="outline"
           />
+        ) : (
+          isLogged && <ProfileComponent />
         )}
       </div>
     </S.HeaderContainer>

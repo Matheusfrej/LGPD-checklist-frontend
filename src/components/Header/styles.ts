@@ -26,24 +26,5 @@ export const HeaderContainer = styled.div`
     @media (max-width: 1000px) {
       gap: 1rem;
     }
-
-    p {
-      text-align: center;
-    }
-
-    > div {
-      display: flex;
-      flex-direction: column;
-      gap: 0.2rem;
-      > div {
-        display: flex;
-        justify-content: center;
-        gap: 2rem;
-
-        @media (max-width: 1000px) {
-          gap: 0rem;
-        }
-      }
-    }
   }
 `

@@ -7,7 +7,7 @@ import {
   useState,
 } from 'react'
 import * as S from './styles'
-import { LabelComponent } from '../LabelComponent'
+import { LabelComponent } from './LabelComponent'
 import { SectionContainer } from '../../templates/SectionContainer'
 import { FieldValues, Path, UseFormRegister } from 'react-hook-form'
 import { Eye, EyeSlash } from 'phosphor-react'

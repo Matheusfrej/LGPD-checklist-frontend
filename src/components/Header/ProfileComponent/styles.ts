@@ -4,11 +4,15 @@ export const ProfileContainer = styled.div``
 
 export const Avatar = styled.div`
   border-radius: 10px;
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background: ${({ theme }) => theme.colors.contrast};
   color: ${({ theme }) => theme.colors['base-background']};
   font-weight: bold;
   font-size: 1.25rem;
-  padding: 0.5rem 0.75rem;
   cursor: pointer;
 `
 

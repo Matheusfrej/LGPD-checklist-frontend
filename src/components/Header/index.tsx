@@ -4,7 +4,7 @@ import { ButtonComponent } from '../ButtonComponent'
 import { useTheme } from '../../contexts/ThemeContext'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthContext'
-import { ProfileComponent } from '../ProfileComponent'
+import { ProfileComponent } from './ProfileComponent'
 
 export function Header() {
   const { isLogged } = useAuth()

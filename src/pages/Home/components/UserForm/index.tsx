@@ -6,6 +6,7 @@ import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { InputComponent } from '../../../../components/InputComponent'
 import { FormContainer } from '../../../../templates/FormContainer'
+import { useAuth } from '../../../../contexts/AuthContext'
 
 const userFormSchema = z.object({
   name: z
@@ -31,6 +32,7 @@ interface UserFormProps {
 }
 
 export function UserForm({ submitted }: UserFormProps) {
+  const { isLogged } = useAuth()
   const { user, onUserUpdate } = useUsers()
   const navigate = useNavigate()
 
@@ -81,7 +83,7 @@ export function UserForm({ submitted }: UserFormProps) {
       <InputComponent
         labelText="Nome do avaliador"
         isRequired
-        isReadOnly
+        isReadOnly={isLogged}
         name="name"
         register={register}
         errorMessage={errors.name?.message}
@@ -89,7 +91,7 @@ export function UserForm({ submitted }: UserFormProps) {
       <InputComponent
         labelText="Cargo ou função"
         isRequired
-        isReadOnly
+        isReadOnly={isLogged}
         name="office"
         register={register}
         errorMessage={errors.office?.message}

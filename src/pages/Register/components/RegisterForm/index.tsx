@@ -65,6 +65,7 @@ export function RegisterForm() {
           name="name"
           register={register}
           isNormal
+          isRequired
           errorMessage={errors.name?.message}
         />
         <InputComponent
@@ -72,6 +73,7 @@ export function RegisterForm() {
           name="office"
           register={register}
           isNormal
+          isRequired
           errorMessage={errors.office?.message}
         />
         <InputComponent
@@ -80,6 +82,7 @@ export function RegisterForm() {
           register={register}
           isNormal
           isEmail
+          isRequired
           errorMessage={errors.email?.message}
         />
         <InputComponent
@@ -88,6 +91,7 @@ export function RegisterForm() {
           isNormal
           isPassword
           register={register}
+          isRequired
           errorMessage={errors.password?.message}
         />
         <InputComponent
@@ -96,6 +100,7 @@ export function RegisterForm() {
           isNormal
           isPassword
           register={register}
+          isRequired
           errorMessage={errors.confirmPassword?.message}
         />
         <p>

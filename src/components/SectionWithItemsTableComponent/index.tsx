@@ -1,6 +1,6 @@
 import { CSSProperties } from 'styled-components'
 import { ItemsTableComponent } from '../ItemsTableComponent'
-import { SectionContainer } from '../SectionContainer'
+import { SectionContainer } from '../../templates/SectionContainer'
 import { SectionTitleComponent } from '../SectionTitleComponent'
 import * as S from './styles'
 import { useChecklists } from '../../contexts/ChecklistsContext'

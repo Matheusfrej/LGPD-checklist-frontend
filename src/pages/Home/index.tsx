@@ -1,9 +1,9 @@
 import { ButtonComponent } from '../../components/ButtonComponent'
-import { MainContainer } from '../../components/MainContainer'
+import { MainContainer } from '../../templates/MainContainer'
 import { Instructions } from './components/Instructions'
 import { UserForm } from './components/UserForm'
 import { VocabularyTable } from './components/VocabularyTable'
-import { ActionsFooterContainer } from '../../components/ActionsFooterContainer'
+import { ActionsFooterContainer } from '../../templates/ActionsFooterContainer'
 import { useState } from 'react'
 
 export function Home() {

@@ -8,8 +8,9 @@ import {
 } from 'react'
 import * as S from './styles'
 import { LabelComponent } from '../LabelComponent'
-import { SectionContainer } from '../SectionContainer'
+import { SectionContainer } from '../../templates/SectionContainer'
 import { FieldValues, Path, UseFormRegister } from 'react-hook-form'
+import { Eye, EyeSlash } from 'phosphor-react'
 
 interface InputComponentProps<T extends FieldValues> {
   name: Path<T>
@@ -18,6 +19,9 @@ interface InputComponentProps<T extends FieldValues> {
   isTextArea?: boolean
   hasHeader?: boolean
   style?: CSSProperties
+  isNormal?: boolean
+  isEmail?: boolean
+  isPassword?: boolean
   register: UseFormRegister<T>
   errorMessage?: string
 }
@@ -28,12 +32,16 @@ export const InputComponent = <T extends FieldValues>({
   isRequired,
   isTextArea,
   hasHeader = false,
+  isNormal = false,
+  isEmail = false,
+  isPassword = false,
   style,
   register,
   errorMessage,
 }: InputComponentProps<T>) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const [currVal, setCurrVal] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
 
   useEffect(() => {
     if (textareaRef && textareaRef.current && isTextArea) {
@@ -52,7 +60,7 @@ export const InputComponent = <T extends FieldValues>({
   useImperativeHandle(ref, () => textareaRef.current)
 
   return (
-    <SectionContainer style={style} hasHeader={hasHeader}>
+    <SectionContainer style={style} hasHeader={hasHeader} hasBorder={!isNormal}>
       {labelText && <LabelComponent text={labelText} isRequired={isRequired} />}
 
       <S.InputContainer>
@@ -60,13 +68,36 @@ export const InputComponent = <T extends FieldValues>({
           <S.TextArea
             $error={errorMessage}
             required={isRequired}
+            $isNormal={isNormal}
             {...rest}
             ref={textareaRef}
           />
+        ) : isPassword ? (
+          <S.InputWithEye>
+            <S.Input
+              $error={errorMessage}
+              $isNormal={isNormal}
+              type={!showPassword ? 'password' : 'text'}
+              required={isRequired}
+              {...register(name)}
+            />
+            {showPassword ? (
+              <Eye
+                size={20}
+                onClick={() => setShowPassword((state) => !state)}
+              />
+            ) : (
+              <EyeSlash
+                size={20}
+                onClick={() => setShowPassword((state) => !state)}
+              />
+            )}
+          </S.InputWithEye>
         ) : (
           <S.Input
             $error={errorMessage}
-            type="text"
+            $isNormal={isNormal}
+            type={isEmail ? 'email' : 'text'}
             required={isRequired}
             {...register(name)}
           />

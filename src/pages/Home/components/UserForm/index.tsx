@@ -1,4 +1,3 @@
-import * as S from './styles'
 import { useUsers } from '../../../../contexts/UsersContext'
 import * as z from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -6,6 +5,7 @@ import { useForm } from 'react-hook-form'
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { InputComponent } from '../../../../components/InputComponent'
+import { FormContainer } from '../../../../templates/FormContainer'
 
 const userFormSchema = z.object({
   name: z
@@ -77,7 +77,7 @@ export function UserForm({ submitted }: UserFormProps) {
   }, [user])
 
   return (
-    <S.FormContainer id="my-form" onSubmit={handleSubmit(handleUserSubmit)}>
+    <FormContainer id="my-form" onSubmit={handleSubmit(handleUserSubmit)}>
       <InputComponent
         labelText="Nome do avaliador"
         isRequired
@@ -107,6 +107,6 @@ export function UserForm({ submitted }: UserFormProps) {
         register={register}
         errorMessage={errors.systemDesc?.message}
       />
-    </S.FormContainer>
+    </FormContainer>
   )
 }

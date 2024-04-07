@@ -15,6 +15,7 @@ export const HeaderContainer = styled.div`
   h2 {
     font-weight: 500;
     font-size: ${({ theme }) => theme.fonts.sizes.medium};
+    cursor: pointer;
   }
 
   > div {

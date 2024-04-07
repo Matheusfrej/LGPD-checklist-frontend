@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom'
-import { ActionsFooterContainer } from '../../../../components/ActionsFooterContainer'
+import { ActionsFooterContainer } from '../../../../templates/ActionsFooterContainer'
 import { ButtonComponent } from '../../../../components/ButtonComponent'
 
 interface ReportActionsProps {

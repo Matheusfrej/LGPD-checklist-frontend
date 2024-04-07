@@ -1,9 +1,9 @@
 import { useNavigate } from 'react-router-dom'
 import { ButtonComponent } from '../../components/ButtonComponent'
-import { MainContainer } from '../../components/MainContainer'
-import { SectionContainer } from '../../components/SectionContainer'
+import { MainContainer } from '../../templates/MainContainer'
+import { SectionContainer } from '../../templates/SectionContainer'
 import * as S from './styles'
-import { ActionsFooterContainer } from '../../components/ActionsFooterContainer'
+import { ActionsFooterContainer } from '../../templates/ActionsFooterContainer'
 import {
   ChecklistFamiliesOptions,
   useChecklists,

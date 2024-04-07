@@ -1,5 +1,5 @@
 import { Margin, usePDF } from 'react-to-pdf'
-import { MainContainer } from '../../components/MainContainer'
+import { MainContainer } from '../../templates/MainContainer'
 import { ReportActions } from './components/ReportActions'
 import { ReportContent } from './components/ReportContent'
 import { ReportHeader } from './components/ReportHeader'

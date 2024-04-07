@@ -3,8 +3,9 @@ import { ReactElement, CSSProperties } from 'react'
 
 interface ButtonProps {
   icon?: ReactElement
-  text: string
-  action: () => void
+  text?: string
+  type?: 'button' | 'submit' | 'reset'
+  action?: () => void
   variant?: 'default' | 'outline'
   style?: CSSProperties
 }
@@ -13,14 +14,16 @@ export function ButtonComponent({
   icon,
   text,
   action,
+  type = 'button',
   variant = 'default',
   style,
 }: ButtonProps) {
   return (
     <S.ButtonContainer
-      onClick={() => action()}
+      onClick={action ? () => action() : undefined}
       $variant={variant}
       style={style}
+      type={type}
     >
       {icon}
       {text}

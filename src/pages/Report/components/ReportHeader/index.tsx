@@ -1,4 +1,4 @@
-import { SectionContainer } from '../../../../components/SectionContainer'
+import { SectionContainer } from '../../../../templates/SectionContainer'
 import { SectionTitleComponent } from '../../../../components/SectionTitleComponent'
 import { useUsers } from '../../../../contexts/UsersContext'
 import * as S from './styles'

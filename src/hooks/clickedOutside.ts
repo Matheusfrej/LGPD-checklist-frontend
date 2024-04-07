@@ -1,12 +1,11 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { useEffect, useState } from 'react'
+import { RefObject, useEffect, useState } from 'react'
 
-function useOutsideAlerter(ref: any) {
+function useOutsideAlerter<T extends HTMLElement>(ref: RefObject<T>) {
   const [clickedOutside, setClickedOutside] = useState(false)
 
   useEffect(() => {
-    function handleClickOutside(event: any) {
-      if (ref.current && !ref.current.contains(event.target)) {
+    function handleClickOutside(event: MouseEvent) {
+      if (ref.current && !ref.current.contains(event.target as Node)) {
         setClickedOutside((state) => !state)
       }
     }

@@ -11,6 +11,15 @@ interface PieChartComponentProps {
   }[]
 }
 
+interface RenderCustomLabelProps {
+  cx: number
+  cy: number
+  midAngle: number
+  innerRadius: number
+  outerRadius: number
+  percent: number
+}
+
 export function PieChartComponent({
   title,
   colors = [],
@@ -24,7 +33,7 @@ export function PieChartComponent({
     outerRadius,
     percent,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  }: any) => {
+  }: RenderCustomLabelProps) => {
     const radius = innerRadius + (outerRadius - innerRadius) * 0.5
     const RADIAN = Math.PI / 180
     const x = cx + radius * Math.cos(-midAngle * RADIAN)

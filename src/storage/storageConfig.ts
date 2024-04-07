@@ -1,3 +1,6 @@
-const AUTH_STORAGE = '@lgpd-checklist:token'
+const STORAGE_PREFIX = '@lgpd-checklist:'
 
-export { AUTH_STORAGE }
+const AUTH_STORAGE = STORAGE_PREFIX + 'token'
+const THEME_STORAGE = STORAGE_PREFIX + 'theme'
+
+export { AUTH_STORAGE, THEME_STORAGE }

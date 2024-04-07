@@ -7,6 +7,7 @@ import { MandatoryItems } from './pages/MandatoryItems'
 import { NonMandatoryItems } from './pages/NonMandatoryItems'
 import { Login } from './pages/Login'
 import { Register } from './pages/Register'
+import { NotFound } from './pages/NotFound'
 
 export function Router() {
   return (
@@ -19,6 +20,7 @@ export function Router() {
         <Route path="/mandatory-items" element={<MandatoryItems />} />
         <Route path="/non-mandatory-items" element={<NonMandatoryItems />} />
         <Route path="/report" element={<Report />} />
+        <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>
   )

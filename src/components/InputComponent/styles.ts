@@ -15,7 +15,7 @@ export const TextArea = styled.textarea<InputProps>`
   overflow: hidden;
 
   border-color: ${({ theme, $error }) =>
-    $error ? theme.colors.red : theme.colors.black};
+    $error ? theme.colors.red : theme.colors.span};
 
   &:focus {
     border: none;

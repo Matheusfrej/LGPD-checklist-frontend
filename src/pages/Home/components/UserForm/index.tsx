@@ -81,6 +81,7 @@ export function UserForm({ submitted }: UserFormProps) {
       <InputComponent
         labelText="Nome do avaliador"
         isRequired
+        isReadOnly
         name="name"
         register={register}
         errorMessage={errors.name?.message}
@@ -88,6 +89,7 @@ export function UserForm({ submitted }: UserFormProps) {
       <InputComponent
         labelText="Cargo ou função"
         isRequired
+        isReadOnly
         name="office"
         register={register}
         errorMessage={errors.office?.message}

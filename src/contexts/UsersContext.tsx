@@ -1,4 +1,11 @@
-import { ReactNode, createContext, useContext, useState } from 'react'
+import {
+  ReactNode,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from 'react'
+import { useAuth } from './AuthContext'
 
 export type UserType = {
   name: string
@@ -19,6 +26,8 @@ interface UsersContextProviderProps {
 }
 
 export function UsersContextProvider({ children }: UsersContextProviderProps) {
+  const { user: userLogged, isLogged } = useAuth()
+
   const [user, setUser] = useState<UserType>({
     name: '',
     office: '',
@@ -29,6 +38,24 @@ export function UsersContextProvider({ children }: UsersContextProviderProps) {
   const onUserUpdate = (user: UserType) => {
     setUser(user)
   }
+
+  useEffect(() => {
+    if (isLogged && userLogged) {
+      onUserUpdate({
+        ...user,
+        name: userLogged?.name,
+        office: userLogged?.office,
+      })
+    } else {
+      onUserUpdate({
+        name: '',
+        office: '',
+        systemName: '',
+        systemDesc: '',
+      })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLogged])
 
   return (
     <UsersContext.Provider

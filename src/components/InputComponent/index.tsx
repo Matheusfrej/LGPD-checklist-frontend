@@ -17,6 +17,7 @@ interface InputComponentProps<T extends FieldValues> {
   labelText?: string
   isRequired?: boolean
   isTextArea?: boolean
+  isReadOnly?: boolean
   hasHeader?: boolean
   style?: CSSProperties
   isNormal?: boolean
@@ -30,6 +31,7 @@ export const InputComponent = <T extends FieldValues>({
   name,
   labelText,
   isRequired,
+  isReadOnly,
   isTextArea,
   hasHeader = false,
   isNormal = false,
@@ -77,6 +79,7 @@ export const InputComponent = <T extends FieldValues>({
             <S.Input
               $error={errorMessage}
               $isNormal={isNormal}
+              readOnly={isReadOnly}
               type={!showPassword ? 'password' : 'text'}
               required={isRequired}
               {...register(name)}
@@ -97,6 +100,7 @@ export const InputComponent = <T extends FieldValues>({
           <S.Input
             $error={errorMessage}
             $isNormal={isNormal}
+            readOnly={isReadOnly}
             type={isEmail ? 'email' : 'text'}
             required={isRequired}
             {...register(name)}

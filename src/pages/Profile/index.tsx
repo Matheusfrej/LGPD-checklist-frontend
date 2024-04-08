@@ -12,6 +12,7 @@ import { InputComponent } from '../../components/InputComponent'
 import api from '../../libs/api'
 import { useToast } from '../../contexts/ToastContext'
 import { AppError } from '../../utils/AppError'
+import { DeleteUserModal } from './components/DeleteUserModal'
 
 const editUserFormSchema = z.object({
   name: z
@@ -28,6 +29,7 @@ export function Profile() {
   const { user, userUpdate } = useAuth()
   const { toastSuccess, toastError } = useToast()
   const [editMode, setEditMode] = useState(false)
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
 
   const {
     register,
@@ -102,6 +104,12 @@ export function Profile() {
               />
             )}
           </S.ProfileHeader>
+          {!editMode && (
+            <S.InfoContainer>
+              <strong>Email</strong>
+              <p>{user?.email}</p>
+            </S.InfoContainer>
+          )}
           <S.InfoContainer>
             {editMode ? (
               <InputComponent
@@ -140,11 +148,21 @@ export function Profile() {
         <S.UserProfileContainer>
           <h3>Deletar Conta</h3>
           <p>
-            Deletar sua conta irá deletar todos os seus sistemas e checklists
+            Deletar sua conta irá excluir todos os seus sistemas e checklists
             salvos. Essa ação não pode ser desfeita.
           </p>
+          <ButtonComponent
+            text="Deletar conta"
+            variant="danger"
+            style={{ width: '7rem' }}
+            action={() => setIsDeleteModalOpen(true)}
+          />
         </S.UserProfileContainer>
       </SectionContainer>
+      <DeleteUserModal
+        isVisible={isDeleteModalOpen}
+        handleModalOpenChange={setIsDeleteModalOpen}
+      />
     </MainContainer>
   )
 }

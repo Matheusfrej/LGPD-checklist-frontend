@@ -31,7 +31,7 @@ interface AuthContextType {
   isLogged: boolean
   signIn: (email: string, password: string) => Promise<boolean>
   register: (data: RegisterRequestData) => Promise<boolean>
-  signOut: () => void
+  signOut: (showToast?: boolean) => void
   userUpdate: (user: UserDTO) => void
 }
 
@@ -117,10 +117,10 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
     }
   }
 
-  function signOut() {
+  function signOut(showToast?: boolean) {
     setUser(undefined)
     storageAuthTokenRemove()
-    toastSuccess('Saiu com sucesso')
+    if (showToast) toastSuccess('Saiu com sucesso')
   }
 
   async function loadUserData() {

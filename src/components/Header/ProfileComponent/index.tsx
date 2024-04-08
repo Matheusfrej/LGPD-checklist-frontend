@@ -5,6 +5,8 @@ import { LineComponent } from '../../LineComponent'
 import { useOutsideAlerter } from '../../../hooks/clickedOutside'
 import { useNavigate } from 'react-router-dom'
 
+type ActionOptionType = 'checklists' | 'systems' | 'profile' | 'signOut'
+
 export function ProfileComponent() {
   const { user, signOut } = useAuth()
   const [isOpen, setIsOpen] = useState<boolean>(false)
@@ -16,9 +18,19 @@ export function ProfileComponent() {
     return user?.name[0]
   }
 
-  const handleSignOut = () => {
-    signOut()
-    navigate('/')
+  const handleAction = (option: ActionOptionType) => {
+    if (option === 'checklists') {
+      console.log('oi')
+    } else if (option === 'systems') {
+      console.log('oi')
+    } else if (option === 'profile') {
+      navigate('/profile')
+    } else if (option === 'signOut') {
+      setIsOpen(false)
+      signOut()
+      navigate('/')
+    }
+    setIsOpen(false)
   }
 
   useEffect(() => {
@@ -32,13 +44,17 @@ export function ProfileComponent() {
       </S.Avatar>
       {isOpen && (
         <S.ProfileOpenedContainer>
-          <S.Option>Minhas checklists</S.Option>
-          <S.Option>Meus sistemas</S.Option>
-          <S.Option onClick={() => navigate('/profile')}>
+          <S.Option onClick={() => handleAction('checklists')}>
+            Minhas checklists
+          </S.Option>
+          <S.Option onClick={() => handleAction('systems')}>
+            Meus sistemas
+          </S.Option>
+          <S.Option onClick={() => handleAction('profile')}>
             Gerenciar Perfil
           </S.Option>
           <LineComponent />
-          <S.Option onClick={() => handleSignOut()}>Sair</S.Option>
+          <S.Option onClick={() => handleAction('signOut')}>Sair</S.Option>
         </S.ProfileOpenedContainer>
       )}
     </S.ProfileContainer>

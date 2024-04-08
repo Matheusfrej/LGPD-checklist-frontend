@@ -6,7 +6,7 @@ interface ButtonProps {
   text?: string
   type?: 'button' | 'submit' | 'reset'
   action?: () => void
-  variant?: 'default' | 'outline'
+  variant?: 'default' | 'outline' | 'danger'
   style?: CSSProperties
 }
 

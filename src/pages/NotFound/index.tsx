@@ -19,7 +19,7 @@ export function NotFound() {
 
             <div>
               <a onClick={() => navigate('/')}>Nova Checklist</a>
-              {isLogged && <a onClick={() => navigate('/login')}>Login</a>}
+              {!isLogged && <a onClick={() => navigate('/login')}>Login</a>}
             </div>
           </div>
         </div>

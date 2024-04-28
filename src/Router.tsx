@@ -9,6 +9,7 @@ import { Login } from './pages/Login'
 import { Register } from './pages/Register'
 import { NotFound } from './pages/NotFound'
 import { Profile } from './pages/Profile'
+import { Systems } from './pages/Systems'
 
 export function Router() {
   return (
@@ -22,6 +23,7 @@ export function Router() {
         <Route path="/non-mandatory-items" element={<NonMandatoryItems />} />
         <Route path="/report" element={<Report />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/systems" element={<Systems />} />
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>

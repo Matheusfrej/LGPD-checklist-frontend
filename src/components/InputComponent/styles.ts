@@ -9,7 +9,7 @@ export const TextArea = styled.textarea<InputProps>`
   background: ${({ theme }) => theme.colors['header-background']};
   border-width: 0;
   border-bottom-width: 1px;
-  width: 60%;
+  width: ${({ $isNormal }) => ($isNormal ? '100%' : '60%')};
   padding: 0.1rem;
   resize: none;
   overflow: hidden;

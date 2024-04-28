@@ -1,49 +1,46 @@
-import { useNavigate } from 'react-router-dom'
-import { useAuth } from '../../../../contexts/AuthContext'
 import { useToast } from '../../../../contexts/ToastContext'
 import api from '../../../../libs/api'
 import { AppError } from '../../../../utils/AppError'
 import { DeleteModalComponent } from '../../../../components/DeleteModalComponent'
+import { SystemDTO } from '../../../../dtos/systemDTO'
 
-interface DeleteUserModalProps {
+interface DeleteSystemModalProps {
+  system?: SystemDTO
   isVisible: boolean
   handleModalOpenChange: (state: boolean) => void
+  triggerList: () => void
 }
 
-export function DeleteUserModal({
+export function DeleteSystemModal({
+  system,
   isVisible,
   handleModalOpenChange,
-}: DeleteUserModalProps) {
-  const { user, signOut } = useAuth()
+  triggerList,
+}: DeleteSystemModalProps) {
   const { toastSuccess, toastError } = useToast()
 
-  const navigate = useNavigate()
-
-  async function deleteUser() {
+  async function deleteSystem() {
     try {
-      if (user) {
-        await api.delete(`/users/${user?.id}`)
+      await api.delete(`/systems/${system?.id}`)
 
-        toastSuccess('Conta deletada com sucesso.')
-        signOut()
-        handleModalOpenChange(false)
-        navigate('/')
-      }
+      toastSuccess('Sistema deletado com sucesso.')
+      handleModalOpenChange(false)
+      triggerList()
     } catch (error) {
       const isAppError = error instanceof AppError
 
       const title = isAppError
         ? error.message
-        : 'Não foi possível excluir sua conta. Tente novamente mais tarde.'
+        : 'Não foi possível excluir o sistema. Tente novamente mais tarde.'
       toastError(title)
     }
   }
 
   return (
     <DeleteModalComponent
-      deleteService={deleteUser}
+      deleteService={deleteSystem}
       handleModalOpenChange={handleModalOpenChange}
-      title="Tem certeza que deseja deletar sua conta permanentemente?"
+      title={`Tem certeza que deseja excluir o sistema ${system?.name}?`}
       isVisible={isVisible}
     />
   )

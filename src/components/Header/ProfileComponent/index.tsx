@@ -15,19 +15,19 @@ export function ProfileComponent() {
   const navigate = useNavigate()
 
   const getUserNameFirstLetter = () => {
-    return user?.name[0]
+    return user?.name[0].toUpperCase()
   }
 
   const handleAction = (option: ActionOptionType) => {
     if (option === 'checklists') {
       console.log('oi')
     } else if (option === 'systems') {
-      console.log('oi')
+      navigate('/systems')
     } else if (option === 'profile') {
       navigate('/profile')
     } else if (option === 'signOut') {
       setIsOpen(false)
-      signOut()
+      signOut(true)
       navigate('/')
     }
     setIsOpen(false)

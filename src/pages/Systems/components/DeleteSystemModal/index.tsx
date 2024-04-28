@@ -1,8 +1,11 @@
 import { useToast } from '../../../../contexts/ToastContext'
-import api from '../../../../libs/api'
 import { AppError } from '../../../../utils/AppError'
 import { DeleteModalComponent } from '../../../../components/DeleteModalComponent'
 import { SystemDTO } from '../../../../dtos/systemDTO'
+import {
+  deleteSystemService,
+  deleteSystemServiceDefaultErrorMessage,
+} from '../../../../services/system/deleteSystemService'
 
 interface DeleteSystemModalProps {
   system?: SystemDTO
@@ -21,17 +24,21 @@ export function DeleteSystemModal({
 
   async function deleteSystem() {
     try {
-      await api.delete(`/systems/${system?.id}`)
+      if (system) {
+        await deleteSystemService(system.id)
 
-      toastSuccess('Sistema deletado com sucesso.')
-      handleModalOpenChange(false)
-      triggerList()
+        toastSuccess('Sistema deletado com sucesso.')
+        handleModalOpenChange(false)
+        triggerList()
+      } else {
+        toastError(deleteSystemServiceDefaultErrorMessage)
+      }
     } catch (error) {
       const isAppError = error instanceof AppError
 
       const title = isAppError
         ? error.message
-        : 'Não foi possível excluir o sistema. Tente novamente mais tarde.'
+        : deleteSystemServiceDefaultErrorMessage
       toastError(title)
     }
   }

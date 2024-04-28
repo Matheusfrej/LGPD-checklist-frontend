@@ -9,10 +9,13 @@ import { useForm } from 'react-hook-form'
 import { ButtonComponent } from '../../components/ButtonComponent'
 import { Check, Pencil } from 'phosphor-react'
 import { InputComponent } from '../../components/InputComponent'
-import api from '../../libs/api'
 import { useToast } from '../../contexts/ToastContext'
 import { AppError } from '../../utils/AppError'
 import { DeleteUserModal } from './components/DeleteUserModal'
+import {
+  editUserService,
+  editUserServiceDefaultErrorMessage,
+} from '../../services/user/editUserService'
 
 const editUserFormSchema = z.object({
   name: z
@@ -51,7 +54,8 @@ export function Profile() {
   async function editUser(data: EditUserFormInputs) {
     try {
       if (user) {
-        await api.put(`/users/${user?.id}`, {
+        await editUserService({
+          id: user.id,
           name: data.name,
           office: data.office,
         })
@@ -59,13 +63,15 @@ export function Profile() {
         userUpdate({ ...user, name: data.name, office: data.office })
         toastSuccess('Conta editada com sucesso!')
         setEditMode(false)
+      } else {
+        toastError(editUserServiceDefaultErrorMessage)
       }
     } catch (error) {
       const isAppError = error instanceof AppError
 
       const title = isAppError
         ? error.message
-        : 'Não foi possível editar sua conta. Tente novamente mais tarde.'
+        : editUserServiceDefaultErrorMessage
       toastError(title)
     }
   }

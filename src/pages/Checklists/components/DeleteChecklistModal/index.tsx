@@ -1,8 +1,11 @@
 import { useToast } from '../../../../contexts/ToastContext'
-import api from '../../../../libs/api'
 import { AppError } from '../../../../utils/AppError'
 import { DeleteModalComponent } from '../../../../components/DeleteModalComponent'
 import { ParsedChecklistDTO } from '../../../../dtos/checklistDTO'
+import {
+  deleteChecklistService,
+  deleteChecklistServiceDefaultErrorMessage,
+} from '../../../../services/checklist/deleteChecklistService'
 
 interface DeleteChecklistModalProps {
   checklist?: ParsedChecklistDTO
@@ -21,17 +24,20 @@ export function DeleteChecklistModal({
 
   async function deleteChecklist() {
     try {
-      await api.delete(`/checklists/${checklist?.id}`)
-
-      toastSuccess('Checklist deletada com sucesso.')
-      handleModalOpenChange(false)
-      triggerList()
+      if (checklist) {
+        await deleteChecklistService(checklist?.id)
+        toastSuccess('Checklist deletada com sucesso.')
+        handleModalOpenChange(false)
+        triggerList()
+      } else {
+        toastError(deleteChecklistServiceDefaultErrorMessage)
+      }
     } catch (error) {
       const isAppError = error instanceof AppError
 
       const title = isAppError
         ? error.message
-        : 'Não foi possível excluir a checklist. Tente novamente mais tarde.'
+        : deleteChecklistServiceDefaultErrorMessage
       toastError(title)
     }
   }

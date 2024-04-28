@@ -1,9 +1,12 @@
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../../../contexts/AuthContext'
 import { useToast } from '../../../../contexts/ToastContext'
-import api from '../../../../libs/api'
 import { AppError } from '../../../../utils/AppError'
 import { DeleteModalComponent } from '../../../../components/DeleteModalComponent'
+import {
+  deleteUserService,
+  deleteUserServiceDefaultErrorMessage,
+} from '../../../../services/user/deleteUserService'
 
 interface DeleteUserModalProps {
   isVisible: boolean
@@ -22,19 +25,21 @@ export function DeleteUserModal({
   async function deleteUser() {
     try {
       if (user) {
-        await api.delete(`/users/${user?.id}`)
+        await deleteUserService(user.id)
 
         toastSuccess('Conta deletada com sucesso.')
         signOut()
         handleModalOpenChange(false)
         navigate('/')
+      } else {
+        toastError(deleteUserServiceDefaultErrorMessage)
       }
     } catch (error) {
       const isAppError = error instanceof AppError
 
       const title = isAppError
         ? error.message
-        : 'Não foi possível excluir sua conta. Tente novamente mais tarde.'
+        : deleteUserServiceDefaultErrorMessage
       toastError(title)
     }
   }

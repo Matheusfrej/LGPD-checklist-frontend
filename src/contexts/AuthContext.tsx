@@ -5,7 +5,6 @@ import {
   useEffect,
   useState,
 } from 'react'
-import api from '../libs/api'
 import {
   storageAuthTokenGet,
   storageAuthTokenRemove,
@@ -14,23 +13,30 @@ import {
 import { UserDTO } from '../dtos/userDTO'
 import { useToast } from './ToastContext'
 import { AppError } from '../utils/AppError'
+import {
+  signInService,
+  signInServiceDefaultErrorMessage,
+} from '../services/user/signInService'
+import {
+  RegisterServiceRequest,
+  registerService,
+  registerServiceDefaultErrorMessage,
+} from '../services/user/registerService'
+import {
+  getUserService,
+  getUserServiceDefaultErrorMessage,
+} from '../services/user/getUserService'
+import { saveTokenOnAuthorizationHeader } from '../libs/utils'
 
 interface AuthContextProviderProps {
   children: ReactNode
-}
-
-type RegisterRequestData = {
-  name: string
-  office: string
-  email: string
-  password: string
 }
 
 interface AuthContextType {
   user: UserDTO | undefined
   isLogged: boolean
   signIn: (email: string, password: string) => Promise<boolean>
-  register: (data: RegisterRequestData) => Promise<boolean>
+  register: (data: RegisterServiceRequest) => Promise<boolean>
   signOut: (showToast?: boolean) => void
   userUpdate: (user: UserDTO) => void
 }
@@ -47,16 +53,13 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
   }
 
   async function userAndTokenUpdate(user: UserDTO, token: string) {
-    api.defaults.headers.common.Authorization = `Bearer ${token}`
+    saveTokenOnAuthorizationHeader(token)
     setUser(user)
   }
 
   async function signIn(email: string, password: string) {
     try {
-      const { data } = await api.post('/login', {
-        email,
-        password,
-      })
+      const data = await signInService(email, password)
 
       if (data.user && data.token) {
         setUser(data.user)
@@ -71,20 +74,15 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
 
       const title = isAppError
         ? error.message
-        : 'Não foi possível entrar. Tente novamente mais tarde.'
+        : signInServiceDefaultErrorMessage
       toastError(title)
       return false
     }
   }
 
-  async function register(data: RegisterRequestData) {
+  async function register(data: RegisterServiceRequest) {
     try {
-      await api.post('/users', {
-        name: data.name,
-        office: data.office,
-        email: data.email,
-        password: data.password,
-      })
+      await registerService(data)
 
       toastSuccess('Conta criada com sucesso!')
       return true
@@ -93,7 +91,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
 
       const title = isAppError
         ? error.message
-        : 'Não foi possível entrar. Tente novamente mais tarde.'
+        : registerServiceDefaultErrorMessage
       toastError(title)
       return false
     }
@@ -101,9 +99,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
 
   async function getUserData(token: string) {
     try {
-      const { data } = await api.get('/token', {
-        headers: { Authorization: `Bearer ${token}` },
-      })
+      const data = await getUserService(token)
 
       return data.user
     } catch (error) {
@@ -111,7 +107,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
 
       const title = isAppError
         ? error.message
-        : 'Não foi possível entrar. Tente novamente mais tarde.'
+        : getUserServiceDefaultErrorMessage
       toastError(title)
       return undefined
     }

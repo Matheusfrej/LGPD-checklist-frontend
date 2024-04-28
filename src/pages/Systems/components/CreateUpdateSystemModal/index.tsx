@@ -7,10 +7,17 @@ import { InputComponent } from '../../../../components/InputComponent'
 import { ButtonComponent } from '../../../../components/ButtonComponent'
 import { useAuth } from '../../../../contexts/AuthContext'
 import { AppError } from '../../../../utils/AppError'
-import api from '../../../../libs/api'
 import { useToast } from '../../../../contexts/ToastContext'
 import { SystemDTO } from '../../../../dtos/systemDTO'
 import { useEffect } from 'react'
+import {
+  createSystemService,
+  createSystemServiceDefaultErrorMessage,
+} from '../../../../services/system/createSystemService'
+import {
+  updateSystemService,
+  updateSystemServiceDefaultErrorMessage,
+} from '../../../../services/system/updateSystemService'
 
 const createUpdateSystemFormSchema = z.object({
   name: z
@@ -56,43 +63,52 @@ export function CreateUpdateSystemModal({
 
   const createSystem = async (data: CreateUpdateSystemFormInputs) => {
     try {
-      await api.post('/systems', {
-        name: data.name,
-        description: data.description,
-        userId: user?.id,
-      })
+      if (user) {
+        await createSystemService({
+          userId: user.id,
+          name: data.name,
+          description: data.description,
+        })
 
-      toastSuccess('Sistema criado com sucesso!')
-      handleModalOpenChange(false)
-      triggerList()
-      reset()
+        toastSuccess('Sistema criado com sucesso!')
+        handleModalOpenChange(false)
+        triggerList()
+        reset()
+      } else {
+        toastError(createSystemServiceDefaultErrorMessage)
+      }
     } catch (error) {
       const isAppError = error instanceof AppError
 
       const title = isAppError
         ? error.message
-        : 'Não foi possível criar o sistema. Tente novamente mais tarde.'
+        : createSystemServiceDefaultErrorMessage
       toastError(title)
     }
   }
 
   const updateSystem = async (data: CreateUpdateSystemFormInputs) => {
     try {
-      await api.put(`/systems/${system?.id}`, {
-        name: data.name,
-        description: data.description,
-      })
+      if (system) {
+        await updateSystemService({
+          id: system.id,
+          name: data.name,
+          description: data.description,
+        })
 
-      toastSuccess('Sistema editado com sucesso!')
-      handleModalOpenChange(false)
-      triggerList()
-      reset()
+        toastSuccess('Sistema editado com sucesso!')
+        handleModalOpenChange(false)
+        triggerList()
+        reset()
+      } else {
+        toastError(updateSystemServiceDefaultErrorMessage)
+      }
     } catch (error) {
       const isAppError = error instanceof AppError
 
       const title = isAppError
         ? error.message
-        : 'Não foi possível editar o sistema. Tente novamente mais tarde.'
+        : updateSystemServiceDefaultErrorMessage
       toastError(title)
     }
   }

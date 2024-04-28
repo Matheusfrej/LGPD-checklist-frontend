@@ -2,12 +2,15 @@ import { useState } from 'react'
 import { ListTableComponent } from '../../components/ListTableComponent'
 import { useAuth } from '../../contexts/AuthContext'
 import { useToast } from '../../contexts/ToastContext'
-import api from '../../libs/api'
 import { MainContainer } from '../../templates/MainContainer'
 import { AppError } from '../../utils/AppError'
 import { CreateUpdateSystemModal } from './components/CreateUpdateSystemModal'
 import { SystemDTO } from '../../dtos/systemDTO'
 import { DeleteSystemModal } from './components/DeleteSystemModal'
+import {
+  listSystemsByUserIdService,
+  listSystemsByUserIdServiceDefaultErrorMessage,
+} from '../../services/system/listSystemsByUserIdService'
 
 export function Systems() {
   const { user } = useAuth()
@@ -34,15 +37,20 @@ export function Systems() {
 
   const listSystems = async () => {
     try {
-      const { data } = await api.get(`/systemsByUserId/${user?.id}`)
+      if (user) {
+        const data = await listSystemsByUserIdService(user?.id)
 
-      return data.systems
+        return data.systems
+      } else {
+        toastError(listSystemsByUserIdServiceDefaultErrorMessage)
+        return []
+      }
     } catch (error) {
       const isAppError = error instanceof AppError
 
       const title = isAppError
         ? error.message
-        : 'Não foi possível carregar os seus sistemas. Tente novamente mais tarde.'
+        : listSystemsByUserIdServiceDefaultErrorMessage
       toastError(title)
       return []
     }

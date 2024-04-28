@@ -2,13 +2,14 @@ import { useState } from 'react'
 import { ListTableComponent } from '../../components/ListTableComponent'
 import { useAuth } from '../../contexts/AuthContext'
 import { useToast } from '../../contexts/ToastContext'
-import api from '../../libs/api'
 import { MainContainer } from '../../templates/MainContainer'
 import { AppError } from '../../utils/AppError'
-import { SystemDTO } from '../../dtos/systemDTO'
-import { ChecklistDTO, ParsedChecklistDTO } from '../../dtos/checklistDTO'
+import { ParsedChecklistDTO } from '../../dtos/checklistDTO'
 import { DeleteChecklistModal } from './components/DeleteChecklistModal'
-import { convertToBrazilDateTime } from '../../utils/format'
+import {
+  listChecklistsByUserIdService,
+  listChecklistsByUserIdServiceDefaultErrorMessage,
+} from '../../services/checklist/listChecklistsByUserIdService'
 
 export function Checklists() {
   const { user } = useAuth()
@@ -39,53 +40,20 @@ export function Checklists() {
 
   const listChecklists = async () => {
     try {
-      const { data } = await api.get(`/checklistsByUserId/${user?.id}`)
-
-      const formattedChecklists = await checklistsListAdapter(data.checklists)
-
-      return formattedChecklists
+      if (user) {
+        const { checklists } = await listChecklistsByUserIdService(user?.id)
+        return checklists
+      }
+      return []
     } catch (error) {
       const isAppError = error instanceof AppError
 
       const title = isAppError
         ? error.message
-        : 'Não foi possível carregar os seus checklists. Tente novamente mais tarde.'
+        : listChecklistsByUserIdServiceDefaultErrorMessage
       toastError(title)
       return []
     }
-  }
-
-  const getSystem = async (id: number): Promise<SystemDTO | null> => {
-    try {
-      const { data } = await api.get(`/systems/${id}`)
-      return data.system
-    } catch (error) {
-      const isAppError = error instanceof AppError
-
-      const title = isAppError
-        ? error.message
-        : 'Não foi possível carregar os seus sistemas. Tente novamente mais tarde.'
-      toastError(title)
-      return null
-    }
-  }
-
-  const checklistsListAdapter = async (checklists: ChecklistDTO[]) => {
-    const checklistsParsed = await Promise.all(
-      checklists.map(async (checklist) => {
-        const system = await getSystem(checklist.systemId)
-        const systemName = system ? system.name : '"não encontrado"'
-        const newChecklist: ParsedChecklistDTO = {
-          ...checklist,
-          name: `Checklist para o sistema ${systemName}`,
-          createdAtParsed: convertToBrazilDateTime(checklist.createdAt),
-          updatedAtParsed: convertToBrazilDateTime(checklist.updatedAt),
-        }
-        return newChecklist
-      }),
-    )
-
-    return checklistsParsed
   }
 
   const openDeleteModal = (checklist: ParsedChecklistDTO) => {

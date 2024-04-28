@@ -1,5 +1,5 @@
 import { ThemeType } from '../contexts/ThemeContext'
-import { THEME_STORAGE } from './storageConfig'
+import { THEME_STORAGE } from './config'
 
 type StorageThemeProps = {
   theme: ThemeType

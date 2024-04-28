@@ -10,13 +10,6 @@ export const ChecklistFamiliesContainer = styled.div`
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    div {
-      display: flex;
-      flex-direction: row-reverse;
-      justify-content: flex-end;
-      align-items: center;
-      gap: 0.5rem;
-    }
 
     input[type='checkbox'] {
       width: 1.25rem;

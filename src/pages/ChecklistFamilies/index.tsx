@@ -8,6 +8,7 @@ import {
   ChecklistFamiliesOptions,
   useChecklists,
 } from '../../contexts/ChecklistsContext'
+import { CheckboxComponent } from '../../components/CheckboxComponent'
 
 export function ChecklistFamilies() {
   const { familiesSelected, onFamiliesSelectedUpdate } = useChecklists()
@@ -31,20 +32,16 @@ export function ChecklistFamilies() {
             nessa avaliação, além da checklist geral:
           </p>
           <form>
-            <div>
-              <label htmlFor="IoT">Checklist IoT</label>
-              <input
-                type="checkbox"
-                itemID="IoT"
-                value={IoTInputValue}
-                checked={familiesSelected[IoTInputValue]}
-                onChange={(e) =>
-                  updateFamiliesSelected(
-                    e.target.value as keyof ChecklistFamiliesOptions,
-                  )
-                }
-              />
-            </div>
+            <CheckboxComponent
+              value={IoTInputValue}
+              checked={familiesSelected[IoTInputValue]}
+              labelText="Checklist IoT"
+              onChange={(e) =>
+                updateFamiliesSelected(
+                  e.target.value as keyof ChecklistFamiliesOptions,
+                )
+              }
+            />
           </form>
         </S.ChecklistFamiliesContainer>
       </SectionContainer>

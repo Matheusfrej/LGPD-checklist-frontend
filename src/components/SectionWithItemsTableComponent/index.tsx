@@ -23,17 +23,10 @@ export function SectionWithItemsTableComponent({
   title,
   isReport = false,
 }: SectionWithItemsTableComponentProps) {
-  const { checklist, familiesSelected } = useChecklists()
+  const { filteredChecklist } = useChecklists()
 
   const hasAnyItemInClassification = (tag: string) => {
-    return (
-      checklist.filter(
-        (item) =>
-          item.mandatory === isMandatory &&
-          item.code.startsWith(tag) &&
-          familiesSelected[item.type],
-      ).length > 0
-    )
+    return filteredChecklist(isMandatory, tag).length > 0
   }
 
   return (

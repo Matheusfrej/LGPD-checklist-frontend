@@ -26,14 +26,25 @@ export type ChecklistItemType = {
   recomendations: string
 }
 
+export type CategoriesType = {
+  ['Sim']: boolean
+  ['Não']: boolean
+  ['Não se aplica']: boolean
+  ['Não Preenchido']: boolean
+}
+
 export interface ChecklistsContextType {
   checklist: ChecklistItemType[]
   familiesSelected: ChecklistFamiliesOptions
+  categoriesSelected: CategoriesType
   mandatoryItemsClassifications: ItemClassification[]
   nonMandatoryItemsClassifications: ItemClassification[]
+  filteredChecklist: (isMandatory: boolean, tag: string) => ChecklistItemType[]
+  findIndexByIsMandatoryAndCode: (isMandatory: boolean, code: string) => number
   onChecklistUpdate: (checklist: ChecklistItemType[]) => void
   updateChecklistRow: (checklist: ChecklistItemType, index: number) => void
   onFamiliesSelectedUpdate: (familiesSelected: ChecklistFamiliesOptions) => void
+  onCategoriesSelectedUpdate: (categoriesSelected: CategoriesType) => void
   progressData: (isMandatory: boolean) => { name: string; value: number }[]
   distributionData: (isMandatory: boolean) => { name: string; value: number }[]
   progressTableData: (isMandatory: boolean) => { name: string; value: number }[]
@@ -49,6 +60,12 @@ export function ChecklistsContextProvider({
   children,
 }: ChecklistsContextProviderProps) {
   const [checklist, setChecklist] = useState<ChecklistItemType[]>(initialItems)
+  const [categoriesSelected, setCategoriesSelected] = useState<CategoriesType>({
+    Sim: true,
+    Não: true,
+    'Não se aplica': true,
+    'Não Preenchido': true,
+  })
   const [familiesSelected, setFamiliesSelected] =
     useState<ChecklistFamiliesOptions>({
       general: true,
@@ -96,6 +113,28 @@ export function ChecklistsContextProvider({
       tag: 'SF-',
     },
   ]
+
+  const findIndexByIsMandatoryAndCode = (
+    isMandatory: boolean,
+    code: string,
+  ) => {
+    return checklist.findIndex(
+      (item) => item.mandatory === isMandatory && item.code === code,
+    )
+  }
+
+  const filteredChecklist = (isMandatory: boolean, tag: string) => {
+    const filtered = checklist.filter(
+      (row) =>
+        row.mandatory === isMandatory &&
+        row.code.startsWith(tag) &&
+        familiesSelected[row.type] &&
+        categoriesSelected[row.answer ? row.answer : 'Não Preenchido'],
+    )
+    console.log(filtered)
+
+    return filtered
+  }
 
   const onChecklistUpdate = (checklist: ChecklistItemType[]) => {
     setChecklist(checklist)
@@ -258,6 +297,10 @@ export function ChecklistsContextProvider({
     setFamiliesSelected(familiesSelected)
   }
 
+  const onCategoriesSelectedUpdate = (categoriesSelected: CategoriesType) => {
+    setCategoriesSelected(categoriesSelected)
+  }
+
   return (
     <ChecklistsContext.Provider
       value={{
@@ -265,12 +308,16 @@ export function ChecklistsContextProvider({
         familiesSelected,
         mandatoryItemsClassifications,
         nonMandatoryItemsClassifications,
+        categoriesSelected,
+        filteredChecklist,
         onChecklistUpdate,
         updateChecklistRow,
         onFamiliesSelectedUpdate,
+        onCategoriesSelectedUpdate,
         progressData,
         distributionData,
         progressTableData,
+        findIndexByIsMandatoryAndCode,
       }}
     >
       {children}

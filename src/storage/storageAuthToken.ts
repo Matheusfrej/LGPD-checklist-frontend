@@ -1,4 +1,4 @@
-import { AUTH_STORAGE } from './storageConfig'
+import { AUTH_STORAGE } from './config'
 
 type StorageAuthTokenProps = {
   token: string

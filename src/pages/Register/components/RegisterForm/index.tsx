@@ -8,6 +8,9 @@ import { useAuth } from '../../../../contexts/AuthContext'
 import { useNavigate } from 'react-router-dom'
 import * as S from './styles'
 
+const passwordValidation =
+  /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/
+
 const registerFormSchema = z
   .object({
     name: z
@@ -22,7 +25,11 @@ const registerFormSchema = z
       .email('Insira um email válido'),
     password: z
       .string({ required_error: 'A senha é obrigatória' })
-      .min(1, { message: 'A senha é obrigatória' }),
+      .min(1, { message: 'A senha é obrigatória' })
+      .regex(passwordValidation, {
+        message:
+          'A senha deve ter pelo menos um caractere maiúsculo, um minúsculo, um número e um caractere especial (#?!@$%^&*-)',
+      }),
     confirmPassword: z
       .string({
         required_error: 'Confirmar a senha é obrigatório',

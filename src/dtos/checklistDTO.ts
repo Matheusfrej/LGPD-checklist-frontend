@@ -9,3 +9,17 @@ export type ChecklistDTO = {
   createdAt: Date
   updatedAt: Date
 }
+
+export type ParsedChecklistDTO = {
+  id: number
+  userId: number
+  name: string
+  systemId: number
+  isGeneral: boolean
+  isIot: boolean
+  checklistData: any
+  createdAt: Date
+  updatedAt: Date
+  createdAtParsed: string
+  updatedAtParsed: string
+}

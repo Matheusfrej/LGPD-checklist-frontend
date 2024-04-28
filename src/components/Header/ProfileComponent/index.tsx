@@ -20,7 +20,7 @@ export function ProfileComponent() {
 
   const handleAction = (option: ActionOptionType) => {
     if (option === 'checklists') {
-      console.log('oi')
+      navigate('/checklists')
     } else if (option === 'systems') {
       navigate('/systems')
     } else if (option === 'profile') {

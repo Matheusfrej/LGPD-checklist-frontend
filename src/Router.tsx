@@ -10,6 +10,7 @@ import { Register } from './pages/Register'
 import { NotFound } from './pages/NotFound'
 import { Profile } from './pages/Profile'
 import { Systems } from './pages/Systems'
+import { Checklists } from './pages/Checklists'
 
 export function Router() {
   return (
@@ -24,6 +25,7 @@ export function Router() {
         <Route path="/report" element={<Report />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/systems" element={<Systems />} />
+        <Route path="/checklists" element={<Checklists />} />
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>

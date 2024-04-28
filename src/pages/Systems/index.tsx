@@ -19,6 +19,10 @@ export function Systems() {
   )
   const columns = [
     {
+      key: 'id',
+      value: 'ID',
+    },
+    {
       key: 'name',
       value: 'Nome',
     },

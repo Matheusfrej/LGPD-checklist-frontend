@@ -78,7 +78,7 @@ export function ListTableComponent({
           action={() => handleCreateNewItem()}
         />
       </S.TableHeader>
-      <SectionContainer hasHeader>
+      <SectionContainer hasHeader style={{ overflow: 'auto' }}>
         <S.Table>
           <thead>
             <tr>

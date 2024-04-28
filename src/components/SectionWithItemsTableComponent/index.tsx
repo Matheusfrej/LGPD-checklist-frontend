@@ -32,9 +32,9 @@ export function SectionWithItemsTableComponent({
   return (
     <S.SectionWithItemsTable $isReport={isReport}>
       {title && <SectionTitleComponent text={title} isSecondary />}
-      {classifications.map((item) => {
+      {classifications.map((item, idx) => {
         return hasAnyItemInClassification(item.tag) ? (
-          <SectionContainer key={item.tag + isMandatory} style={style}>
+          <SectionContainer key={item.tag + isMandatory + idx} style={style}>
             <SectionTitleComponent text={item.name} isSecondary />
             <S.ItemsContainer>
               <ItemsTableComponent

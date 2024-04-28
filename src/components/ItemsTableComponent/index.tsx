@@ -37,7 +37,7 @@ export function ItemsTableComponent({
       <tbody>
         {filteredChecklist(isMandatory, tag).map((row, idx) => {
           return (
-            <tr key={row.code + idx + row.mandatory}>
+            <tr key={row.code + idx + row.mandatory + tag + row.severityDegree}>
               {row.type !== 'general' ? (
                 <td>
                   {row.code} <br /> {row.type}
@@ -61,7 +61,7 @@ export function ItemsTableComponent({
                         selectedValue = undefined
                       }
                       updateChecklistRow(
-                        { ...row, answer: e.target.value as AnswerType },
+                        { ...row, answer: selectedValue as AnswerType },
                         findIndexByIsMandatoryAndCode(row.mandatory, row.code),
                       )
                     }}
@@ -81,13 +81,16 @@ export function ItemsTableComponent({
                     value={row.severityDegree}
                     onChange={(e) => {
                       let selectedValue: string | undefined = e.target.value
-                      if (selectedValue === '') {
+                      if (
+                        selectedValue === '' ||
+                        selectedValue === 'Escolha uma opção'
+                      ) {
                         selectedValue = undefined
                       }
                       updateChecklistRow(
                         {
                           ...row,
-                          severityDegree: e.target.value as SeverityDegreeType,
+                          severityDegree: selectedValue as SeverityDegreeType,
                         },
                         findIndexByIsMandatoryAndCode(row.mandatory, row.code),
                       )

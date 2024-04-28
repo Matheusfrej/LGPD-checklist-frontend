@@ -40,6 +40,7 @@ export interface ChecklistsContextType {
   mandatoryItemsClassifications: ItemClassification[]
   nonMandatoryItemsClassifications: ItemClassification[]
   filteredChecklist: (isMandatory: boolean, tag: string) => ChecklistItemType[]
+  validateChecklist: (isMandatory: boolean) => string | null
   findIndexByIsMandatoryAndCode: (isMandatory: boolean, code: string) => number
   onChecklistUpdate: (checklist: ChecklistItemType[]) => void
   updateChecklistRow: (checklist: ChecklistItemType, index: number) => void
@@ -131,7 +132,6 @@ export function ChecklistsContextProvider({
         familiesSelected[row.type] &&
         categoriesSelected[row.answer ? row.answer : 'Não Preenchido'],
     )
-    console.log(filtered)
 
     return filtered
   }
@@ -142,6 +142,9 @@ export function ChecklistsContextProvider({
 
   const updateChecklistRow = (row: ChecklistItemType, index: number) => {
     const checklistCopy = [...checklist]
+    if (row.answer !== 'Não') {
+      row.severityDegree = undefined
+    }
     checklistCopy[index] = row
     setChecklist(checklistCopy)
   }
@@ -173,6 +176,19 @@ export function ChecklistsContextProvider({
           100,
       },
     ]
+  }
+
+  const validateChecklist = (isMandatory: boolean): string | null => {
+    for (const item of checklist) {
+      if (
+        item.answer === 'Não' &&
+        item.mandatory === isMandatory &&
+        !(item.severityDegree && item.userComment)
+      ) {
+        return 'Nos itens respondidos com "Não", preencha o grau de severidade e o comentário'
+      }
+    }
+    return null
   }
 
   const distributionData = (isMandatory: boolean) => {
@@ -310,6 +326,7 @@ export function ChecklistsContextProvider({
         nonMandatoryItemsClassifications,
         categoriesSelected,
         filteredChecklist,
+        validateChecklist,
         onChecklistUpdate,
         updateChecklistRow,
         onFamiliesSelectedUpdate,

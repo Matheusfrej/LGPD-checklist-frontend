@@ -5,7 +5,7 @@ const listSystemsByUserIdServiceDefaultErrorMessage =
   'Não foi possível carregar os seus sistemas. Tente novamente mais tarde.'
 
 interface ListSystemsByUserIdServiceResponse {
-  systems: SystemDTO
+  systems: SystemDTO[]
 }
 
 const listSystemsByUserIdService = async (

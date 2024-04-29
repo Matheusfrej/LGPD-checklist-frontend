@@ -10,8 +10,8 @@ import { useAuth } from './AuthContext'
 export type UserType = {
   name: string
   office: string
-  systemName: string
-  systemDesc: string
+  systemName?: string
+  systemDesc?: string
 }
 
 interface UsersContextType {
@@ -31,8 +31,8 @@ export function UsersContextProvider({ children }: UsersContextProviderProps) {
   const [user, setUser] = useState<UserType>({
     name: '',
     office: '',
-    systemName: '',
-    systemDesc: '',
+    systemName: undefined,
+    systemDesc: undefined,
   })
 
   const onUserUpdate = (user: UserType) => {
@@ -45,13 +45,15 @@ export function UsersContextProvider({ children }: UsersContextProviderProps) {
         ...user,
         name: userLogged?.name,
         office: userLogged?.office,
+        systemName: undefined,
+        systemDesc: undefined,
       })
     } else {
       onUserUpdate({
         name: '',
         office: '',
-        systemName: '',
-        systemDesc: '',
+        systemName: undefined,
+        systemDesc: undefined,
       })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

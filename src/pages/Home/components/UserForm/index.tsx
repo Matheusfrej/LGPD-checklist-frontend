@@ -2,28 +2,69 @@ import { useUsers } from '../../../../contexts/UsersContext'
 import * as z from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { InputComponent } from '../../../../components/InputComponent'
 import { FormContainer } from '../../../../templates/FormContainer'
 import { useAuth } from '../../../../contexts/AuthContext'
+import { SelectComponent } from '../../../../components/SelectComponent'
+import { SystemDTO } from '../../../../dtos/systemDTO'
+import {
+  listSystemsByUserIdService,
+  listSystemsByUserIdServiceDefaultErrorMessage,
+} from '../../../../services/system/listSystemsByUserIdService'
+import { AppError } from '../../../../utils/AppError'
+import { useToast } from '../../../../contexts/ToastContext'
 
-const userFormSchema = z.object({
-  name: z
-    .string({ required_error: 'O nome é obrigatório' })
-    .min(1, { message: 'O nome é obrigatório' }),
-  office: z
-    .string({ required_error: 'O cargo/função é obrigatório' })
-    .min(1, { message: 'O cargo/função é obrigatório' }),
-  systemName: z
-    .string({ required_error: 'O nome do sistema é obrigatório' })
-    .min(1, { message: 'O nome do sistema é obrigatório' }),
-  systemDesc: z
-    .string({
-      required_error: 'A descrição do sistema é obrigatória',
-    })
-    .min(1, { message: 'A descrição do sistema é obrigatória' }),
-})
+const userFormSchema = z
+  .object({
+    name: z
+      .string({ required_error: 'O nome é obrigatório' })
+      .min(1, { message: 'O nome é obrigatório' }),
+    office: z
+      .string({ required_error: 'O cargo/função é obrigatório' })
+      .min(1, { message: 'O cargo/função é obrigatório' }),
+    systemName: z
+      .string({ required_error: 'O nome do sistema é obrigatório' })
+      .optional(),
+    systemDesc: z
+      .string({
+        required_error: 'A descrição do sistema é obrigatória',
+      })
+      .optional(),
+    system: z.coerce
+      .number({
+        required_error: 'Informe um sistema para avaliar',
+      })
+      .optional(),
+  })
+  .superRefine((values, ctx) => {
+    if (!values.system && !values.systemDesc && !values.systemName) {
+      if (!values.systemDesc) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'A descrição do sistema é obrigatória',
+          path: ['systemDesc'],
+        })
+      }
+      if (!values.systemName) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'O nome do sistema é obrigatório',
+          path: ['systemName'],
+        })
+      }
+      if (!values.system) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'Informe um sistema para avaliar',
+          path: ['system'],
+        })
+      }
+      return false
+    }
+    return true
+  })
 
 type UserFormInputs = z.infer<typeof userFormSchema>
 
@@ -32,9 +73,18 @@ interface UserFormProps {
 }
 
 export function UserForm({ submitted }: UserFormProps) {
-  const { isLogged } = useAuth()
+  const { isLogged, user: userLogged } = useAuth()
   const { user, onUserUpdate } = useUsers()
+  const { toastError } = useToast()
   const navigate = useNavigate()
+  const [systems, setSystems] = useState<SystemDTO[]>([])
+
+  const systemsParsedToSelect = systems.map((system) => {
+    return {
+      value: system.id,
+      label: system.name,
+    }
+  })
 
   const handleUserSubmit = (data: UserFormInputs) => {
     onUserUpdate(data)
@@ -45,6 +95,7 @@ export function UserForm({ submitted }: UserFormProps) {
     register,
     handleSubmit,
     formState: { errors },
+    resetField,
     setValue,
     getValues,
   } = useForm<UserFormInputs>({
@@ -61,6 +112,31 @@ export function UserForm({ submitted }: UserFormProps) {
     },
   })
 
+  const fetchSystems = async () => {
+    try {
+      if (userLogged) {
+        const data = await listSystemsByUserIdService(userLogged.id)
+
+        setSystems(data.systems)
+      } else {
+        toastError(listSystemsByUserIdServiceDefaultErrorMessage)
+      }
+    } catch (error) {
+      const isAppError = error instanceof AppError
+
+      const title = isAppError
+        ? error.message
+        : listSystemsByUserIdServiceDefaultErrorMessage
+      toastError(title)
+      return false
+    }
+  }
+
+  useEffect(() => {
+    if (userLogged) fetchSystems()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userLogged])
+
   useEffect(() => {
     if (submitted > 0) {
       handleSubmit(handleUserSubmit)()
@@ -75,8 +151,11 @@ export function UserForm({ submitted }: UserFormProps) {
       setValue('systemName', user.systemName)
     if (getValues('systemDesc') !== user.systemDesc)
       setValue('systemDesc', user.systemDesc)
+    if (!isLogged) {
+      resetField('system')
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user])
+  }, [user, isLogged])
 
   return (
     <FormContainer id="my-form" onSubmit={handleSubmit(handleUserSubmit)}>
@@ -96,21 +175,33 @@ export function UserForm({ submitted }: UserFormProps) {
         register={register}
         errorMessage={errors.office?.message}
       />
-      <InputComponent
-        labelText="Nome do sistema"
-        isRequired
-        name="systemName"
-        register={register}
-        errorMessage={errors.systemName?.message}
-      />
-      <InputComponent
-        labelText="Descrição do sistema"
-        name="systemDesc"
-        isRequired
-        isTextArea
-        register={register}
-        errorMessage={errors.systemDesc?.message}
-      />
+      {isLogged ? (
+        <SelectComponent
+          defaultValueText="Escolha um sistema"
+          items={systemsParsedToSelect}
+          name="system"
+          register={register}
+          errorMessage={errors.system?.message}
+        />
+      ) : (
+        <>
+          <InputComponent
+            labelText="Nome do sistema"
+            isRequired
+            name="systemName"
+            register={register}
+            errorMessage={errors.systemName?.message}
+          />
+          <InputComponent
+            labelText="Descrição do sistema"
+            name="systemDesc"
+            isRequired
+            isTextArea
+            register={register}
+            errorMessage={errors.systemDesc?.message}
+          />
+        </>
+      )}
     </FormContainer>
   )
 }

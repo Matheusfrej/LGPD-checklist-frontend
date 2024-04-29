@@ -7,6 +7,7 @@ import { useTheme } from 'styled-components'
 import { ChartsContainer } from '../ChartsContainer'
 import { SectionTitleComponent } from '../SectionTitleComponent'
 import { SectionWithItemsTableComponent } from '../SectionWithItemsTableComponent'
+import { CheckboxesAnswerComponent } from '../CheckboxesAnswerComponent'
 
 interface ItemsTablePageComponentProps {
   text: string
@@ -36,6 +37,7 @@ export function ItemsTablePageComponent({
 
   return (
     <MainContainer hasTable>
+      <CheckboxesAnswerComponent />
       <SectionContainer hasHeader>
         <SectionTitleComponent text={text} />
         <ChartsContainer isMandatory={isMandatory} colors={colors} />

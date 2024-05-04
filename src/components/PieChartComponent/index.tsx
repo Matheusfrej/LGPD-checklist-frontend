@@ -32,7 +32,6 @@ export function PieChartComponent({
     innerRadius,
     outerRadius,
     percent,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   }: RenderCustomLabelProps) => {
     const radius = innerRadius + (outerRadius - innerRadius) * 0.5
     const RADIAN = Math.PI / 180

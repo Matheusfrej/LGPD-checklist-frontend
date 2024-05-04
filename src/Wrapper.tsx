@@ -11,7 +11,6 @@ import { Router } from './Router'
 // contexts
 import { UsersContextProvider } from './contexts/UsersContext'
 import { ChecklistsContextProvider } from './contexts/ChecklistsContext'
-import { AllDataContextProvider } from './contexts/AllDataContext'
 import { ToastContextProvider } from './contexts/ToastContext'
 
 import { useState } from 'react'
@@ -34,10 +33,8 @@ export function Wrapper() {
             <AuthContextProvider>
               <UsersContextProvider>
                 <ChecklistsContextProvider>
-                  <AllDataContextProvider>
-                    <ScrollToTop />
-                    <Router />
-                  </AllDataContextProvider>
+                  <ScrollToTop />
+                  <Router />
                 </ChecklistsContextProvider>
               </UsersContextProvider>
             </AuthContextProvider>

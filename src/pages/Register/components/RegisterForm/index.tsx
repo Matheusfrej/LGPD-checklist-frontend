@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom'
 import * as S from './styles'
 
 const passwordValidation =
-  /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/
+  /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).*$/
 
 const registerFormSchema = z
   .object({
@@ -25,7 +25,7 @@ const registerFormSchema = z
       .email('Insira um email válido'),
     password: z
       .string({ required_error: 'A senha é obrigatória' })
-      .min(1, { message: 'A senha é obrigatória' })
+      .min(6, { message: 'A senha deve ter no mínimo 6 caracteres' })
       .regex(passwordValidation, {
         message:
           'A senha deve ter pelo menos um caractere maiúsculo, um minúsculo, um número e um caractere especial (#?!@$%^&*-)',

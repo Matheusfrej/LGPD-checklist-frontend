@@ -1,44 +1,15 @@
 import { ReactNode, createContext, useContext, useState } from 'react'
-import { initialItems } from '../utils/checklistInitial'
-
-export type AnswerType = 'Sim' | 'Não' | 'Não se aplica' | undefined
-
-export type SeverityDegreeType = 'Leve' | 'Grave' | 'Catastrófico' | undefined
-
-export type ChecklistFamiliesOptions = {
-  general: boolean
-  IoT: boolean
-}
-
-export type ItemClassification = {
-  name: string
-  tag: string
-}
-
-export type ChecklistItemType = {
-  mandatory: boolean
-  type: keyof ChecklistFamiliesOptions
-  code: string
-  itemDesc: string
-  answer?: AnswerType
-  severityDegree?: SeverityDegreeType
-  userComment: string
-  recomendations: string
-}
-
-export type CategoriesType = {
-  ['Sim']: boolean
-  ['Não']: boolean
-  ['Não se aplica']: boolean
-  ['Não Preenchido']: boolean
-}
+import { initialItems } from '../utils/constants/checklistInitial'
+import {
+  CategoriesType,
+  ChecklistFamiliesOptions,
+  ChecklistItemType,
+} from '../@types'
 
 export interface ChecklistsContextType {
   checklist: ChecklistItemType[]
   familiesSelected: ChecklistFamiliesOptions
   categoriesSelected: CategoriesType
-  mandatoryItemsClassifications: ItemClassification[]
-  nonMandatoryItemsClassifications: ItemClassification[]
   filteredChecklist: (isMandatory: boolean, tag: string) => ChecklistItemType[]
   validateChecklist: (isMandatory: boolean) => string | null
   findIndexByIsMandatoryAndCode: (isMandatory: boolean, code: string) => number
@@ -73,48 +44,6 @@ export function ChecklistsContextProvider({
       IoT: false,
     })
 
-  const mandatoryItemsClassifications: ItemClassification[] = [
-    {
-      name: 'Sobre transparência de Dados (T)',
-      tag: 'T-',
-    },
-    {
-      name: 'Sobre Consentimento do Titular (C)',
-      tag: 'C-',
-    },
-    {
-      name: 'Sobre os Direitos do Titular (D)',
-      tag: 'D-',
-    },
-    {
-      name: 'Sobre Segurança de Dados (S)',
-      tag: 'S-',
-    },
-    {
-      name: 'Sobre Responsabilidade do Controlador   (R)',
-      tag: 'R-',
-    },
-  ]
-
-  const nonMandatoryItemsClassifications: ItemClassification[] = [
-    {
-      name: 'Sobre Segurança de Dados (S)',
-      tag: 'S-',
-    },
-    {
-      name: 'Sobre Responsabilidade do Controlador   (R)',
-      tag: 'R-',
-    },
-    {
-      name: 'Acesso ao Dispositivo (A)',
-      tag: 'A-',
-    },
-    {
-      name: 'Segurança Física (SF)',
-      tag: 'SF-',
-    },
-  ]
-
   const findIndexByIsMandatoryAndCode = (
     isMandatory: boolean,
     code: string,
@@ -124,11 +53,11 @@ export function ChecklistsContextProvider({
     )
   }
 
-  const filteredChecklist = (isMandatory: boolean, tag: string) => {
+  const filteredChecklist = (isMandatory?: boolean, tag?: string) => {
     const filtered = checklist.filter(
       (row) =>
-        row.mandatory === isMandatory &&
-        row.code.startsWith(tag) &&
+        (!isMandatory || row.mandatory === isMandatory) &&
+        (!tag || row.code.startsWith(tag)) &&
         familiesSelected[row.type] &&
         categoriesSelected[row.answer ? row.answer : 'Não Preenchido'],
     )
@@ -147,6 +76,19 @@ export function ChecklistsContextProvider({
     }
     checklistCopy[index] = row
     setChecklist(checklistCopy)
+  }
+
+  const validateChecklist = (isMandatory: boolean): string | null => {
+    for (const item of checklist) {
+      if (
+        item.answer === 'Não' &&
+        item.mandatory === isMandatory &&
+        !(item.severityDegree && item.userComment)
+      ) {
+        return 'Nos itens respondidos com "Não", preencha o grau de severidade e o comentário'
+      }
+    }
+    return null
   }
 
   const progressData = (isMandatory: boolean) => {
@@ -176,19 +118,6 @@ export function ChecklistsContextProvider({
           100,
       },
     ]
-  }
-
-  const validateChecklist = (isMandatory: boolean): string | null => {
-    for (const item of checklist) {
-      if (
-        item.answer === 'Não' &&
-        item.mandatory === isMandatory &&
-        !(item.severityDegree && item.userComment)
-      ) {
-        return 'Nos itens respondidos com "Não", preencha o grau de severidade e o comentário'
-      }
-    }
-    return null
   }
 
   const distributionData = (isMandatory: boolean) => {
@@ -322,8 +251,6 @@ export function ChecklistsContextProvider({
       value={{
         checklist,
         familiesSelected,
-        mandatoryItemsClassifications,
-        nonMandatoryItemsClassifications,
         categoriesSelected,
         filteredChecklist,
         validateChecklist,

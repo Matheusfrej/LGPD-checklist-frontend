@@ -1,4 +1,5 @@
-import { CategoriesType, useChecklists } from '../../contexts/ChecklistsContext'
+import { CategoriesType } from '../../@types'
+import { useChecklists } from '../../contexts/ChecklistsContext'
 import { CheckboxComponent } from '../CheckboxComponent'
 import * as S from './styles'
 

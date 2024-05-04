@@ -1,8 +1,5 @@
-import {
-  AnswerType,
-  SeverityDegreeType,
-  useChecklists,
-} from '../../contexts/ChecklistsContext'
+import { AnswerType, SeverityDegreeType } from '../../@types'
+import { useChecklists } from '../../contexts/ChecklistsContext'
 import * as S from './styles'
 
 interface ItemsTableComponentProps {

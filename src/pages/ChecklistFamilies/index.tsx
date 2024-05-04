@@ -4,11 +4,9 @@ import { MainContainer } from '../../templates/MainContainer'
 import { SectionContainer } from '../../templates/SectionContainer'
 import * as S from './styles'
 import { ActionsFooterContainer } from '../../templates/ActionsFooterContainer'
-import {
-  ChecklistFamiliesOptions,
-  useChecklists,
-} from '../../contexts/ChecklistsContext'
+import { useChecklists } from '../../contexts/ChecklistsContext'
 import { CheckboxComponent } from '../../components/CheckboxComponent'
+import { ChecklistFamiliesOptions } from '../../@types'
 
 export function ChecklistFamilies() {
   const { familiesSelected, onFamiliesSelectedUpdate } = useChecklists()

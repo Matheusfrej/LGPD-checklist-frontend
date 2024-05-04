@@ -2,9 +2,10 @@ import { useNavigate } from 'react-router-dom'
 import { ItemsTablePageComponent } from '../../components/ItemsTablePageComponent'
 import { useChecklists } from '../../contexts/ChecklistsContext'
 import { useToast } from '../../contexts/ToastContext'
+import { mandatoryItemsClassifications } from '../../utils/constants/classifications'
 
 export function MandatoryItems() {
-  const { mandatoryItemsClassifications, validateChecklist } = useChecklists()
+  const { validateChecklist } = useChecklists()
   const { toastError } = useToast()
   const navigate = useNavigate()
   const isMandatory = true

@@ -15,6 +15,9 @@ import {
 import { AppError } from '../../../../utils/AppError'
 import { useToast } from '../../../../contexts/ToastContext'
 import { UserFormInputs, userFormSchema } from './schema'
+import { ButtonComponent } from '../../../../components/ButtonComponent'
+import { SectionContainer } from '../../../../templates/SectionContainer'
+import { CreateUpdateSystemModal } from '../../../../components/CreateUpdateSystemModal'
 
 interface UserFormProps {
   submitted: number
@@ -26,6 +29,8 @@ export function UserForm({ submitted }: UserFormProps) {
   const { toastError } = useToast()
   const navigate = useNavigate()
   const [systems, setSystems] = useState<SystemDTO[]>([])
+  const [isCreateUpdateSystemModalOpen, setIsCreateUpdateSystemModalOpen] =
+    useState(false)
 
   const systemsParsedToSelect = systems.map((system) => {
     return {
@@ -35,8 +40,15 @@ export function UserForm({ submitted }: UserFormProps) {
   })
 
   const handleUserSubmit = (data: UserFormInputs) => {
-    onUserUpdate(data)
-    navigate('/checklist-families')
+    if (!isCreateUpdateSystemModalOpen) {
+      onUserUpdate(data)
+
+      navigate('/checklist-families')
+    }
+  }
+
+  const handleCreateUpdateSystemModalChange = (val: boolean) => {
+    setIsCreateUpdateSystemModalOpen(val)
   }
 
   const {
@@ -53,6 +65,7 @@ export function UserForm({ submitted }: UserFormProps) {
       office: user.office,
       systemName: user.systemName,
       systemDesc: user.systemDesc,
+      system: user.system,
     },
     resetOptions: {
       keepValues: true,
@@ -99,6 +112,7 @@ export function UserForm({ submitted }: UserFormProps) {
       setValue('systemName', user.systemName)
     if (getValues('systemDesc') !== user.systemDesc)
       setValue('systemDesc', user.systemDesc)
+    if (getValues('system') !== user.system) setValue('system', user.system)
     if (!isLogged) {
       resetField('system')
     }
@@ -106,7 +120,7 @@ export function UserForm({ submitted }: UserFormProps) {
   }, [user, isLogged])
 
   return (
-    <FormContainer id="my-form" onSubmit={handleSubmit(handleUserSubmit)}>
+    <FormContainer id="user-form" onSubmit={handleSubmit(handleUserSubmit)}>
       <InputComponent
         labelText="Nome do avaliador"
         isRequired
@@ -124,13 +138,22 @@ export function UserForm({ submitted }: UserFormProps) {
         errorMessage={errors.office?.message}
       />
       {isLogged ? (
-        <SelectComponent
-          defaultValueText="Escolha um sistema"
-          items={systemsParsedToSelect}
-          name="system"
-          register={register}
-          errorMessage={errors.system?.message}
-        />
+        <SectionContainer>
+          <SelectComponent
+            exampleOptionText="Escolha um sistema"
+            items={systemsParsedToSelect}
+            name="system"
+            selected={getValues('system')}
+            register={register}
+            errorMessage={errors.system?.message}
+            style={{ border: 0, paddingLeft: 0 }}
+          />
+          <ButtonComponent
+            text="Novo sistema"
+            action={() => handleCreateUpdateSystemModalChange(true)}
+            style={{ width: 'fit-content' }}
+          />
+        </SectionContainer>
       ) : (
         <>
           <InputComponent
@@ -150,6 +173,11 @@ export function UserForm({ submitted }: UserFormProps) {
           />
         </>
       )}
+      <CreateUpdateSystemModal
+        isVisible={isCreateUpdateSystemModalOpen}
+        handleModalOpenChange={handleCreateUpdateSystemModalChange}
+        fetchItems={fetchSystems}
+      />
     </FormContainer>
   )
 }

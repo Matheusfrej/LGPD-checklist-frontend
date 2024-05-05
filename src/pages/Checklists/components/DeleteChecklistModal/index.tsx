@@ -11,14 +11,14 @@ interface DeleteChecklistModalProps {
   checklist?: ParsedChecklistDTO
   isVisible: boolean
   handleModalOpenChange: (state: boolean) => void
-  triggerList: () => void
+  fetchItems: () => void
 }
 
 export function DeleteChecklistModal({
   checklist,
   isVisible,
   handleModalOpenChange,
-  triggerList,
+  fetchItems,
 }: DeleteChecklistModalProps) {
   const { toastSuccess, toastError } = useToast()
 
@@ -28,7 +28,7 @@ export function DeleteChecklistModal({
         await deleteChecklistService(checklist?.id)
         toastSuccess('Checklist deletada com sucesso.')
         handleModalOpenChange(false)
-        triggerList()
+        fetchItems()
       } else {
         toastError(deleteChecklistServiceDefaultErrorMessage)
       }

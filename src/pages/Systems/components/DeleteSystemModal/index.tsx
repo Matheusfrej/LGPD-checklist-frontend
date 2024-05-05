@@ -11,14 +11,14 @@ interface DeleteSystemModalProps {
   system?: SystemDTO
   isVisible: boolean
   handleModalOpenChange: (state: boolean) => void
-  triggerList: () => void
+  fetchItems: () => void
 }
 
 export function DeleteSystemModal({
   system,
   isVisible,
   handleModalOpenChange,
-  triggerList,
+  fetchItems,
 }: DeleteSystemModalProps) {
   const { toastSuccess, toastError } = useToast()
 
@@ -29,7 +29,7 @@ export function DeleteSystemModal({
 
         toastSuccess('Sistema deletado com sucesso.')
         handleModalOpenChange(false)
-        triggerList()
+        fetchItems()
       } else {
         toastError(deleteSystemServiceDefaultErrorMessage)
       }
@@ -47,7 +47,7 @@ export function DeleteSystemModal({
     <DeleteModalComponent
       deleteService={deleteSystem}
       handleModalOpenChange={handleModalOpenChange}
-      title={`Tem certeza que deseja excluir o sistema ${system?.name}?`}
+      title={`Tem certeza que deseja excluir o sistema ${system?.name}? Excluí-lo irá excluir também todas as checklists desse sistema.`}
       isVisible={isVisible}
     />
   )

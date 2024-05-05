@@ -4,15 +4,17 @@ import { useAuth } from '../../../contexts/AuthContext'
 import { LineComponent } from '../../LineComponent'
 import { useOutsideAlerter } from '../../../hooks/clickedOutside'
 import { useNavigate } from 'react-router-dom'
+import { useChecklists } from '../../../contexts/ChecklistsContext'
 
 type ActionOptionType = 'checklists' | 'systems' | 'profile' | 'signOut'
 
 export function ProfileComponent() {
   const { user, signOut } = useAuth()
-  const [isOpen, setIsOpen] = useState<boolean>(false)
+  const { resetChecklist } = useChecklists()
+  const navigate = useNavigate()
   const wrapperRef = useRef(null)
   const { clickedOutside } = useOutsideAlerter(wrapperRef)
-  const navigate = useNavigate()
+  const [isOpen, setIsOpen] = useState<boolean>(false)
 
   const getUserNameFirstLetter = () => {
     return user?.name[0].toUpperCase()
@@ -28,6 +30,7 @@ export function ProfileComponent() {
     } else if (option === 'signOut') {
       setIsOpen(false)
       signOut(true)
+      resetChecklist()
       navigate('/')
     }
     setIsOpen(false)

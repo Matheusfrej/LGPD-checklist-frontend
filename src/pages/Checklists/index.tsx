@@ -10,15 +10,20 @@ import {
   listChecklistsByUserIdService,
   listChecklistsByUserIdServiceDefaultErrorMessage,
 } from '../../services/checklist/listChecklistsByUserIdService'
+import { useNavigate } from 'react-router-dom'
+import { useChecklists } from '../../contexts/ChecklistsContext'
 
 export function Checklists() {
   const { user } = useAuth()
   const { toastError } = useToast()
+  const { resetChecklist } = useChecklists()
+  const navigate = useNavigate()
   const [isDeleteChecklistModalOpen, setIsDeleteChecklistModalOpen] =
     useState(false)
   const [selectedChecklist, setSelectedChecklist] = useState<
     ParsedChecklistDTO | undefined
   >(undefined)
+
   const columns = [
     {
       key: 'id',
@@ -68,16 +73,25 @@ export function Checklists() {
     }
   }
 
-  const updateSystemList = () => {}
+  const handleEditChecklist = (checklist: ParsedChecklistDTO) => {
+    navigate(`/checklist/${checklist.id}`)
+  }
+
+  const handleCreateChecklist = () => {
+    resetChecklist()
+    navigate('/')
+  }
+
+  const updateChecklistList = () => {}
 
   return (
     <MainContainer hasTable>
       <ListTableComponent
         columns={columns}
         listService={listChecklists}
-        updateListTrigger={updateSystemList}
-        createService={() => console.log('criou')}
-        editService={() => console.log('editou')}
+        updateListTrigger={updateChecklistList}
+        createService={() => handleCreateChecklist()}
+        editService={handleEditChecklist}
         deleteService={openDeleteModal}
         title="Minhas checklists cadastradas"
         addButtonLabel="Nova checklist"
@@ -85,7 +99,7 @@ export function Checklists() {
       <DeleteChecklistModal
         isVisible={isDeleteChecklistModalOpen}
         handleModalOpenChange={handleDeleteModalChange}
-        triggerList={updateSystemList}
+        fetchItems={updateChecklistList}
         checklist={selectedChecklist}
       />
     </MainContainer>

@@ -19,7 +19,9 @@ export function Router() {
   return (
     <Routes>
       <Route path="/" element={<DefaultLayout />}>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Home />}>
+          <Route path="/checklist/:id" element={<Home />} />
+        </Route>
         <Route
           path="/login"
           element={!isLogged ? <Login /> : <Navigate replace to="/" />}
@@ -28,29 +30,21 @@ export function Router() {
           path="/register"
           element={!isLogged ? <Register /> : <Navigate replace to="/" />}
         />
-        <Route path="/checklist-families" element={<ChecklistFamilies />} />
-        <Route path="/mandatory-items" element={<MandatoryItems />} />
-        <Route path="/non-mandatory-items" element={<NonMandatoryItems />} />
-        <Route path="/report" element={<Report />} />
-        <Route path="/checklist-families/:id" element={<ChecklistFamilies />} />
-        <Route path="/mandatory-items/:id" element={<MandatoryItems />} />
-        <Route
-          path="/non-mandatory-items/:id"
-          element={<NonMandatoryItems />}
-        />
-        <Route path="/report/:id" element={<Report />} />
-        <Route
-          path="/profile"
-          element={isLogged ? <Profile /> : <Navigate replace to="/login" />}
-        />
-        <Route
-          path="/systems"
-          element={isLogged ? <Systems /> : <Navigate replace to="/login" />}
-        />
-        <Route
-          path="/checklists"
-          element={isLogged ? <Checklists /> : <Navigate replace to="/login" />}
-        />
+        <Route path="/checklist-families" element={<ChecklistFamilies />}>
+          <Route path=":id" element={<ChecklistFamilies />} />
+        </Route>
+        <Route path="/mandatory-items" element={<MandatoryItems />}>
+          <Route path=":id" element={<MandatoryItems />} />
+        </Route>
+        <Route path="/non-mandatory-items" element={<NonMandatoryItems />}>
+          <Route path=":id" element={<NonMandatoryItems />} />
+        </Route>
+        <Route path="/report" element={<Report />}>
+          <Route path=":id" element={<Report />} />
+        </Route>
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/systems" element={<Systems />} />
+        <Route path="/checklists" element={<Checklists />} />
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>

@@ -24,11 +24,14 @@ export const CloseButton = styled(Dialog.Close)`
 
 export const Content = styled(Dialog.Content)`
   min-width: 32rem;
-  @media (max-width: 700px) {
-    min-width: 15rem;
-  }
   border-radius: 6px;
   padding: 2.5rem 3rem;
+
+  @media (max-width: 1000px) {
+    min-width: 80%;
+    padding: 2rem;
+  }
+
   background: ${(props) => props.theme.colors['base-background']};
 
   position: fixed;

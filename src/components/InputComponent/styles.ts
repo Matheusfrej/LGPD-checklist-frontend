@@ -10,6 +10,10 @@ export const TextArea = styled.textarea<InputProps>`
   border-width: 0;
   border-bottom-width: 1px;
   width: ${({ $isNormal }) => ($isNormal ? '100%' : '60%')};
+
+  @media (max-width: 1000px) {
+    width: 100%;
+  }
   padding: 0.1rem;
   resize: none;
   overflow: hidden;
@@ -28,6 +32,9 @@ export const Input = styled.input<InputProps>`
   border-bottom-width: 1px;
   width: ${({ $isNormal }) => ($isNormal ? '100%' : '60%')};
   padding: 0.5rem;
+  @media (max-width: 1000px) {
+    width: 100%;
+  }
 
   border-color: ${({ theme, $error }) =>
     $error ? theme.colors.red : theme.colors.black};

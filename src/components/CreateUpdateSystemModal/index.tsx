@@ -1,23 +1,23 @@
-import { ModalContainer } from '../../../../templates/ModalContainer'
+import { ModalContainer } from '../../templates/ModalContainer'
 import * as z from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
-import { FormContainer } from '../../../../templates/FormContainer'
-import { InputComponent } from '../../../../components/InputComponent'
-import { ButtonComponent } from '../../../../components/ButtonComponent'
-import { useAuth } from '../../../../contexts/AuthContext'
-import { AppError } from '../../../../utils/AppError'
-import { useToast } from '../../../../contexts/ToastContext'
-import { SystemDTO } from '../../../../dtos/systemDTO'
+import { FormContainer } from '../../templates/FormContainer'
+import { InputComponent } from '../InputComponent'
+import { ButtonComponent } from '../ButtonComponent'
+import { useAuth } from '../../contexts/AuthContext'
+import { AppError } from '../../utils/AppError'
+import { useToast } from '../../contexts/ToastContext'
+import { SystemDTO } from '../../dtos/systemDTO'
 import { useEffect } from 'react'
 import {
   createSystemService,
   createSystemServiceDefaultErrorMessage,
-} from '../../../../services/system/createSystemService'
+} from '../../services/system/createSystemService'
 import {
   updateSystemService,
   updateSystemServiceDefaultErrorMessage,
-} from '../../../../services/system/updateSystemService'
+} from '../../services/system/updateSystemService'
 
 const createUpdateSystemFormSchema = z.object({
   name: z
@@ -34,14 +34,14 @@ interface CreateUpdateSystemModalProps {
   isVisible: boolean
   system?: SystemDTO
   handleModalOpenChange: (state: boolean) => void
-  triggerList: () => void
+  fetchItems?: () => void
 }
 
 export function CreateUpdateSystemModal({
   isVisible,
   system,
   handleModalOpenChange,
-  triggerList,
+  fetchItems,
 }: CreateUpdateSystemModalProps) {
   const { user } = useAuth()
   const { toastError, toastSuccess } = useToast()
@@ -72,7 +72,7 @@ export function CreateUpdateSystemModal({
 
         toastSuccess('Sistema criado com sucesso!')
         handleModalOpenChange(false)
-        triggerList()
+        if (fetchItems) fetchItems()
         reset()
       } else {
         toastError(createSystemServiceDefaultErrorMessage)
@@ -98,7 +98,7 @@ export function CreateUpdateSystemModal({
 
         toastSuccess('Sistema editado com sucesso!')
         handleModalOpenChange(false)
-        triggerList()
+        if (fetchItems) fetchItems()
         reset()
       } else {
         toastError(updateSystemServiceDefaultErrorMessage)
@@ -159,7 +159,11 @@ export function CreateUpdateSystemModal({
           register={register}
           errorMessage={errors.description?.message}
         />
-        <ButtonComponent type="submit" text={isEditMode ? 'Editar' : 'Criar'} />
+        <ButtonComponent
+          type="submit"
+          form="create-update-system-form"
+          text={isEditMode ? 'Editar' : 'Criar'}
+        />
       </FormContainer>
     </ModalContainer>
   )

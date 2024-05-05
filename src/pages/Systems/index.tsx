@@ -4,7 +4,7 @@ import { useAuth } from '../../contexts/AuthContext'
 import { useToast } from '../../contexts/ToastContext'
 import { MainContainer } from '../../templates/MainContainer'
 import { AppError } from '../../utils/AppError'
-import { CreateUpdateSystemModal } from './components/CreateUpdateSystemModal'
+import { CreateUpdateSystemModal } from '../../components/CreateUpdateSystemModal'
 import { SystemDTO } from '../../dtos/systemDTO'
 import { DeleteSystemModal } from './components/DeleteSystemModal'
 import {
@@ -101,13 +101,13 @@ export function Systems() {
       <CreateUpdateSystemModal
         isVisible={isCreateUpdateModalOpen}
         handleModalOpenChange={handleCreateUpdateModalChange}
-        triggerList={updateSystemList}
+        fetchItems={updateSystemList}
         system={selectedSystem}
       />
       <DeleteSystemModal
         isVisible={isDeleteSystemModalOpen}
         handleModalOpenChange={handleDeleteModalChange}
-        triggerList={updateSystemList}
+        fetchItems={updateSystemList}
         system={selectedSystem}
       />
     </MainContainer>

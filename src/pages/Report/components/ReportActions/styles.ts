@@ -5,3 +5,10 @@ export const ReportActionsContainer = styled.div`
   flex-direction: column;
   gap: 2rem;
 `
+
+export const SaveButtonsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+  gap: 1rem;
+`

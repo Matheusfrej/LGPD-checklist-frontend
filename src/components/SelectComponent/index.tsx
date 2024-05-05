@@ -5,7 +5,8 @@ import { FieldValues, Path, UseFormRegister } from 'react-hook-form'
 
 interface SelectComponentProps<T extends FieldValues> {
   name: Path<T>
-  defaultValueText?: string
+  exampleOptionText?: string
+  selected?: number
   items: {
     value: number
     label: string
@@ -19,7 +20,8 @@ interface SelectComponentProps<T extends FieldValues> {
 
 export const SelectComponent = <T extends FieldValues>({
   name,
-  defaultValueText,
+  exampleOptionText,
+  selected,
   isRequired,
   hasHeader = false,
   style,
@@ -30,9 +32,13 @@ export const SelectComponent = <T extends FieldValues>({
   return (
     <SectionContainer style={style} hasHeader={hasHeader}>
       <S.Select $error={errorMessage} required={isRequired} {...register(name)}>
-        <option value="">{defaultValueText}</option>
-        {items.map((item, index) => (
-          <option value={item.value} key={index}>
+        <option value="">{exampleOptionText}</option>
+        {items.map((item) => (
+          <option
+            value={item.value}
+            key={item.value}
+            selected={item.value === selected}
+          >
             {item.label}
           </option>
         ))}

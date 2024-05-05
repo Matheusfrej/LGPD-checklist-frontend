@@ -3,10 +3,17 @@ import { MainContainer } from '../../templates/MainContainer'
 import { useAuth } from '../../contexts/AuthContext'
 import NotFoundImage from '../../assets/404.png'
 import * as S from './styles'
+import { useChecklists } from '../../contexts/ChecklistsContext'
 
 export function NotFound() {
   const { isLogged } = useAuth()
+  const { resetChecklist } = useChecklists()
   const navigate = useNavigate()
+
+  const handleNewChecklist = () => {
+    resetChecklist()
+    navigate('/')
+  }
 
   return (
     <MainContainer>
@@ -18,7 +25,7 @@ export function NotFound() {
             <p>Aqui estão alguns links úteis:</p>
 
             <div>
-              <a onClick={() => navigate('/')}>Nova Checklist</a>
+              <a onClick={() => handleNewChecklist()}>Nova Checklist</a>
               {!isLogged && <a onClick={() => navigate('/login')}>Login</a>}
             </div>
           </div>

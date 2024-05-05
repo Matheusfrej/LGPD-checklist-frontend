@@ -5,6 +5,7 @@ interface ButtonProps {
   icon?: ReactElement
   text?: string
   type?: 'button' | 'submit' | 'reset'
+  form?: string
   action?: () => void
   variant?: 'default' | 'outline' | 'danger'
   style?: CSSProperties
@@ -14,6 +15,7 @@ export function ButtonComponent({
   icon,
   text,
   action,
+  form,
   type = 'button',
   variant = 'default',
   style,
@@ -24,6 +26,7 @@ export function ButtonComponent({
       $variant={variant}
       style={style}
       type={type}
+      form={form}
     >
       {icon}
       {text}

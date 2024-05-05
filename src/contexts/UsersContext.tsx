@@ -12,6 +12,7 @@ export type UserType = {
   office: string
   systemName?: string
   systemDesc?: string
+  system?: number
 }
 
 interface UsersContextType {
@@ -33,6 +34,7 @@ export function UsersContextProvider({ children }: UsersContextProviderProps) {
     office: '',
     systemName: undefined,
     systemDesc: undefined,
+    system: undefined,
   })
 
   const onUserUpdate = (user: UserType) => {
@@ -47,6 +49,7 @@ export function UsersContextProvider({ children }: UsersContextProviderProps) {
         office: userLogged?.office,
         systemName: undefined,
         systemDesc: undefined,
+        system: undefined,
       })
     } else {
       onUserUpdate({
@@ -54,6 +57,7 @@ export function UsersContextProvider({ children }: UsersContextProviderProps) {
         office: '',
         systemName: undefined,
         systemDesc: undefined,
+        system: undefined,
       })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

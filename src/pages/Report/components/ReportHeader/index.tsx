@@ -3,9 +3,41 @@ import { SectionTitleComponent } from '../../../../components/SectionTitleCompon
 import { useUsers } from '../../../../contexts/UsersContext'
 import * as S from './styles'
 import { LineComponent } from '../../../../components/LineComponent'
+import { SystemDTO } from '../../../../dtos/systemDTO'
+import { useEffect, useState } from 'react'
+import {
+  getSystemService,
+  getSystemServiceDefaultErrorMessage,
+} from '../../../../services/system/getSystemService'
+import { AppError } from '../../../../utils/AppError'
+import { useToast } from '../../../../contexts/ToastContext'
 
 export function ReportHeader() {
   const { user } = useUsers()
+  const { toastError } = useToast()
+  const [system, setSystem] = useState<SystemDTO>()
+
+  const getSystem = async (id: number) => {
+    try {
+      const data = await getSystemService(id)
+
+      setSystem(data.system)
+    } catch (error) {
+      const isAppError = error instanceof AppError
+
+      const title = isAppError
+        ? error.message
+        : getSystemServiceDefaultErrorMessage
+      toastError(title)
+    }
+  }
+
+  useEffect(() => {
+    if (user.system) {
+      getSystem(user.system)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user])
 
   return (
     <>
@@ -23,11 +55,11 @@ export function ReportHeader() {
           </div>
           <div>
             <span>Nome do sistema </span>
-            <p>{user.systemName}</p>
+            <p>{system ? system.name : user.systemName}</p>
           </div>
           <div>
             <span>Descrição do sistema</span>
-            <p>{user.systemDesc}</p>
+            <p>{system ? system.description : user.systemDesc}</p>
           </div>
         </S.UserInfoContainer>
       </SectionContainer>

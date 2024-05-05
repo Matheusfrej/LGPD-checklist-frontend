@@ -7,6 +7,14 @@ interface SelectProps {
 export const Select = styled.select<SelectProps>`
   padding: 0.5rem;
   width: 60%;
+
+  background: ${({ theme }) => theme.colors['header-background']};
+
+  color: ${({ theme }) => theme.colors['base-text']};
+  @media (max-width: 1000px) {
+    width: 100%;
+  }
+
   font-size: 1rem;
   border-color: ${({ theme, $error }) =>
     $error ? theme.colors.red : theme.colors.span};

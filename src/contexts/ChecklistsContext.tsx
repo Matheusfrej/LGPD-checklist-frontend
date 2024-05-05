@@ -5,6 +5,8 @@ import {
   ChecklistFamiliesOptions,
   ChecklistItemType,
 } from '../@types'
+import { useUsers } from './UsersContext'
+import { useAuth } from './AuthContext'
 
 export interface ChecklistsContextType {
   checklist: ChecklistItemType[]
@@ -12,6 +14,7 @@ export interface ChecklistsContextType {
   categoriesSelected: CategoriesType
   filteredChecklist: (isMandatory: boolean, tag: string) => ChecklistItemType[]
   validateChecklist: (isMandatory: boolean) => string | null
+  resetChecklist: () => void
   findIndexByIsMandatoryAndCode: (isMandatory: boolean, code: string) => number
   onChecklistUpdate: (checklist: ChecklistItemType[]) => void
   updateChecklistRow: (checklist: ChecklistItemType, index: number) => void
@@ -32,6 +35,8 @@ export function ChecklistsContextProvider({
   children,
 }: ChecklistsContextProviderProps) {
   const [checklist, setChecklist] = useState<ChecklistItemType[]>(initialItems)
+  const { user, onUserUpdate } = useUsers()
+  const { isLogged } = useAuth()
   const [categoriesSelected, setCategoriesSelected] = useState<CategoriesType>({
     Sim: true,
     Não: true,
@@ -89,6 +94,28 @@ export function ChecklistsContextProvider({
       }
     }
     return null
+  }
+
+  const resetChecklist = () => {
+    setChecklist(initialItems)
+    setCategoriesSelected({
+      Sim: true,
+      Não: true,
+      'Não se aplica': true,
+      'Não Preenchido': true,
+    })
+    setFamiliesSelected({
+      general: true,
+      IoT: false,
+    })
+    onUserUpdate({
+      ...user,
+      name: isLogged ? user.name : '',
+      office: isLogged ? user.office : '',
+      systemName: undefined,
+      systemDesc: undefined,
+      system: undefined,
+    })
   }
 
   const progressData = (isMandatory: boolean) => {
@@ -254,6 +281,7 @@ export function ChecklistsContextProvider({
         categoriesSelected,
         filteredChecklist,
         validateChecklist,
+        resetChecklist,
         onChecklistUpdate,
         updateChecklistRow,
         onFamiliesSelectedUpdate,

@@ -1,4 +1,5 @@
-import { ReactNode, createContext, useContext } from 'react'
+import { ReactNode, createContext, useContext, useEffect } from 'react'
+import { storageThemeGet, storageThemeSave } from '../storage/storageTheme'
 
 export type ThemeType = 'light' | 'dark'
 
@@ -22,7 +23,21 @@ export function ThemeContextProvider({
 }: ThemeContextProviderProps) {
   const setTheme = (theme: ThemeType) => {
     setThemeInput(theme)
+    storageThemeSave(theme)
   }
+
+  const getThemeFromStorage = () => {
+    const theme = storageThemeGet()
+
+    if (theme) {
+      setThemeInput(theme)
+    }
+  }
+
+  useEffect(() => {
+    getThemeFromStorage()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <ThemeContext.Provider value={{ theme: themeInput, setTheme }}>

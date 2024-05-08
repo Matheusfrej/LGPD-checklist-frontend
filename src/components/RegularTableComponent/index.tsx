@@ -1,4 +1,4 @@
-import { SectionContainer } from '../SectionContainer'
+import { SectionContainer } from '../../templates/SectionContainer'
 import * as S from './styles'
 
 interface RegularTableComponentProps {

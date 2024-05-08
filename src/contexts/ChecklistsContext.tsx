@@ -1,42 +1,38 @@
 import { ReactNode, createContext, useContext, useState } from 'react'
-import { initialItems } from '../utils/checklistInitial'
-
-export type AnswerType = 'Sim' | 'Não' | 'Não se aplica' | undefined
-
-export type SeverityDegreeType = 'Leve' | 'Grave' | 'Catastrófico' | undefined
-
-export type ChecklistFamiliesOptions = {
-  general: boolean
-  IoT: boolean
-}
-
-export type ItemClassification = {
-  name: string
-  tag: string
-}
-
-export type ChecklistItemType = {
-  mandatory: boolean
-  type: keyof ChecklistFamiliesOptions
-  code: string
-  itemDesc: string
-  answer?: AnswerType
-  severityDegree?: SeverityDegreeType
-  userComment: string
-  recomendations: string
-}
+import { initialItems } from '../utils/constants/checklistInitial'
+import {
+  CategoriesType,
+  ChecklistFamiliesOptions,
+  ChecklistItemType,
+} from '../@types'
+import { useUsers } from './UsersContext'
+import { useAuth } from './AuthContext'
+import {
+  getChecklistService,
+  getChecklistServiceDefaultErrorMessage,
+} from '../services/checklist/getChecklistService'
+import { ChecklistDTO } from '../dtos/checklistDTO'
+import { AppError } from '../utils/AppError'
+import { useToast } from './ToastContext'
 
 export interface ChecklistsContextType {
   checklist: ChecklistItemType[]
   familiesSelected: ChecklistFamiliesOptions
-  mandatoryItemsClassifications: ItemClassification[]
-  nonMandatoryItemsClassifications: ItemClassification[]
+  categoriesSelected: CategoriesType
+  currChecklistId: number | undefined
+  filteredChecklist: (isMandatory: boolean, tag: string) => ChecklistItemType[]
+  validateChecklist: (isMandatory: boolean) => string | null
+  resetChecklist: () => void
+  findIndexByIsMandatoryAndCode: (isMandatory: boolean, code: string) => number
   onChecklistUpdate: (checklist: ChecklistItemType[]) => void
   updateChecklistRow: (checklist: ChecklistItemType, index: number) => void
   onFamiliesSelectedUpdate: (familiesSelected: ChecklistFamiliesOptions) => void
+  onCategoriesSelectedUpdate: (categoriesSelected: CategoriesType) => void
   progressData: (isMandatory: boolean) => { name: string; value: number }[]
   distributionData: (isMandatory: boolean) => { name: string; value: number }[]
   progressTableData: (isMandatory: boolean) => { name: string; value: number }[]
+  loadChecklist: (id: number) => Promise<void>
+  setCurrChecklistId: React.Dispatch<React.SetStateAction<number | undefined>>
 }
 
 const ChecklistsContext = createContext({} as ChecklistsContextType)
@@ -49,53 +45,43 @@ export function ChecklistsContextProvider({
   children,
 }: ChecklistsContextProviderProps) {
   const [checklist, setChecklist] = useState<ChecklistItemType[]>(initialItems)
+  const { user, onUserUpdate, setUserSystemId } = useUsers()
+  const { toastError } = useToast()
+  const { isLogged } = useAuth()
+
+  const [categoriesSelected, setCategoriesSelected] = useState<CategoriesType>({
+    Sim: true,
+    Não: true,
+    'Não se aplica': true,
+    'Não Preenchido': true,
+  })
   const [familiesSelected, setFamiliesSelected] =
     useState<ChecklistFamiliesOptions>({
       general: true,
       IoT: false,
     })
+  const [currChecklistId, setCurrChecklistId] = useState<number | undefined>()
 
-  const mandatoryItemsClassifications: ItemClassification[] = [
-    {
-      name: 'Sobre transparência de Dados (T)',
-      tag: 'T-',
-    },
-    {
-      name: 'Sobre Consentimento do Titular (C)',
-      tag: 'C-',
-    },
-    {
-      name: 'Sobre os Direitos do Titular (D)',
-      tag: 'D-',
-    },
-    {
-      name: 'Sobre Segurança de Dados (S)',
-      tag: 'S-',
-    },
-    {
-      name: 'Sobre Responsabilidade do Controlador   (R)',
-      tag: 'R-',
-    },
-  ]
+  const findIndexByIsMandatoryAndCode = (
+    isMandatory: boolean,
+    code: string,
+  ) => {
+    return checklist.findIndex(
+      (item) => item.mandatory === isMandatory && item.code === code,
+    )
+  }
 
-  const nonMandatoryItemsClassifications: ItemClassification[] = [
-    {
-      name: 'Sobre Segurança de Dados (S)',
-      tag: 'S-',
-    },
-    {
-      name: 'Sobre Responsabilidade do Controlador   (R)',
-      tag: 'R-',
-    },
-    {
-      name: 'Acesso ao Dispositivo (A)',
-      tag: 'A-',
-    },
-    {
-      name: 'Segurança Física (SF)',
-      tag: 'SF-',
-    },
-  ]
+  const filteredChecklist = (isMandatory?: boolean, tag?: string) => {
+    const filtered = checklist.filter(
+      (row) =>
+        (isMandatory === undefined || row.mandatory === isMandatory) &&
+        (!tag || row.code.startsWith(tag)) &&
+        familiesSelected[row.type] &&
+        categoriesSelected[row.answer ? row.answer : 'Não Preenchido'],
+    )
+
+    return filtered
+  }
 
   const onChecklistUpdate = (checklist: ChecklistItemType[]) => {
     setChecklist(checklist)
@@ -103,8 +89,46 @@ export function ChecklistsContextProvider({
 
   const updateChecklistRow = (row: ChecklistItemType, index: number) => {
     const checklistCopy = [...checklist]
+    if (row.answer !== 'Não') {
+      row.severityDegree = undefined
+    }
     checklistCopy[index] = row
     setChecklist(checklistCopy)
+  }
+
+  const validateChecklist = (isMandatory: boolean): string | null => {
+    for (const item of checklist) {
+      if (
+        item.answer === 'Não' &&
+        item.mandatory === isMandatory &&
+        !(item.severityDegree && item.userComment)
+      ) {
+        return 'Nos itens respondidos com "Não", preencha o grau de severidade e o comentário'
+      }
+    }
+    return null
+  }
+
+  const resetChecklist = () => {
+    setChecklist(initialItems)
+    setCategoriesSelected({
+      Sim: true,
+      Não: true,
+      'Não se aplica': true,
+      'Não Preenchido': true,
+    })
+    setFamiliesSelected({
+      general: true,
+      IoT: false,
+    })
+    onUserUpdate({
+      ...user,
+      name: isLogged ? user.name : '',
+      office: isLogged ? user.office : '',
+      systemName: undefined,
+      systemDesc: undefined,
+      system: undefined,
+    })
   }
 
   const progressData = (isMandatory: boolean) => {
@@ -258,19 +282,55 @@ export function ChecklistsContextProvider({
     setFamiliesSelected(familiesSelected)
   }
 
+  const onCategoriesSelectedUpdate = (categoriesSelected: CategoriesType) => {
+    setCategoriesSelected(categoriesSelected)
+  }
+
+  const setChecklistLoaded = (checklist: ChecklistDTO) => {
+    setChecklist(checklist.checklistData)
+    setUserSystemId(checklist.systemId)
+    setFamiliesSelected({
+      general: checklist.isGeneral,
+      IoT: checklist.isIot,
+    })
+  }
+
+  const loadChecklist = async (id: number) => {
+    try {
+      setCurrChecklistId(id)
+      const data = await getChecklistService(id)
+
+      setChecklistLoaded(data.checklist)
+    } catch (error) {
+      const isAppError = error instanceof AppError
+
+      const title = isAppError
+        ? error.message
+        : getChecklistServiceDefaultErrorMessage
+      toastError(title)
+    }
+  }
+
   return (
     <ChecklistsContext.Provider
       value={{
         checklist,
         familiesSelected,
-        mandatoryItemsClassifications,
-        nonMandatoryItemsClassifications,
+        categoriesSelected,
+        currChecklistId,
+        filteredChecklist,
+        validateChecklist,
+        resetChecklist,
         onChecklistUpdate,
         updateChecklistRow,
         onFamiliesSelectedUpdate,
+        onCategoriesSelectedUpdate,
         progressData,
         distributionData,
         progressTableData,
+        findIndexByIsMandatoryAndCode,
+        loadChecklist,
+        setCurrChecklistId,
       }}
     >
       {children}

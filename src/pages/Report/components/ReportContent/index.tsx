@@ -1,13 +1,14 @@
 import { useTheme } from 'styled-components'
 import { ChartsContainer } from '../../../../components/ChartsContainer'
-import { SectionContainer } from '../../../../components/SectionContainer'
+import { SectionContainer } from '../../../../templates/SectionContainer'
 import { SectionTitleComponent } from '../../../../components/SectionTitleComponent'
 import { SectionWithItemsTableComponent } from '../../../../components/SectionWithItemsTableComponent'
-import { useChecklists } from '../../../../contexts/ChecklistsContext'
+import {
+  mandatoryItemsClassifications,
+  nonMandatoryItemsClassifications,
+} from '../../../../utils/constants/classifications'
 
 export function ReportContent() {
-  const { nonMandatoryItemsClassifications, mandatoryItemsClassifications } =
-    useChecklists()
   const theme = useTheme()
 
   const colors = [

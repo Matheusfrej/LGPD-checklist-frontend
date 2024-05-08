@@ -1,13 +1,15 @@
 import { ButtonComponent } from '../../components/ButtonComponent'
-import { MainContainer } from '../../components/MainContainer'
+import { MainContainer } from '../../templates/MainContainer'
 import { Instructions } from './components/Instructions'
 import { UserForm } from './components/UserForm'
 import { VocabularyTable } from './components/VocabularyTable'
-import { ActionsFooterContainer } from '../../components/ActionsFooterContainer'
+import { ActionsFooterContainer } from '../../templates/ActionsFooterContainer'
 import { useState } from 'react'
+import { useLoadChecklist } from '../../hooks/loadChecklist'
 
 export function Home() {
   const [pressed, setPressed] = useState(0)
+  useLoadChecklist()
 
   return (
     <MainContainer>

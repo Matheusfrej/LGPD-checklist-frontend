@@ -1,5 +1,5 @@
 import { LineComponent } from '../../../../components/LineComponent'
-import { SectionContainer } from '../../../../components/SectionContainer'
+import { SectionContainer } from '../../../../templates/SectionContainer'
 import * as S from './styles'
 
 export function Instructions() {

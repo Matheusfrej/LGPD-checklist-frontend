@@ -1,4 +1,4 @@
-import { ChecklistItemType } from '../contexts/ChecklistsContext'
+import { ChecklistItemType } from '../../@types'
 
 const initialItems: ChecklistItemType[] = [
   {

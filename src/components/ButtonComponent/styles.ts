@@ -1,35 +1,43 @@
 import styled from 'styled-components'
 
 interface ButtonProps {
-  $variant: 'default' | 'outline'
+  $variant: 'default' | 'outline' | 'danger'
 }
 
 export const ButtonContainer = styled.button<ButtonProps>`
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0.6rem 0.5rem;
+  padding: 0.5rem 0.5rem;
   font-size: 0.9rem;
-  min-width: 5rem;
   border: 1px solid
     ${({ theme, $variant }) =>
       $variant === 'default'
         ? theme.colors['base-background']
-        : theme.colors.contrast};
-  border-radius: ${({ $variant }) => ($variant === 'outline' ? '16px' : '8px')};
+        : $variant === 'outline'
+          ? theme.colors.contrast
+          : theme.colors.red};
+  border-radius: 8px;
   cursor: pointer;
   background: ${({ theme, $variant }) =>
     $variant === 'default' ? theme.colors.contrast : 'transparent'};
   color: ${({ theme, $variant }) =>
     $variant === 'default'
       ? theme.colors['base-background']
-      : theme.colors.contrast};
+      : $variant === 'outline'
+        ? theme.colors.contrast
+        : theme.colors.red};
 
   &:hover {
     background-color: ${({ theme, $variant }) =>
       $variant === 'default'
         ? theme.colors['strong-contrast']
-        : theme.colors.contrast};
-    color: ${({ theme }) => theme.colors['base-background']};
+        : $variant === 'outline'
+          ? theme.colors.contrast
+          : theme.colors.red};
+    color: ${({ theme, $variant }) =>
+      $variant === 'danger'
+        ? theme.colors.white
+        : theme.colors['base-background']};
   }
 `

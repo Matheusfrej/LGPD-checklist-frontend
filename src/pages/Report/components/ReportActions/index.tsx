@@ -1,18 +1,40 @@
 import { useNavigate } from 'react-router-dom'
-import { ActionsFooterContainer } from '../../../../components/ActionsFooterContainer'
+import { ActionsFooterContainer } from '../../../../templates/ActionsFooterContainer'
 import { ButtonComponent } from '../../../../components/ButtonComponent'
+import * as S from './styles'
+import { CheckboxesAnswerComponent } from '../../../../components/CheckboxesAnswerComponent'
 
 interface ReportActionsProps {
-  action: () => void
+  downloadPDFAction: () => void
+  saveChecklistAction?: () => void
 }
 
-export function ReportActions({ action }: ReportActionsProps) {
+export function ReportActions({
+  downloadPDFAction,
+  saveChecklistAction,
+}: ReportActionsProps) {
   const navigate = useNavigate()
 
   return (
-    <ActionsFooterContainer hasMessage inverted>
-      <ButtonComponent text="Voltar" action={() => navigate(-1)} />
-      <ButtonComponent text="Baixar PDF" action={() => action()} />
-    </ActionsFooterContainer>
+    <S.ReportActionsContainer>
+      <CheckboxesAnswerComponent />
+      <ActionsFooterContainer hasMessage inverted>
+        <div>
+          <ButtonComponent text="Voltar" action={() => navigate(-1)} />
+        </div>
+        <S.SaveButtonsContainer>
+          {saveChecklistAction && (
+            <ButtonComponent
+              text="Salvar"
+              action={() => saveChecklistAction()}
+            />
+          )}
+          <ButtonComponent
+            text="Baixar PDF"
+            action={() => downloadPDFAction()}
+          />
+        </S.SaveButtonsContainer>
+      </ActionsFooterContainer>
+    </S.ReportActionsContainer>
   )
 }

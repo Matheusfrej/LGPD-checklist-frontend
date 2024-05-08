@@ -1,15 +1,24 @@
-import { ReactNode, createContext, useContext, useState } from 'react'
+import {
+  ReactNode,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from 'react'
+import { useAuth } from './AuthContext'
 
 export type UserType = {
   name: string
   office: string
-  systemName: string
-  systemDesc: string
+  systemName?: string
+  systemDesc?: string
+  system?: number
 }
 
 interface UsersContextType {
   user: UserType
   onUserUpdate: (user: UserType) => void
+  setUserSystemId: (systemId: number) => void
 }
 
 const UsersContext = createContext({} as UsersContextType)
@@ -19,22 +28,47 @@ interface UsersContextProviderProps {
 }
 
 export function UsersContextProvider({ children }: UsersContextProviderProps) {
+  const { user: userLogged, isLogged } = useAuth()
+
   const [user, setUser] = useState<UserType>({
     name: '',
     office: '',
-    systemName: '',
-    systemDesc: '',
+    systemName: undefined,
+    systemDesc: undefined,
+    system: undefined,
   })
 
-  const onUserUpdate = (user: UserType) => {
-    setUser(user)
+  const onUserUpdate = (userUpdate: UserType) => {
+    setUser((prevUser) => ({
+      ...prevUser,
+      ...userUpdate,
+    }))
   }
+
+  const setUserSystemId = (systemId: number) => {
+    setUser((prevUser) => ({
+      ...prevUser,
+      system: systemId,
+    }))
+  }
+
+  useEffect(() => {
+    if (isLogged && userLogged) {
+      onUserUpdate({
+        name: userLogged.name,
+        office: userLogged.office,
+        systemName: undefined,
+        systemDesc: undefined,
+      })
+    }
+  }, [isLogged, userLogged])
 
   return (
     <UsersContext.Provider
       value={{
         user,
         onUserUpdate,
+        setUserSystemId,
       }}
     >
       {children}

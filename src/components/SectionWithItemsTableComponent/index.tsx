@@ -1,6 +1,6 @@
 import { CSSProperties } from 'styled-components'
 import { ItemsTableComponent } from '../ItemsTableComponent'
-import { SectionContainer } from '../SectionContainer'
+import { SectionContainer } from '../../templates/SectionContainer'
 import { SectionTitleComponent } from '../SectionTitleComponent'
 import * as S from './styles'
 import { useChecklists } from '../../contexts/ChecklistsContext'
@@ -23,25 +23,18 @@ export function SectionWithItemsTableComponent({
   title,
   isReport = false,
 }: SectionWithItemsTableComponentProps) {
-  const { checklist, familiesSelected } = useChecklists()
+  const { filteredChecklist } = useChecklists()
 
   const hasAnyItemInClassification = (tag: string) => {
-    return (
-      checklist.filter(
-        (item) =>
-          item.mandatory === isMandatory &&
-          item.code.startsWith(tag) &&
-          familiesSelected[item.type],
-      ).length > 0
-    )
+    return filteredChecklist(isMandatory, tag).length > 0
   }
 
   return (
     <S.SectionWithItemsTable $isReport={isReport}>
       {title && <SectionTitleComponent text={title} isSecondary />}
-      {classifications.map((item) => {
+      {classifications.map((item, idx) => {
         return hasAnyItemInClassification(item.tag) ? (
-          <SectionContainer key={item.tag + isMandatory} style={style}>
+          <SectionContainer key={item.tag + isMandatory + idx} style={style}>
             <SectionTitleComponent text={item.name} isSecondary />
             <S.ItemsContainer>
               <ItemsTableComponent

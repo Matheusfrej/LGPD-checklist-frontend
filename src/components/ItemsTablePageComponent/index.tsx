@@ -1,12 +1,13 @@
 import { useNavigate } from 'react-router-dom'
-import { ActionsFooterContainer } from '../ActionsFooterContainer'
+import { ActionsFooterContainer } from '../../templates/ActionsFooterContainer'
 import { ButtonComponent } from '../ButtonComponent'
-import { MainContainer } from '../MainContainer'
-import { SectionContainer } from '../SectionContainer'
+import { MainContainer } from '../../templates/MainContainer'
+import { SectionContainer } from '../../templates/SectionContainer'
 import { useTheme } from 'styled-components'
 import { ChartsContainer } from '../ChartsContainer'
 import { SectionTitleComponent } from '../SectionTitleComponent'
 import { SectionWithItemsTableComponent } from '../SectionWithItemsTableComponent'
+import { CheckboxesAnswerComponent } from '../CheckboxesAnswerComponent'
 
 interface ItemsTablePageComponentProps {
   text: string
@@ -36,6 +37,7 @@ export function ItemsTablePageComponent({
 
   return (
     <MainContainer hasTable>
+      <CheckboxesAnswerComponent />
       <SectionContainer hasHeader>
         <SectionTitleComponent text={text} />
         <ChartsContainer isMandatory={isMandatory} colors={colors} />

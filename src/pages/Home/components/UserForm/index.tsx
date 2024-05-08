@@ -1,48 +1,67 @@
-import * as S from './styles'
 import { useUsers } from '../../../../contexts/UsersContext'
-import * as z from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
-import { useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 import { InputComponent } from '../../../../components/InputComponent'
-
-const userFormSchema = z.object({
-  name: z
-    .string({ required_error: 'O nome é obrigatório' })
-    .min(1, { message: 'O nome é obrigatório' }),
-  office: z
-    .string({ required_error: 'O cargo/função é obrigatório' })
-    .min(1, { message: 'O cargo/função é obrigatório' }),
-  systemName: z
-    .string({ required_error: 'O nome do sistema é obrigatório' })
-    .min(1, { message: 'O nome do sistema é obrigatório' }),
-  systemDesc: z
-    .string({
-      required_error: 'A descrição do sistema é obrigatória',
-    })
-    .min(1, { message: 'A descrição do sistema é obrigatória' }),
-})
-
-type UserFormInputs = z.infer<typeof userFormSchema>
+import { FormContainer } from '../../../../templates/FormContainer'
+import { useAuth } from '../../../../contexts/AuthContext'
+import { SelectComponent } from '../../../../components/SelectComponent'
+import { SystemDTO } from '../../../../dtos/systemDTO'
+import {
+  listSystemsByUserIdService,
+  listSystemsByUserIdServiceDefaultErrorMessage,
+} from '../../../../services/system/listSystemsByUserIdService'
+import { AppError } from '../../../../utils/AppError'
+import { useToast } from '../../../../contexts/ToastContext'
+import { UserFormInputs, userFormSchema } from './schema'
+import { ButtonComponent } from '../../../../components/ButtonComponent'
+import { SectionContainer } from '../../../../templates/SectionContainer'
+import { CreateUpdateSystemModal } from '../../../../components/CreateUpdateSystemModal'
 
 interface UserFormProps {
   submitted: number
 }
 
 export function UserForm({ submitted }: UserFormProps) {
+  const { isLogged, user: userLogged } = useAuth()
   const { user, onUserUpdate } = useUsers()
+  const { toastError } = useToast()
   const navigate = useNavigate()
+  const { id } = useParams()
+
+  const [systems, setSystems] = useState<SystemDTO[]>([])
+  const [isCreateUpdateSystemModalOpen, setIsCreateUpdateSystemModalOpen] =
+    useState(false)
+
+  const systemsParsedToSelect = systems.map((system) => {
+    return {
+      value: system.id,
+      label: system.name,
+    }
+  })
 
   const handleUserSubmit = (data: UserFormInputs) => {
-    onUserUpdate(data)
-    navigate('/checklist-families')
+    if (!isCreateUpdateSystemModalOpen) {
+      onUserUpdate(data)
+
+      if (id) {
+        navigate(`/checklist-families/${id}`)
+      } else {
+        navigate('/checklist-families')
+      }
+    }
+  }
+
+  const handleCreateUpdateSystemModalChange = (val: boolean) => {
+    setIsCreateUpdateSystemModalOpen(val)
   }
 
   const {
     register,
     handleSubmit,
     formState: { errors },
+    resetField,
     setValue,
     getValues,
   } = useForm<UserFormInputs>({
@@ -52,12 +71,38 @@ export function UserForm({ submitted }: UserFormProps) {
       office: user.office,
       systemName: user.systemName,
       systemDesc: user.systemDesc,
+      system: user.system,
     },
     resetOptions: {
       keepValues: true,
       keepDefaultValues: true,
     },
   })
+
+  const fetchSystems = async () => {
+    try {
+      if (userLogged) {
+        const data = await listSystemsByUserIdService(userLogged.id)
+
+        setSystems(data.systems)
+      } else {
+        toastError(listSystemsByUserIdServiceDefaultErrorMessage)
+      }
+    } catch (error) {
+      const isAppError = error instanceof AppError
+
+      const title = isAppError
+        ? error.message
+        : listSystemsByUserIdServiceDefaultErrorMessage
+      toastError(title)
+      return false
+    }
+  }
+
+  useEffect(() => {
+    if (userLogged) fetchSystems()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userLogged])
 
   useEffect(() => {
     if (submitted > 0) {
@@ -66,6 +111,8 @@ export function UserForm({ submitted }: UserFormProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [submitted])
 
+  const userSystemId = user.system
+
   useEffect(() => {
     if (getValues('name') !== user.name) setValue('name', user.name)
     if (getValues('office') !== user.office) setValue('office', user.office)
@@ -73,14 +120,19 @@ export function UserForm({ submitted }: UserFormProps) {
       setValue('systemName', user.systemName)
     if (getValues('systemDesc') !== user.systemDesc)
       setValue('systemDesc', user.systemDesc)
+    if (getValues('system') !== user.system) setValue('system', user.system)
+    if (!isLogged) {
+      resetField('system')
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user])
+  }, [user, isLogged, userSystemId])
 
   return (
-    <S.FormContainer id="my-form" onSubmit={handleSubmit(handleUserSubmit)}>
+    <FormContainer id="user-form" onSubmit={handleSubmit(handleUserSubmit)}>
       <InputComponent
         labelText="Nome do avaliador"
         isRequired
+        isReadOnly={isLogged}
         name="name"
         register={register}
         errorMessage={errors.name?.message}
@@ -88,25 +140,52 @@ export function UserForm({ submitted }: UserFormProps) {
       <InputComponent
         labelText="Cargo ou função"
         isRequired
+        isReadOnly={isLogged}
         name="office"
         register={register}
         errorMessage={errors.office?.message}
       />
-      <InputComponent
-        labelText="Nome do sistema"
-        isRequired
-        name="systemName"
-        register={register}
-        errorMessage={errors.systemName?.message}
+      {isLogged ? (
+        <SectionContainer>
+          <SelectComponent
+            exampleOptionText="Escolha um sistema"
+            items={systemsParsedToSelect}
+            name="system"
+            selected={getValues('system')}
+            register={register}
+            errorMessage={errors.system?.message}
+            style={{ border: 0, paddingLeft: 0 }}
+          />
+          <ButtonComponent
+            text="Novo sistema"
+            action={() => handleCreateUpdateSystemModalChange(true)}
+            style={{ width: 'fit-content' }}
+          />
+        </SectionContainer>
+      ) : (
+        <>
+          <InputComponent
+            labelText="Nome do sistema"
+            isRequired
+            name="systemName"
+            register={register}
+            errorMessage={errors.systemName?.message}
+          />
+          <InputComponent
+            labelText="Descrição do sistema"
+            name="systemDesc"
+            isRequired
+            isTextArea
+            register={register}
+            errorMessage={errors.systemDesc?.message}
+          />
+        </>
+      )}
+      <CreateUpdateSystemModal
+        isVisible={isCreateUpdateSystemModalOpen}
+        handleModalOpenChange={handleCreateUpdateSystemModalChange}
+        fetchItems={fetchSystems}
       />
-      <InputComponent
-        labelText="Descrição do sistema"
-        name="systemDesc"
-        isRequired
-        isTextArea
-        register={register}
-        errorMessage={errors.systemDesc?.message}
-      />
-    </S.FormContainer>
+    </FormContainer>
   )
 }

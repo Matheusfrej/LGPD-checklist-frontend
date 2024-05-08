@@ -17,10 +17,12 @@ interface ToastContextProviderProps {
 export function ToastContextProvider({ children }: ToastContextProviderProps) {
   const themeStyledComponents = useThemeStyledComponents()
 
+  const autoCloseTiming = 2000
+
   const toastSuccess = (message: string) => {
     toast.success(message, {
       position: 'top-right',
-      autoClose: 3000,
+      autoClose: autoCloseTiming,
       hideProgressBar: true,
       closeOnClick: true,
       pauseOnHover: true,
@@ -36,7 +38,7 @@ export function ToastContextProvider({ children }: ToastContextProviderProps) {
   const toastWarn = (message: string) => {
     toast.warn(message, {
       position: 'top-right',
-      autoClose: 3000,
+      autoClose: autoCloseTiming,
       hideProgressBar: true,
       closeOnClick: true,
       pauseOnHover: true,
@@ -52,7 +54,7 @@ export function ToastContextProvider({ children }: ToastContextProviderProps) {
   const toastError = (message: string) => {
     toast.error(message, {
       position: 'top-right',
-      autoClose: 3000,
+      autoClose: autoCloseTiming,
       hideProgressBar: true,
       closeOnClick: true,
       pauseOnHover: true,

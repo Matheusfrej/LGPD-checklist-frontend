@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { ButtonComponent } from '../../components/ButtonComponent'
 import { MainContainer } from '../../templates/MainContainer'
 import { SectionContainer } from '../../templates/SectionContainer'
@@ -11,6 +11,7 @@ import { ChecklistFamiliesOptions } from '../../@types'
 export function ChecklistFamilies() {
   const { familiesSelected, onFamiliesSelectedUpdate } = useChecklists()
   const navigate = useNavigate()
+  const { id } = useParams()
 
   const IoTInputValue: keyof ChecklistFamiliesOptions = 'IoT'
 
@@ -19,6 +20,14 @@ export function ChecklistFamilies() {
       ...familiesSelected,
       [val]: !familiesSelected[val],
     })
+  }
+
+  const goToMandatoryItems = () => {
+    if (id) {
+      navigate(`/mandatory-items/${id}`)
+    } else {
+      navigate('/mandatory-items')
+    }
   }
 
   return (
@@ -45,10 +54,7 @@ export function ChecklistFamilies() {
       </SectionContainer>
       <ActionsFooterContainer hasMessage>
         <ButtonComponent text="Voltar" action={() => navigate(-1)} />
-        <ButtonComponent
-          text="Continuar"
-          action={() => navigate('/mandatory-items')}
-        />
+        <ButtonComponent text="Continuar" action={() => goToMandatoryItems()} />
       </ActionsFooterContainer>
     </MainContainer>
   )

@@ -32,12 +32,14 @@ export function ReportHeader() {
     }
   }
 
+  const userSystem = user.system
+
   useEffect(() => {
-    if (user.system) {
-      getSystem(user.system)
+    if (userSystem) {
+      getSystem(userSystem)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user])
+  }, [user, userSystem])
 
   return (
     <>

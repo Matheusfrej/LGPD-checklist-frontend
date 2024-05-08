@@ -18,6 +18,7 @@ export type UserType = {
 interface UsersContextType {
   user: UserType
   onUserUpdate: (user: UserType) => void
+  setUserSystemId: (systemId: number) => void
 }
 
 const UsersContext = createContext({} as UsersContextType)
@@ -37,37 +38,37 @@ export function UsersContextProvider({ children }: UsersContextProviderProps) {
     system: undefined,
   })
 
-  const onUserUpdate = (user: UserType) => {
-    setUser(user)
+  const onUserUpdate = (userUpdate: UserType) => {
+    setUser((prevUser) => ({
+      ...prevUser,
+      ...userUpdate,
+    }))
+  }
+
+  const setUserSystemId = (systemId: number) => {
+    setUser((prevUser) => ({
+      ...prevUser,
+      system: systemId,
+    }))
   }
 
   useEffect(() => {
     if (isLogged && userLogged) {
       onUserUpdate({
-        ...user,
-        name: userLogged?.name,
-        office: userLogged?.office,
+        name: userLogged.name,
+        office: userLogged.office,
         systemName: undefined,
         systemDesc: undefined,
-        system: undefined,
-      })
-    } else {
-      onUserUpdate({
-        name: '',
-        office: '',
-        systemName: undefined,
-        systemDesc: undefined,
-        system: undefined,
       })
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isLogged])
+  }, [isLogged, userLogged])
 
   return (
     <UsersContext.Provider
       value={{
         user,
         onUserUpdate,
+        setUserSystemId,
       }}
     >
       {children}

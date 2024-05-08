@@ -7,11 +7,19 @@ import {
 } from '../@types'
 import { useUsers } from './UsersContext'
 import { useAuth } from './AuthContext'
+import {
+  getChecklistService,
+  getChecklistServiceDefaultErrorMessage,
+} from '../services/checklist/getChecklistService'
+import { ChecklistDTO } from '../dtos/checklistDTO'
+import { AppError } from '../utils/AppError'
+import { useToast } from './ToastContext'
 
 export interface ChecklistsContextType {
   checklist: ChecklistItemType[]
   familiesSelected: ChecklistFamiliesOptions
   categoriesSelected: CategoriesType
+  currChecklistId: number | undefined
   filteredChecklist: (isMandatory: boolean, tag: string) => ChecklistItemType[]
   validateChecklist: (isMandatory: boolean) => string | null
   resetChecklist: () => void
@@ -23,6 +31,8 @@ export interface ChecklistsContextType {
   progressData: (isMandatory: boolean) => { name: string; value: number }[]
   distributionData: (isMandatory: boolean) => { name: string; value: number }[]
   progressTableData: (isMandatory: boolean) => { name: string; value: number }[]
+  loadChecklist: (id: number) => Promise<void>
+  setCurrChecklistId: React.Dispatch<React.SetStateAction<number | undefined>>
 }
 
 const ChecklistsContext = createContext({} as ChecklistsContextType)
@@ -35,8 +45,10 @@ export function ChecklistsContextProvider({
   children,
 }: ChecklistsContextProviderProps) {
   const [checklist, setChecklist] = useState<ChecklistItemType[]>(initialItems)
-  const { user, onUserUpdate } = useUsers()
+  const { user, onUserUpdate, setUserSystemId } = useUsers()
+  const { toastError } = useToast()
   const { isLogged } = useAuth()
+
   const [categoriesSelected, setCategoriesSelected] = useState<CategoriesType>({
     Sim: true,
     Não: true,
@@ -48,6 +60,7 @@ export function ChecklistsContextProvider({
       general: true,
       IoT: false,
     })
+  const [currChecklistId, setCurrChecklistId] = useState<number | undefined>()
 
   const findIndexByIsMandatoryAndCode = (
     isMandatory: boolean,
@@ -61,7 +74,7 @@ export function ChecklistsContextProvider({
   const filteredChecklist = (isMandatory?: boolean, tag?: string) => {
     const filtered = checklist.filter(
       (row) =>
-        (!isMandatory || row.mandatory === isMandatory) &&
+        (isMandatory === undefined || row.mandatory === isMandatory) &&
         (!tag || row.code.startsWith(tag)) &&
         familiesSelected[row.type] &&
         categoriesSelected[row.answer ? row.answer : 'Não Preenchido'],
@@ -273,12 +286,38 @@ export function ChecklistsContextProvider({
     setCategoriesSelected(categoriesSelected)
   }
 
+  const setChecklistLoaded = (checklist: ChecklistDTO) => {
+    setChecklist(checklist.checklistData)
+    setUserSystemId(checklist.systemId)
+    setFamiliesSelected({
+      general: checklist.isGeneral,
+      IoT: checklist.isIot,
+    })
+  }
+
+  const loadChecklist = async (id: number) => {
+    try {
+      setCurrChecklistId(id)
+      const data = await getChecklistService(id)
+
+      setChecklistLoaded(data.checklist)
+    } catch (error) {
+      const isAppError = error instanceof AppError
+
+      const title = isAppError
+        ? error.message
+        : getChecklistServiceDefaultErrorMessage
+      toastError(title)
+    }
+  }
+
   return (
     <ChecklistsContext.Provider
       value={{
         checklist,
         familiesSelected,
         categoriesSelected,
+        currChecklistId,
         filteredChecklist,
         validateChecklist,
         resetChecklist,
@@ -290,6 +329,8 @@ export function ChecklistsContextProvider({
         distributionData,
         progressTableData,
         findIndexByIsMandatoryAndCode,
+        loadChecklist,
+        setCurrChecklistId,
       }}
     >
       {children}

@@ -2,7 +2,7 @@ import { useUsers } from '../../../../contexts/UsersContext'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { InputComponent } from '../../../../components/InputComponent'
 import { FormContainer } from '../../../../templates/FormContainer'
 import { useAuth } from '../../../../contexts/AuthContext'
@@ -28,6 +28,8 @@ export function UserForm({ submitted }: UserFormProps) {
   const { user, onUserUpdate } = useUsers()
   const { toastError } = useToast()
   const navigate = useNavigate()
+  const { id } = useParams()
+
   const [systems, setSystems] = useState<SystemDTO[]>([])
   const [isCreateUpdateSystemModalOpen, setIsCreateUpdateSystemModalOpen] =
     useState(false)
@@ -43,7 +45,11 @@ export function UserForm({ submitted }: UserFormProps) {
     if (!isCreateUpdateSystemModalOpen) {
       onUserUpdate(data)
 
-      navigate('/checklist-families')
+      if (id) {
+        navigate(`/checklist-families/${id}`)
+      } else {
+        navigate('/checklist-families')
+      }
     }
   }
 
@@ -105,6 +111,8 @@ export function UserForm({ submitted }: UserFormProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [submitted])
 
+  const userSystemId = user.system
+
   useEffect(() => {
     if (getValues('name') !== user.name) setValue('name', user.name)
     if (getValues('office') !== user.office) setValue('office', user.office)
@@ -117,7 +125,7 @@ export function UserForm({ submitted }: UserFormProps) {
       resetField('system')
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user, isLogged])
+  }, [user, isLogged, userSystemId])
 
   return (
     <FormContainer id="user-form" onSubmit={handleSubmit(handleUserSubmit)}>

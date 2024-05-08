@@ -1,3 +1,5 @@
+import { ChecklistItemType } from '../@types'
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export type ChecklistDTO = {
   id: number
@@ -5,7 +7,7 @@ export type ChecklistDTO = {
   systemId: number
   isGeneral: boolean
   isIot: boolean
-  checklistData: any
+  checklistData: ChecklistItemType[]
   createdAt: Date
   updatedAt: Date
 }

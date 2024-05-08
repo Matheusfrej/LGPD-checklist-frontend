@@ -5,12 +5,11 @@ import { UserForm } from './components/UserForm'
 import { VocabularyTable } from './components/VocabularyTable'
 import { ActionsFooterContainer } from '../../templates/ActionsFooterContainer'
 import { useState } from 'react'
-// import { useParams } from 'react-router-dom'
+import { useLoadChecklist } from '../../hooks/loadChecklist'
 
 export function Home() {
   const [pressed, setPressed] = useState(0)
-
-  // const { id } = useParams()
+  useLoadChecklist()
 
   return (
     <MainContainer>

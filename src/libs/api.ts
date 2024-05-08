@@ -1,8 +1,9 @@
 import axios from 'axios'
 import { AppError } from '../utils/AppError'
+import { BASE_URL } from './config'
 
 const api = axios.create({
-  baseURL: 'http://localhost:8045',
+  baseURL: BASE_URL,
 })
 
 api.interceptors.response.use(

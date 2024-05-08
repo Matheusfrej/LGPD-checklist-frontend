@@ -13,7 +13,7 @@ function storageAuthTokenGet(): string | null {
 
   const token: StorageAuthTokenProps = response ? JSON.parse(response) : null
 
-  return token.token
+  return token ? token.token : null
 }
 
 function storageAuthTokenRemove() {

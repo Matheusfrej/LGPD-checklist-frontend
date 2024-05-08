@@ -14,7 +14,7 @@ function storageThemeGet(): ThemeType | null {
 
   const theme: StorageThemeProps = response ? JSON.parse(response) : null
 
-  return theme.theme
+  return theme ? theme.theme : null
 }
 
 function storageThemeRemove() {

@@ -2,19 +2,19 @@ import { ThemeType } from '../contexts/ThemeContext'
 import { THEME_STORAGE } from './config'
 
 type StorageThemeProps = {
-  theme: ThemeType
+  theme: ThemeType | null
 }
 
 function storageThemeSave(theme: ThemeType): void {
   localStorage.setItem(THEME_STORAGE, JSON.stringify({ theme }))
 }
 
-function storageThemeGet(): ThemeType {
+function storageThemeGet(): ThemeType | null {
   const response = localStorage.getItem(THEME_STORAGE)
 
-  const { theme }: StorageThemeProps = response ? JSON.parse(response) : null
+  const theme: StorageThemeProps = response ? JSON.parse(response) : null
 
-  return theme
+  return theme.theme
 }
 
 function storageThemeRemove() {

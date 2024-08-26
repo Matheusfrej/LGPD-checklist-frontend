@@ -35,20 +35,17 @@ export function Report() {
 
   const editChecklist = async () => {
     try {
-      console.log(user)
       if (userLogged?.id && user.system && id) {
         await editChecklistService({
           id,
           systemId: user.system,
           checklistData: checklist,
           isGeneral: familiesSelected.general,
-          isIoT: familiesSelected.IoT,
+          isIot: familiesSelected.IoT,
         })
 
         toastSuccess('Checklist salva com sucesso!')
       } else {
-        console.log(userLogged?.id, user.system, id)
-
         toastError(editChecklistServiceDefaultErrorMessage)
       }
     } catch (error) {
@@ -70,7 +67,7 @@ export function Report() {
           systemId: user.system,
           checklistData: checklist,
           isGeneral: familiesSelected.general,
-          isIoT: familiesSelected.IoT,
+          isIot: familiesSelected.IoT,
         })
 
         toastSuccess('Checklist salva com sucesso!')

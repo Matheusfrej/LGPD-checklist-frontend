@@ -61,21 +61,15 @@ export function UserForm({ submitted }: UserFormProps) {
     register,
     handleSubmit,
     formState: { errors },
-    resetField,
-    setValue,
     getValues,
   } = useForm<UserFormInputs>({
     resolver: zodResolver(userFormSchema),
-    defaultValues: {
+    values: {
       name: user.name,
       office: user.office,
       systemName: user.systemName,
       systemDesc: user.systemDesc,
       system: user.system,
-    },
-    resetOptions: {
-      keepValues: true,
-      keepDefaultValues: true,
     },
   })
 
@@ -110,22 +104,6 @@ export function UserForm({ submitted }: UserFormProps) {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [submitted])
-
-  const userSystemId = user.system
-
-  useEffect(() => {
-    if (getValues('name') !== user.name) setValue('name', user.name)
-    if (getValues('office') !== user.office) setValue('office', user.office)
-    if (getValues('systemName') !== user.systemName)
-      setValue('systemName', user.systemName)
-    if (getValues('systemDesc') !== user.systemDesc)
-      setValue('systemDesc', user.systemDesc)
-    if (getValues('system') !== user.system) setValue('system', user.system)
-    if (!isLogged) {
-      resetField('system')
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user, isLogged, userSystemId])
 
   return (
     <FormContainer id="user-form" onSubmit={handleSubmit(handleUserSubmit)}>

@@ -7,7 +7,7 @@ export interface EditChecklistServiceRequest {
   id: number
   systemId: number
   isGeneral: boolean
-  isIoT: boolean
+  isIot: boolean
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   checklistData: any
 }
@@ -19,7 +19,7 @@ async function editChecklistService(
     systemId: data.systemId,
     checklistData: data.checklistData,
     isGeneral: data.isGeneral,
-    isIoT: data.isIoT,
+    isIot: data.isIot,
   })
 }
 

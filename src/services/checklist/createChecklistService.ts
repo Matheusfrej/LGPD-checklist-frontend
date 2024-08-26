@@ -8,7 +8,7 @@ export interface CreateChecklistServiceRequest {
   userId: number
   systemId: number
   isGeneral: boolean
-  isIoT: boolean
+  isIot: boolean
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   checklistData: any
 }
@@ -24,7 +24,7 @@ async function createChecklistService(
     userId: data.userId,
     systemId: data.systemId,
     isGeneral: data.isGeneral,
-    isIoT: data.isIoT,
+    isIot: data.isIot,
     checklistData: data.checklistData,
   })
 

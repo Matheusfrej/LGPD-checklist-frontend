@@ -1,2 +1,1 @@
-// export const BASE_URL = 'http://localhost:8045'
-export const BASE_URL = 'https://lgpd-checklist-api.onrender.com'
+export const BASE_URL = `${window.location.protocol}//${window.location.hostname}:8045`

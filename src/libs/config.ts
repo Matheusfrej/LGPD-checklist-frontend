@@ -1,1 +1,1 @@
-export const BASE_URL = `${window.location.protocol}//${window.location.hostname}:8045`
+export const BASE_URL = `http//vm-lgpd-checklist.cin.ufpe.br:8045`

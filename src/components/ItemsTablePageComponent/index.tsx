@@ -40,6 +40,10 @@ export function ItemsTablePageComponent({
         <SectionTitleComponent text={text} />
         <ChartsContainer isMandatory={isMandatory} colors={colors} />
       </SectionContainer>
+      <strong>
+        ATENÇÃO: Para todos os itens respondidos com &quot;Não&quot;, é
+        obrigatório preencher o grau de severidade e o comentário do avaliador.
+      </strong>{' '}
       <SectionWithItemsTableComponent
         isMandatory={isMandatory}
         sections={sections}

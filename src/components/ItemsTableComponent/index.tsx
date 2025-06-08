@@ -1,5 +1,6 @@
 import { AnswerType, SeverityDegreeType } from '../../@types'
 import { useChecklists } from '../../contexts/ChecklistsContext'
+import { useTheme } from 'styled-components'
 import * as S from './styles'
 
 interface ItemsTableComponentProps {
@@ -18,6 +19,7 @@ export function ItemsTableComponent({
     filteredChecklist,
     findIndexByIsMandatoryAndCode,
   } = useChecklists()
+  const theme = useTheme()
 
   return (
     <S.Table>
@@ -35,6 +37,12 @@ export function ItemsTableComponent({
       </thead>
       <tbody>
         {filteredChecklist(isMandatory, sectionId).map((row, idx) => {
+          const isInvalid =
+            row.answer === 'Não' && (!row.severityDegree || !row.userComment)
+          const borderColor = theme.colors.red
+          const cellStyle = isInvalid
+            ? { border: `2px solid ${borderColor}` }
+            : {}
           return (
             <tr
               key={
@@ -45,9 +53,9 @@ export function ItemsTableComponent({
                 row.severityDegree
               }
             >
-              <td>{row.item.code}</td>
-              <td>{row.item.itemDesc}</td>
-              <td>
+              <td style={cellStyle}>{row.item.code}</td>
+              <td style={cellStyle}>{row.item.itemDesc}</td>
+              <td style={cellStyle}>
                 {isReport ? (
                   <S.AnswerInReport $variant={row.answer}>
                     {row.answer}
@@ -77,7 +85,7 @@ export function ItemsTableComponent({
                   </S.Select>
                 )}
               </td>
-              <td>
+              <td style={cellStyle}>
                 {isReport ? (
                   <S.AnswerInReport>{row.severityDegree}</S.AnswerInReport>
                 ) : (
@@ -111,7 +119,7 @@ export function ItemsTableComponent({
                   </S.Select>
                 )}
               </td>
-              <td>
+              <td style={cellStyle}>
                 {isReport ? (
                   <p>{row.userComment}</p>
                 ) : (
@@ -129,9 +137,11 @@ export function ItemsTableComponent({
                   />
                 )}
               </td>
-              <td>{row.item.recommendations}</td>
-              <td>{row.item.laws?.map((law) => law.name).join(', ')}</td>
-              <td>
+              <td style={cellStyle}>{row.item.recommendations}</td>
+              <td style={cellStyle}>
+                {row.item.laws?.map((law) => law.name).join(', ')}
+              </td>
+              <td style={cellStyle}>
                 {row.item.devices?.map((device) => device.name).join(', ')}
               </td>
             </tr>

@@ -1,3 +1,4 @@
+import { AnswerType, SeverityDegreeType } from '../../@types'
 import { ChecklistDTO } from '../../dtos/checklistDTO'
 import api from '../../libs/api'
 
@@ -7,10 +8,14 @@ const createChecklistServiceDefaultErrorMessage =
 export interface CreateChecklistServiceRequest {
   userId: number
   systemId: number
-  isGeneral: boolean
-  isIot: boolean
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  checklistData: any
+  items: {
+    id: number
+    answer: AnswerType
+    severityDegree: SeverityDegreeType
+    userComment?: string
+  }
+  laws: number[]
+  devices: number[]
 }
 
 export interface CreateChecklistServiceResponse {
@@ -23,9 +28,9 @@ async function createChecklistService(
   const { data: responseData } = await api.post('/checklists', {
     userId: data.userId,
     systemId: data.systemId,
-    isGeneral: data.isGeneral,
-    isIot: data.isIot,
-    checklistData: data.checklistData,
+    items: data.items,
+    laws: data.laws,
+    devices: data.devices,
   })
 
   return responseData

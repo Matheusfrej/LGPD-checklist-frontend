@@ -40,4 +40,12 @@ export const ButtonContainer = styled.button<ButtonProps>`
         ? theme.colors.white
         : theme.colors['base-background']};
   }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    background: ${({ theme }) => theme.colors['header-background']};
+    color: ${({ theme }) => theme.colors['base-text']};
+    border-color: ${({ theme }) => theme.colors.span};
+  }
 `

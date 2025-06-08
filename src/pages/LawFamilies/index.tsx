@@ -60,6 +60,10 @@ export function LawFamilies() {
   }
 
   const handleContinue = () => {
+    if (selectedLawIds.length === 0) {
+      toastError('Selecione pelo menos uma lei para continuar.')
+      return
+    }
     const filteredLaws = allLaws.filter((law) =>
       selectedLawIds.includes(String(law.id)),
     )
@@ -89,7 +93,11 @@ export function LawFamilies() {
       </SectionContainer>
       <ActionsFooterContainer hasMessage>
         <ButtonComponent text="Voltar" action={() => navigate('/')} />
-        <ButtonComponent text="Continuar" action={handleContinue} />
+        <ButtonComponent
+          text="Continuar"
+          action={handleContinue}
+          disabled={selectedLawIds.length === 0}
+        />
       </ActionsFooterContainer>
     </MainContainer>
   )

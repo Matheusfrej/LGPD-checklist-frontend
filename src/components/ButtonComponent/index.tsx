@@ -8,6 +8,7 @@ interface ButtonProps {
   form?: string
   action?: () => void
   variant?: 'default' | 'outline' | 'danger'
+  disabled?: boolean
   style?: CSSProperties
 }
 
@@ -18,6 +19,7 @@ export function ButtonComponent({
   form,
   type = 'button',
   variant = 'default',
+  disabled = false,
   style,
 }: ButtonProps) {
   return (
@@ -27,6 +29,7 @@ export function ButtonComponent({
       style={style}
       type={type}
       form={form}
+      disabled={disabled}
     >
       {icon}
       {text}

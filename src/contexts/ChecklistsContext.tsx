@@ -17,7 +17,6 @@ import {
 } from '../services/item/listItems'
 
 export interface ChecklistsContextType {
-  checklist: ChecklistItemType[]
   devices: DeviceDTO[]
   laws: LawDTO[]
   categoriesSelected: CategoriesType
@@ -36,10 +35,11 @@ export interface ChecklistsContextType {
   distributionData: (isMandatory: boolean) => { name: string; value: number }[]
   progressTableData: (isMandatory: boolean) => { name: string; value: number }[]
   loadChecklist: (id: number) => Promise<void>
-  fetchItems: () => Promise<void>
+  fetchItems: () => Promise<ChecklistItemType[] | null>
   setCurrChecklistId: React.Dispatch<React.SetStateAction<number | undefined>>
   onSetDevices: (devices: DeviceDTO[]) => void
   onSetLaws: (laws: LawDTO[]) => void
+  removeDisabledItems: () => void
 }
 
 const ChecklistsContext = createContext({} as ChecklistsContextType)
@@ -79,8 +79,9 @@ export function ChecklistsContextProvider({
   const filteredChecklist = (isMandatory?: boolean, sectionId?: number) => {
     const filtered = checklist.filter(
       (row) =>
+        !row.disabled &&
         (isMandatory === undefined || row.item.isMandatory === isMandatory) &&
-        row.item.section?.id === sectionId &&
+        (sectionId === undefined || row.item.section?.id === sectionId) &&
         categoriesSelected[row.answer ? row.answer : 'Não Preenchido'],
     )
 
@@ -133,7 +134,7 @@ export function ChecklistsContextProvider({
   }
 
   const progressData = (isMandatory: boolean) => {
-    const progress = checklist.reduce((acc, curr) => {
+    const progress = filteredChecklist().reduce((acc, curr) => {
       if (curr.item.isMandatory === isMandatory) {
         if (curr.answer) {
           return acc + 1
@@ -147,7 +148,7 @@ export function ChecklistsContextProvider({
         name: '',
         value:
           (progress /
-            checklist.reduce((acc, curr) => {
+            filteredChecklist().reduce((acc, curr) => {
               if (curr.item.isMandatory === isMandatory) {
                 return acc + 1
               }
@@ -159,7 +160,7 @@ export function ChecklistsContextProvider({
   }
 
   const distributionData = (isMandatory: boolean) => {
-    const distribution = checklist.reduce(
+    const distribution = filteredChecklist().reduce(
       (acc, curr) => {
         if (curr.item.isMandatory === isMandatory) {
           if (curr.answer === 'Sim') {
@@ -243,7 +244,7 @@ export function ChecklistsContextProvider({
       'Total:',
     ]
 
-    return checklist.reduce(
+    return filteredChecklist().reduce(
       (acc, curr) => {
         if (curr.item.isMandatory === isMandatory) {
           if (curr.answer === 'Sim') {
@@ -293,6 +294,10 @@ export function ChecklistsContextProvider({
     setDevices(checklist.devices ?? [])
   }
 
+  const removeDisabledItems = () => {
+    setChecklist((prev) => prev.filter((item) => !item.disabled))
+  }
+
   const loadChecklist = async (id: number) => {
     try {
       setCurrChecklistId(id)
@@ -316,32 +321,46 @@ export function ChecklistsContextProvider({
         devices.map((d) => d.id),
       )
 
-      setChecklist(
-        // faz merge de itens que remanesceram após busca de itens
-        data.items.map((item) => {
-          const existing = checklist.find((c) => c.item.id === item.id)
-          return {
-            item,
-            answer: existing?.answer,
-            severityDegree: existing?.severityDegree,
-            userComment: existing?.userComment,
-          }
-        }),
-      )
+      // IDs of items that should be enabled (from API)
+      const enabledIds = data.items.map((item) => item.id)
+
+      // 1. Items from API, enabled (merge with previous answers if exist)
+      const enabledItems = data.items.map((item) => {
+        const existing = checklist.find((c) => c.item.id === item.id)
+        return {
+          item,
+          answer: existing?.answer,
+          severityDegree: existing?.severityDegree,
+          userComment: existing?.userComment,
+          disabled: false,
+        }
+      })
+
+      // 2. Items that were in checklist but not in API, keep as disabled
+      const disabledItems = checklist
+        .filter((c) => !enabledIds.includes(c.item.id))
+        .map((c) => ({
+          ...c,
+          disabled: true,
+        }))
+
+      // 3. Merge and set
+      const merged = [...enabledItems, ...disabledItems]
+      setChecklist(merged)
+      return merged
     } catch (error) {
       const isAppError = error instanceof AppError
-
       const title = isAppError
         ? error.message
         : listItemsServiceDefaultErrorMessage
       toastError(title)
+      return null
     }
   }
 
   return (
     <ChecklistsContext.Provider
       value={{
-        checklist,
         devices,
         laws,
         categoriesSelected,
@@ -361,6 +380,7 @@ export function ChecklistsContextProvider({
         setCurrChecklistId,
         onSetLaws,
         onSetDevices,
+        removeDisabledItems,
       }}
     >
       {children}

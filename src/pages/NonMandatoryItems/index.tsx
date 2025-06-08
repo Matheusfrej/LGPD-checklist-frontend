@@ -5,7 +5,7 @@ import { useToast } from '../../contexts/ToastContext'
 import { useLoadChecklist } from '../../hooks/loadChecklist'
 
 export function NonMandatoryItems() {
-  const { validateChecklist, checklist } = useChecklists()
+  const { validateChecklist, filteredChecklist } = useChecklists()
   const { toastError } = useToast()
   const navigate = useNavigate()
   const { id } = useLoadChecklist()
@@ -27,11 +27,13 @@ export function NonMandatoryItems() {
   }
 
   return (
-    <ItemsTablePageComponent
-      isMandatory={false}
-      text="Itens Não Obrigatórios"
-      sections={checklist.map((item) => item.item.section)}
-      action={() => validateNonMandatoryItems()}
-    />
+    filteredChecklist() && (
+      <ItemsTablePageComponent
+        isMandatory={false}
+        text="Itens Não Obrigatórios"
+        sections={filteredChecklist().map((item) => item.item.section)}
+        action={() => validateNonMandatoryItems()}
+      />
+    )
   )
 }

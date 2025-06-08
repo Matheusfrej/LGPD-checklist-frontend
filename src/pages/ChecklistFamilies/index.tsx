@@ -17,7 +17,7 @@ import { DeviceDTO } from '../../dtos/deviceDTO'
 
 export function ChecklistFamilies() {
   const { devices, onSetDevices, fetchItems } = useChecklists()
-  const { toastError } = useToast()
+  const { toastError, toastWarn } = useToast()
   const navigate = useNavigate()
   const { id } = useParams()
   const [allDevices, setAllDevices] = useState<DeviceDTO[]>([])
@@ -65,10 +65,14 @@ export function ChecklistFamilies() {
       selectedDeviceIds.includes(String(device.id)),
     )
     onSetDevices(filteredDevices)
-    if (!id) {
-      await fetchItems()
+    const items = await fetchItems()
+    if (items && items.length === 0) {
+      toastWarn(
+        'Nenhum item de checklist encontrado para os filtros escolhidos.',
+      )
+    } else if (items) {
+      goToMandatoryItems()
     }
-    goToMandatoryItems()
   }
 
   return (
@@ -77,7 +81,7 @@ export function ChecklistFamilies() {
         <S.ChecklistFamiliesContainer>
           <p>
             Selecione abaixo quais famílias de checklists você quer incluir
-            nessa avaliação, além da checklist geral:
+            nessa avaliação:
           </p>
           <form>
             {allDevices &&

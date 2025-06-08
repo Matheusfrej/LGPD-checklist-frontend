@@ -24,7 +24,8 @@ export function Report() {
   const { user: userLogged, isLogged } = useAuth()
   const { user } = useUsers()
   const { toastSuccess, toastError } = useToast()
-  const { checklist, devices, laws } = useChecklists()
+  const { filteredChecklist, removeDisabledItems, devices, laws } =
+    useChecklists()
   const { id } = useLoadChecklist()
   const navigate = useNavigate()
 
@@ -39,7 +40,7 @@ export function Report() {
         await editChecklistService({
           id,
           systemId: user.system,
-          items: checklist.map((item) => ({
+          items: filteredChecklist().map((item) => ({
             id: item.item.id,
             answer: item.answer || undefined,
             severityDegree: item.severityDegree || undefined,
@@ -49,6 +50,7 @@ export function Report() {
           devices: devices.map((device) => device.id),
         })
 
+        removeDisabledItems()
         toastSuccess('Checklist salva com sucesso!')
       } else {
         toastError(editChecklistServiceDefaultErrorMessage)
@@ -67,10 +69,11 @@ export function Report() {
   const createChecklist = async () => {
     try {
       if (userLogged?.id && user.system) {
+        // Remove disabled items from memory before sending and after saving
         const data = await createChecklistService({
           userId: userLogged?.id,
           systemId: user.system,
-          items: checklist.map((item) => ({
+          items: filteredChecklist().map((item) => ({
             id: item.item.id,
             answer: item.answer || undefined,
             severityDegree: item.severityDegree || undefined,
@@ -80,6 +83,7 @@ export function Report() {
           devices: devices.map((device) => device.id),
         })
 
+        removeDisabledItems()
         toastSuccess('Checklist salva com sucesso!')
         navigate(`/report/${data.checklist.id}`)
       } else {

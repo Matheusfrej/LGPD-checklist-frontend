@@ -8,6 +8,7 @@ export type ChecklistItemType = {
   answer?: AnswerType
   severityDegree?: SeverityDegreeType
   userComment?: string
+  disabled?: boolean
 }
 
 export type ChecklistDTO = {

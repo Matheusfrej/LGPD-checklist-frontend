@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { ButtonComponent } from '../../components/ButtonComponent'
 import { MainContainer } from '../../templates/MainContainer'
 import { SectionContainer } from '../../templates/SectionContainer'
@@ -18,12 +18,17 @@ import { LawDTO } from '../../dtos/lawDTO'
 export function LawFamilies() {
   const { laws, onSetLaws } = useChecklists()
   const { toastError } = useToast()
+  const { id } = useParams()
   const navigate = useNavigate()
   const [allLaws, setAllLaws] = useState<LawDTO[]>([])
   const [selectedLawIds, setSelectedLawIds] = useState<string[]>([])
 
   const goToChecklistFamilies = () => {
-    navigate('/checklist-families')
+    if (id) {
+      navigate(`/checklist-families/${id}`)
+    } else {
+      navigate('/checklist-families')
+    }
   }
 
   useEffect(() => {

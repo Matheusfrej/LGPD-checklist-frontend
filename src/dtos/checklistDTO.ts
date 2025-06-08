@@ -15,8 +15,8 @@ export type ChecklistDTO = {
   userId: number
   systemId: number
   checklistItems: ChecklistItemType[]
-  laws: LawDTO
-  devices: DeviceDTO
+  laws: LawDTO[]
+  devices: DeviceDTO[]
   createdAt: Date
   updatedAt: Date
 }

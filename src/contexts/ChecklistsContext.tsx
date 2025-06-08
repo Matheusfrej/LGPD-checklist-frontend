@@ -289,6 +289,8 @@ export function ChecklistsContextProvider({
   const setChecklistLoaded = (checklist: ChecklistDTO) => {
     setChecklist(checklist.checklistItems)
     setUserSystemId(checklist.systemId)
+    setLaws(checklist.laws ?? [])
+    setDevices(checklist.devices ?? [])
   }
 
   const loadChecklist = async (id: number) => {
@@ -315,12 +317,14 @@ export function ChecklistsContextProvider({
       )
 
       setChecklist(
+        // faz merge de itens que remanesceram após busca de itens
         data.items.map((item) => {
+          const existing = checklist.find((c) => c.item.id === item.id)
           return {
             item,
-            answer: undefined,
-            severityDegree: undefined,
-            userComment: undefined,
+            answer: existing?.answer,
+            severityDegree: existing?.severityDegree,
+            userComment: existing?.userComment,
           }
         }),
       )

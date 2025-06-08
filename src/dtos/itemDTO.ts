@@ -7,8 +7,10 @@ export type ItemDTO = {
   itemDesc: string
   recommendations: string
   isMandatory: boolean
-  sectionId: number
-  sectionName?: string
+  section?: {
+    id: number
+    name: string
+  }
   laws?: LawDTO[]
   devices?: DeviceDTO[]
 }

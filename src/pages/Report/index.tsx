@@ -24,7 +24,7 @@ export function Report() {
   const { user: userLogged, isLogged } = useAuth()
   const { user } = useUsers()
   const { toastSuccess, toastError } = useToast()
-  const { checklist, familiesSelected } = useChecklists()
+  const { checklist, devices, laws } = useChecklists()
   const { id } = useLoadChecklist()
   const navigate = useNavigate()
 
@@ -39,9 +39,14 @@ export function Report() {
         await editChecklistService({
           id,
           systemId: user.system,
-          checklistData: checklist,
-          isGeneral: familiesSelected.general,
-          isIot: familiesSelected.IoT,
+          items: checklist.map((item) => ({
+            id: item.item.id,
+            answer: item.answer,
+            severityDegree: item.severityDegree,
+            userComment: item.userComment,
+          })),
+          laws: laws.map((law) => law.id),
+          devices: devices.map((device) => device.id),
         })
 
         toastSuccess('Checklist salva com sucesso!')
@@ -65,9 +70,14 @@ export function Report() {
         const data = await createChecklistService({
           userId: userLogged?.id,
           systemId: user.system,
-          checklistData: checklist,
-          isGeneral: familiesSelected.general,
-          isIot: familiesSelected.IoT,
+          items: checklist.map((item) => ({
+            id: item.item.id,
+            answer: item.answer,
+            severityDegree: item.severityDegree,
+            userComment: item.userComment,
+          })),
+          laws: laws.map((law) => law.id),
+          devices: devices.map((device) => device.id),
         })
 
         toastSuccess('Checklist salva com sucesso!')

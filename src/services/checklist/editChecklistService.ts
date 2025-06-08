@@ -12,7 +12,7 @@ export interface EditChecklistServiceRequest {
     answer: AnswerType
     severityDegree: SeverityDegreeType
     userComment?: string
-  }
+  }[]
   laws: number[]
   devices: number[]
 }

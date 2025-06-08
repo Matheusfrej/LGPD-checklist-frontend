@@ -13,7 +13,7 @@ export interface CreateChecklistServiceRequest {
     answer: AnswerType
     severityDegree: SeverityDegreeType
     userComment?: string
-  }
+  }[]
   laws: number[]
   devices: number[]
 }

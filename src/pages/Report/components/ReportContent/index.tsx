@@ -3,12 +3,10 @@ import { ChartsContainer } from '../../../../components/ChartsContainer'
 import { SectionContainer } from '../../../../templates/SectionContainer'
 import { SectionTitleComponent } from '../../../../components/SectionTitleComponent'
 import { SectionWithItemsTableComponent } from '../../../../components/SectionWithItemsTableComponent'
-// import {
-//   mandatoryItemsClassifications,
-//   nonMandatoryItemsClassifications,
-// } from '../../../../utils/constants/classifications'
+import { useChecklists } from '../../../../contexts/ChecklistsContext'
 
 export function ReportContent() {
+  const { checklist } = useChecklists()
   const theme = useTheme()
 
   const colors = [
@@ -37,9 +35,9 @@ export function ReportContent() {
           <ChartsContainer isMandatory={false} colors={colors} />
         </SectionContainer>
       </SectionContainer>
-      {/* <SectionContainer>
+      <SectionContainer>
         <SectionWithItemsTableComponent
-          classifications={mandatoryItemsClassifications}
+          sections={checklist.map((item) => item.item.section)}
           isMandatory
           isReport
           title="Tabelas de Itens Obrigatórios"
@@ -47,12 +45,12 @@ export function ReportContent() {
       </SectionContainer>
       <SectionContainer>
         <SectionWithItemsTableComponent
-          classifications={nonMandatoryItemsClassifications}
+          sections={checklist.map((item) => item.item.section)}
           isMandatory={false}
           isReport
           title="Tabelas de Itens Não Obrigatórios"
         />
-      </SectionContainer> */}
+      </SectionContainer>
     </>
   )
 }

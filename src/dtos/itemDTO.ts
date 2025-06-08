@@ -1,5 +1,6 @@
 import { DeviceDTO } from './deviceDTO'
 import { LawDTO } from './lawDTO'
+import { SectionDTO } from './sectionDTO'
 
 export type ItemDTO = {
   id: number
@@ -7,10 +8,7 @@ export type ItemDTO = {
   itemDesc: string
   recommendations: string
   isMandatory: boolean
-  section?: {
-    id: number
-    name: string
-  }
+  section: SectionDTO
   laws?: LawDTO[]
   devices?: DeviceDTO[]
 }

@@ -8,21 +8,19 @@ import { ChartsContainer } from '../ChartsContainer'
 import { SectionTitleComponent } from '../SectionTitleComponent'
 import { SectionWithItemsTableComponent } from '../SectionWithItemsTableComponent'
 import { CheckboxesAnswerComponent } from '../CheckboxesAnswerComponent'
+import { SectionDTO } from '../../dtos/sectionDTO'
 
 interface ItemsTablePageComponentProps {
   text: string
   isMandatory: boolean
-  classifications: {
-    name: string
-    tag: string
-  }[]
+  sections: SectionDTO[]
   action: () => void
 }
 
 export function ItemsTablePageComponent({
   text,
   isMandatory,
-  classifications,
+  sections,
   action,
 }: ItemsTablePageComponentProps) {
   const navigate = useNavigate()
@@ -44,7 +42,7 @@ export function ItemsTablePageComponent({
       </SectionContainer>
       <SectionWithItemsTableComponent
         isMandatory={isMandatory}
-        classifications={classifications}
+        sections={sections}
       />
       <ActionsFooterContainer hasMessage>
         <ButtonComponent text="Voltar" action={() => navigate(-1)} />

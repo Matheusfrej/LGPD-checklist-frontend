@@ -11,6 +11,10 @@ import { AppError } from '../utils/AppError'
 import { useToast } from './ToastContext'
 import { DeviceDTO } from '../dtos/deviceDTO'
 import { LawDTO } from '../dtos/lawDTO'
+import {
+  listItemsService,
+  listItemsServiceDefaultErrorMessage,
+} from '../services/item/listItems'
 
 export interface ChecklistsContextType {
   checklist: ChecklistItemType[]
@@ -18,7 +22,10 @@ export interface ChecklistsContextType {
   laws: LawDTO[]
   categoriesSelected: CategoriesType
   currChecklistId: number | undefined
-  filteredChecklist: (isMandatory: boolean, tag: string) => ChecklistItemType[]
+  filteredChecklist: (
+    isMandatory?: boolean,
+    sectionId?: number,
+  ) => ChecklistItemType[]
   validateChecklist: (isMandatory: boolean) => string | null
   resetChecklist: () => void
   findIndexByIsMandatoryAndCode: (isMandatory: boolean, code: string) => number
@@ -29,6 +36,7 @@ export interface ChecklistsContextType {
   distributionData: (isMandatory: boolean) => { name: string; value: number }[]
   progressTableData: (isMandatory: boolean) => { name: string; value: number }[]
   loadChecklist: (id: number) => Promise<void>
+  fetchItems: () => Promise<void>
   setCurrChecklistId: React.Dispatch<React.SetStateAction<number | undefined>>
   onSetDevices: (devices: DeviceDTO[]) => void
   onSetLaws: (laws: LawDTO[]) => void
@@ -68,10 +76,11 @@ export function ChecklistsContextProvider({
     )
   }
 
-  const filteredChecklist = (isMandatory?: boolean) => {
+  const filteredChecklist = (isMandatory?: boolean, sectionId?: number) => {
     const filtered = checklist.filter(
       (row) =>
         (isMandatory === undefined || row.item.isMandatory === isMandatory) &&
+        row.item.section?.id === sectionId &&
         categoriesSelected[row.answer ? row.answer : 'Não Preenchido'],
     )
 
@@ -298,6 +307,33 @@ export function ChecklistsContextProvider({
     }
   }
 
+  const fetchItems = async () => {
+    try {
+      const data = await listItemsService(
+        laws.map((l) => l.id),
+        devices.map((d) => d.id),
+      )
+
+      setChecklist(
+        data.items.map((item) => {
+          return {
+            item,
+            answer: undefined,
+            severityDegree: undefined,
+            userComment: undefined,
+          }
+        }),
+      )
+    } catch (error) {
+      const isAppError = error instanceof AppError
+
+      const title = isAppError
+        ? error.message
+        : listItemsServiceDefaultErrorMessage
+      toastError(title)
+    }
+  }
+
   return (
     <ChecklistsContext.Provider
       value={{
@@ -317,6 +353,7 @@ export function ChecklistsContextProvider({
         progressTableData,
         findIndexByIsMandatoryAndCode,
         loadChecklist,
+        fetchItems,
         setCurrChecklistId,
         onSetLaws,
         onSetDevices,

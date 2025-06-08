@@ -2,11 +2,10 @@ import { useNavigate } from 'react-router-dom'
 import { ItemsTablePageComponent } from '../../components/ItemsTablePageComponent'
 import { useChecklists } from '../../contexts/ChecklistsContext'
 import { useToast } from '../../contexts/ToastContext'
-// import { mandatoryItemsClassifications } from '../../utils/constants/classifications'
 import { useLoadChecklist } from '../../hooks/loadChecklist'
 
 export function MandatoryItems() {
-  const { validateChecklist } = useChecklists()
+  const { validateChecklist, checklist } = useChecklists()
   const { toastError } = useToast()
   const navigate = useNavigate()
   const { id } = useLoadChecklist()
@@ -28,12 +27,13 @@ export function MandatoryItems() {
   }
 
   return (
-    // <ItemsTablePageComponent
-    //   isMandatory
-    //   text="Itens Obrigatórios"
-    //   classifications={mandatoryItemsClassifications}
-    //   action={() => validateMandatoryItems()}
-    // />
-    <></>
+    checklist && (
+      <ItemsTablePageComponent
+        isMandatory
+        text="Itens Obrigatórios"
+        sections={checklist.map((item) => item.item.section)}
+        action={() => validateMandatoryItems()}
+      />
+    )
   )
 }

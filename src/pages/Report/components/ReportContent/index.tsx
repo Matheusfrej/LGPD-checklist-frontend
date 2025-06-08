@@ -3,10 +3,10 @@ import { ChartsContainer } from '../../../../components/ChartsContainer'
 import { SectionContainer } from '../../../../templates/SectionContainer'
 import { SectionTitleComponent } from '../../../../components/SectionTitleComponent'
 import { SectionWithItemsTableComponent } from '../../../../components/SectionWithItemsTableComponent'
-import {
-  mandatoryItemsClassifications,
-  nonMandatoryItemsClassifications,
-} from '../../../../utils/constants/classifications'
+// import {
+//   mandatoryItemsClassifications,
+//   nonMandatoryItemsClassifications,
+// } from '../../../../utils/constants/classifications'
 
 export function ReportContent() {
   const theme = useTheme()
@@ -37,7 +37,7 @@ export function ReportContent() {
           <ChartsContainer isMandatory={false} colors={colors} />
         </SectionContainer>
       </SectionContainer>
-      <SectionContainer>
+      {/* <SectionContainer>
         <SectionWithItemsTableComponent
           classifications={mandatoryItemsClassifications}
           isMandatory
@@ -52,7 +52,7 @@ export function ReportContent() {
           isReport
           title="Tabelas de Itens Não Obrigatórios"
         />
-      </SectionContainer>
+      </SectionContainer> */}
     </>
   )
 }

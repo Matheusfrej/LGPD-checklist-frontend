@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom'
 import { ItemsTablePageComponent } from '../../components/ItemsTablePageComponent'
 import { useChecklists } from '../../contexts/ChecklistsContext'
 import { useToast } from '../../contexts/ToastContext'
-import { mandatoryItemsClassifications } from '../../utils/constants/classifications'
+// import { mandatoryItemsClassifications } from '../../utils/constants/classifications'
 import { useLoadChecklist } from '../../hooks/loadChecklist'
 
 export function MandatoryItems() {
@@ -28,11 +28,12 @@ export function MandatoryItems() {
   }
 
   return (
-    <ItemsTablePageComponent
-      isMandatory
-      text="Itens Obrigatórios"
-      classifications={mandatoryItemsClassifications}
-      action={() => validateMandatoryItems()}
-    />
+    // <ItemsTablePageComponent
+    //   isMandatory
+    //   text="Itens Obrigatórios"
+    //   classifications={mandatoryItemsClassifications}
+    //   action={() => validateMandatoryItems()}
+    // />
+    <></>
   )
 }

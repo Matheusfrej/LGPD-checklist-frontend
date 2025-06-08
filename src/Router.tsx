@@ -12,6 +12,7 @@ import { Profile } from './pages/Profile'
 import { Systems } from './pages/Systems'
 import { Checklists } from './pages/Checklists'
 import { useAuth } from './contexts/AuthContext'
+import { LawFamilies } from './pages/LawFamilies'
 
 export function Router() {
   const { isLogged } = useAuth()
@@ -30,6 +31,9 @@ export function Router() {
           path="/register"
           element={!isLogged ? <Register /> : <Navigate replace to="/" />}
         />
+        <Route path="/laws" element={<LawFamilies />}>
+          <Route path=":id" element={<LawFamilies />} />
+        </Route>
         <Route path="/checklist-families" element={<ChecklistFamilies />}>
           <Route path=":id" element={<ChecklistFamilies />} />
         </Route>

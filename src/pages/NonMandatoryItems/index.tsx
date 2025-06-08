@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom'
 import { ItemsTablePageComponent } from '../../components/ItemsTablePageComponent'
 import { useChecklists } from '../../contexts/ChecklistsContext'
 import { useToast } from '../../contexts/ToastContext'
-import { nonMandatoryItemsClassifications } from '../../utils/constants/classifications'
+// import { nonMandatoryItemsClassifications } from '../../utils/constants/classifications'
 import { useLoadChecklist } from '../../hooks/loadChecklist'
 
 export function NonMandatoryItems() {
@@ -28,11 +28,12 @@ export function NonMandatoryItems() {
   }
 
   return (
-    <ItemsTablePageComponent
-      isMandatory={false}
-      text="Itens Não Obrigatórios"
-      classifications={nonMandatoryItemsClassifications}
-      action={() => validateNonMandatoryItems()}
-    />
+    // <ItemsTablePageComponent
+    //   isMandatory={false}
+    //   text="Itens Não Obrigatórios"
+    //   classifications={nonMandatoryItemsClassifications}
+    //   action={() => validateNonMandatoryItems()}
+    // />
+    <></>
   )
 }

@@ -27,13 +27,11 @@ export function MandatoryItems() {
   }
 
   return (
-    filteredChecklist() && (
-      <ItemsTablePageComponent
-        isMandatory
-        text="Itens Obrigatórios"
-        sections={filteredChecklist().map((item) => item.item.section)}
-        action={() => validateMandatoryItems()}
-      />
-    )
+    <ItemsTablePageComponent
+      isMandatory
+      text="Itens Obrigatórios"
+      sections={filteredChecklist().map((item) => item.item.section)}
+      action={() => validateMandatoryItems()}
+    />
   )
 }

@@ -35,7 +35,10 @@ export interface ChecklistsContextType {
   distributionData: (isMandatory: boolean) => { name: string; value: number }[]
   progressTableData: (isMandatory: boolean) => { name: string; value: number }[]
   loadChecklist: (id: number) => Promise<void>
-  fetchItems: () => Promise<ChecklistItemType[] | null>
+  fetchItems: (
+    _laws: LawDTO[],
+    _devices: DeviceDTO[],
+  ) => Promise<ChecklistItemType[] | null>
   setCurrChecklistId: React.Dispatch<React.SetStateAction<number | undefined>>
   onSetDevices: (devices: DeviceDTO[]) => void
   onSetLaws: (laws: LawDTO[]) => void
@@ -314,11 +317,11 @@ export function ChecklistsContextProvider({
     }
   }
 
-  const fetchItems = async () => {
+  const fetchItems = async (_laws = laws, _devices = devices) => {
     try {
       const data = await listItemsService(
-        laws.map((l) => l.id),
-        devices.map((d) => d.id),
+        _laws.map((l) => l.id),
+        _devices.map((d) => d.id),
       )
 
       // IDs of items that should be enabled (from API)

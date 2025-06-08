@@ -27,13 +27,11 @@ export function NonMandatoryItems() {
   }
 
   return (
-    filteredChecklist() && (
-      <ItemsTablePageComponent
-        isMandatory={false}
-        text="Itens Não Obrigatórios"
-        sections={filteredChecklist().map((item) => item.item.section)}
-        action={() => validateNonMandatoryItems()}
-      />
-    )
+    <ItemsTablePageComponent
+      isMandatory={false}
+      text="Itens Não Obrigatórios"
+      sections={filteredChecklist().map((item) => item.item.section)}
+      action={() => validateNonMandatoryItems()}
+    />
   )
 }

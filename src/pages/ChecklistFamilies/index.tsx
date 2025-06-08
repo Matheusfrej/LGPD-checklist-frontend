@@ -16,7 +16,7 @@ import {
 import { DeviceDTO } from '../../dtos/deviceDTO'
 
 export function ChecklistFamilies() {
-  const { devices, onSetDevices, fetchItems } = useChecklists()
+  const { laws, devices, onSetDevices, fetchItems } = useChecklists()
   const { toastError, toastWarn } = useToast()
   const navigate = useNavigate()
   const { id } = useParams()
@@ -49,7 +49,7 @@ export function ChecklistFamilies() {
       }
     }
     fetchDevices()
-  }, [devices, toastError])
+  }, [])
 
   const handleDeviceCheckboxChange = (deviceId: number) => {
     const idStr = String(deviceId)
@@ -64,8 +64,8 @@ export function ChecklistFamilies() {
     const filteredDevices = allDevices.filter((device) =>
       selectedDeviceIds.includes(String(device.id)),
     )
-    onSetDevices(filteredDevices)
-    const items = await fetchItems()
+    const items = await fetchItems(laws, filteredDevices)
+
     if (items && items.length === 0) {
       toastWarn(
         'Nenhum item de checklist encontrado para os filtros escolhidos.',
@@ -73,6 +73,7 @@ export function ChecklistFamilies() {
     } else if (items) {
       goToMandatoryItems()
     }
+    onSetDevices(filteredDevices)
   }
 
   return (

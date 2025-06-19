@@ -16,6 +16,7 @@ import {
   listItemsServiceDefaultErrorMessage,
 } from '../services/item/listItems'
 import { SectionDTO } from '../dtos/sectionDTO'
+import { getItemValidationMessage } from '../libs/business'
 
 export interface ChecklistsContextType {
   devices: DeviceDTO[]
@@ -107,14 +108,9 @@ export function ChecklistsContextProvider({
   }
 
   const validateChecklist = (isMandatory: boolean): string | null => {
-    for (const item of checklist) {
-      if (
-        item.answer === 'Não' &&
-        item.item.isMandatory === isMandatory &&
-        !(item.severityDegree && item.userComment)
-      ) {
-        return 'Nos itens respondidos com "Não", preencha o grau de severidade e o comentário'
-      }
+    for (const item of filteredChecklist(isMandatory)) {
+      const msg = getItemValidationMessage(item)
+      if (msg) return msg
     }
     return null
   }
@@ -308,8 +304,11 @@ export function ChecklistsContextProvider({
   const uniqueSections = (isMandatory?: boolean) => {
     return Array.from(
       new Map(
-        filteredChecklist(isMandatory).map((item) => [item.item.section.id, item.item.section])
-      ).values()
+        filteredChecklist(isMandatory).map((item) => [
+          item.item.section.id,
+          item.item.section,
+        ]),
+      ).values(),
     )
   }
 

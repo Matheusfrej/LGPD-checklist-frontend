@@ -49,6 +49,7 @@ export function ChecklistFamilies() {
       }
     }
     fetchDevices()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const handleDeviceCheckboxChange = (deviceId: number) => {

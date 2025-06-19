@@ -5,25 +5,10 @@ export const Stepper = styled.div`
   gap: 1rem;
   margin-bottom: 1rem;
   width: 100%;
-  justify-content: flex-start;
-  overflow-x: auto;
-  scrollbar-width: thin;
-  scrollbar-color: ${({ theme }) => theme.colors.span} transparent;
-  padding-bottom: 8px;
-
-  &::-webkit-scrollbar {
-    height: 6px;
-  }
-  &::-webkit-scrollbar-thumb {
-    background: ${({ theme }) => theme.colors.span};
-    border-radius: 4px;
-  }
-  &::-webkit-scrollbar-track {
-    background: transparent;
-  }
+  justify-content: center;
 `
 
-export const Step = styled.div<{ $active: boolean }>`
+export const Step = styled.div<{ $active: boolean; $completed?: boolean }>`
   padding: 0.5rem 1.5rem;
   border-radius: 20px;
   background: ${({ theme, $active }) =>
@@ -31,32 +16,23 @@ export const Step = styled.div<{ $active: boolean }>`
   color: ${({ theme, $active }) =>
     $active ? theme.colors['header-background'] : theme.colors['base-text']};
   font-weight: ${({ $active }) => ($active ? 'bold' : 'normal')};
-  border: 2px solid ${({ theme, $active }) =>
-    $active ? theme.colors.contrast : theme.colors.span};
-  transition: background 0.2s, color 0.2s;
-  white-space: nowrap;
-  max-width: 120px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  text-align: center;
+  border: 2px solid
+    ${({ theme, $active, $completed }) =>
+      $active
+        ? theme.colors.contrast
+        : $completed
+          ? theme.colors.green
+          : theme.colors.span};
+  transition:
+    background 0.2s,
+    color 0.2s,
+    border 0.2s;
   position: relative;
+`
 
-  &:hover::after {
-    content: attr(data-tooltip);
-    position: absolute;
-    left: 50%;
-    bottom: -2.2rem;
-    transform: translateX(-50%);
-    background: ${({ theme }) => theme.colors['header-background']};
-    color: ${({ theme }) => theme.colors['base-text']};
-    padding: 4px 10px;
-    border-radius: 6px;
-    font-size: 0.9rem;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
-    z-index: 10;
-    white-space: pre-line;
-    min-width: 80px;
-    max-width: 300px;
-    pointer-events: none;
-  }
+// Adiciona um container estilizado para alinhar texto e ícone
+export const StepContent = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
 `

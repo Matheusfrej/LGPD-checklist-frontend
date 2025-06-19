@@ -2,6 +2,7 @@ import { AnswerType, SeverityDegreeType } from '../../@types'
 import { useChecklists } from '../../contexts/ChecklistsContext'
 import { useTheme } from 'styled-components'
 import * as S from './styles'
+import { getItemValidationMessage } from '../../libs/business'
 
 interface ItemsTableComponentProps {
   isMandatory: boolean
@@ -37,8 +38,7 @@ export function ItemsTableComponent({
       </thead>
       <tbody>
         {filteredChecklist(isMandatory, sectionId).map((row, idx) => {
-          const isInvalid =
-            row.answer === 'Não' && (!row.severityDegree || !row.userComment)
+          const isInvalid = getItemValidationMessage(row)
           const borderColor = theme.colors.red
           const cellStyle = isInvalid
             ? { border: `2px solid ${borderColor}` }

@@ -44,13 +44,22 @@ export function ReportContent() {
           </SectionContainer>
         )}
         {!hasMandatory && !hasNonMandatory && (
-          <SectionTitleComponent text="Nenhum item disponível para exibir gráficos." isSecondary />
+          <SectionTitleComponent
+            text="Nenhum item disponível para exibir gráficos."
+            isSecondary
+          />
         )}
       </SectionContainer>
       <SectionContainer>
-        <SectionTitleComponent text="Tabelas de Itens Obrigatórios" isSecondary />
+        <SectionTitleComponent
+          text="Tabelas de Itens Obrigatórios"
+          isSecondary
+        />
         {!hasMandatory && (
-          <SectionTitleComponent text="Nenhum item obrigatório disponível." isSecondary />
+          <SectionTitleComponent
+            text="Nenhum item obrigatório disponível."
+            isSecondary
+          />
         )}
         <SectionWithItemsTableComponent
           sections={mandatorySections}
@@ -59,9 +68,15 @@ export function ReportContent() {
         />
       </SectionContainer>
       <SectionContainer>
-        <SectionTitleComponent text="Tabelas de Itens Não Obrigatórios" isSecondary />
+        <SectionTitleComponent
+          text="Tabelas de Itens Não Obrigatórios"
+          isSecondary
+        />
         {!hasNonMandatory && (
-          <SectionTitleComponent text="Nenhum item não obrigatório disponível." isSecondary />
+          <SectionTitleComponent
+            text="Nenhum item não obrigatório disponível."
+            isSecondary
+          />
         )}
         <SectionWithItemsTableComponent
           sections={nonMandatorySections}

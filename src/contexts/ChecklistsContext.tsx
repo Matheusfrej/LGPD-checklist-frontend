@@ -127,6 +127,7 @@ export function ChecklistsContextProvider({
       'Não se aplica': true,
       'Não Preenchido': true,
     })
+    setLaws([])
     setDevices([])
     onUserUpdate({
       ...user,

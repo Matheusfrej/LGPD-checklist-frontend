@@ -15,6 +15,7 @@ import {
   listItemsService,
   listItemsServiceDefaultErrorMessage,
 } from '../services/item/listItems'
+import { SectionDTO } from '../dtos/sectionDTO'
 
 export interface ChecklistsContextType {
   devices: DeviceDTO[]
@@ -43,6 +44,7 @@ export interface ChecklistsContextType {
   onSetDevices: (devices: DeviceDTO[]) => void
   onSetLaws: (laws: LawDTO[]) => void
   removeDisabledItems: () => void
+  uniqueSections: (isMandatory?: boolean) => SectionDTO[]
 }
 
 const ChecklistsContext = createContext({} as ChecklistsContextType)
@@ -301,6 +303,15 @@ export function ChecklistsContextProvider({
     setChecklist((prev) => prev.filter((item) => !item.disabled))
   }
 
+  // Função para retornar seções únicas do checklist filtrado
+  const uniqueSections = (isMandatory?: boolean) => {
+    return Array.from(
+      new Map(
+        filteredChecklist(isMandatory).map((item) => [item.item.section.id, item.item.section])
+      ).values()
+    )
+  }
+
   const loadChecklist = async (id: number) => {
     try {
       setCurrChecklistId(id)
@@ -384,6 +395,7 @@ export function ChecklistsContextProvider({
         onSetLaws,
         onSetDevices,
         removeDisabledItems,
+        uniqueSections, // <-- adiciona ao contexto
       }}
     >
       {children}

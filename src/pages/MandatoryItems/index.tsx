@@ -5,7 +5,7 @@ import { useToast } from '../../contexts/ToastContext'
 import { useLoadChecklist } from '../../hooks/loadChecklist'
 
 export function MandatoryItems() {
-  const { validateChecklist, filteredChecklist } = useChecklists()
+  const { validateChecklist, uniqueSections } = useChecklists()
   const { toastError } = useToast()
   const navigate = useNavigate()
   const { id } = useLoadChecklist()
@@ -30,7 +30,7 @@ export function MandatoryItems() {
     <ItemsTablePageComponent
       isMandatory
       text="Itens Obrigatórios"
-      sections={filteredChecklist().map((item) => item.item.section)}
+      sections={uniqueSections(isMandatory)}
       action={() => validateMandatoryItems()}
     />
   )

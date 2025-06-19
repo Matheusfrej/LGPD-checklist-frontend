@@ -6,7 +6,7 @@ import { SectionWithItemsTableComponent } from '../../../../components/SectionWi
 import { useChecklists } from '../../../../contexts/ChecklistsContext'
 
 export function ReportContent() {
-  const { filteredChecklist } = useChecklists()
+  const { uniqueSections } = useChecklists()
   const theme = useTheme()
 
   const colors = [
@@ -37,7 +37,7 @@ export function ReportContent() {
       </SectionContainer>
       <SectionContainer>
         <SectionWithItemsTableComponent
-          sections={filteredChecklist().map((item) => item.item.section)}
+          sections={uniqueSections(true)}
           isMandatory
           isReport
           title="Tabelas de Itens Obrigatórios"
@@ -45,7 +45,7 @@ export function ReportContent() {
       </SectionContainer>
       <SectionContainer>
         <SectionWithItemsTableComponent
-          sections={filteredChecklist().map((item) => item.item.section)}
+          sections={uniqueSections(false)}
           isMandatory={false}
           isReport
           title="Tabelas de Itens Não Obrigatórios"

@@ -31,7 +31,7 @@ export function NonMandatoryItems() {
       isMandatory={false}
       text="Itens Não Obrigatórios"
       sections={uniqueSections(isMandatory)}
-      action={() => validateNonMandatoryItems()}
+      action={validateNonMandatoryItems}
     />
   )
 }

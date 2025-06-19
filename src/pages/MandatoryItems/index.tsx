@@ -31,7 +31,7 @@ export function MandatoryItems() {
       isMandatory
       text="Itens Obrigatórios"
       sections={uniqueSections(isMandatory)}
-      action={() => validateMandatoryItems()}
+      action={validateMandatoryItems}
     />
   )
 }

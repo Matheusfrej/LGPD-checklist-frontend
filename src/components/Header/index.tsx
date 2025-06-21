@@ -18,7 +18,7 @@ export function Header() {
   const navigateToHome = () => {
     if (id) {
       navigate(`/checklist/${id}`)
-    } else if (state && state.id) {
+    } else if (state?.id) {
       navigate(`/checklist/${state.id}`)
     } else {
       navigate('/')

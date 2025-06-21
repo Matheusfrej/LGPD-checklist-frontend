@@ -12,7 +12,6 @@ import { CheckboxesAnswerComponent } from '../CheckboxesAnswerComponent'
 import { SectionDTO } from '../../dtos/sectionDTO'
 import { StepperSectionsComponent } from '../StepperSectionsComponent'
 import { useChecklists } from '../../contexts/ChecklistsContext'
-import * as S from './styles'
 import { getItemValidationMessage } from '../../libs/business'
 
 interface ItemsTablePageComponentProps {
@@ -87,26 +86,16 @@ export function ItemsTablePageComponent({
             activeStep={activeStep}
             onStepClick={setActiveStep}
             completedSteps={completedSteps}
-          />
-          {sections[activeStep] && (
-            <SectionWithItemsTableComponent
-              isMandatory={isMandatory}
-              sections={[sections[activeStep]]}
-            />
-          )}
-          <S.StepButtons>
-            <ButtonComponent
-              text="Voltar"
-              action={handleBack}
-              disabled={activeStep === 0}
-            />
-            <ButtonComponent
-              text={
-                activeStep === sections.length - 1 ? 'Finalizar' : 'Próximo'
-              }
-              action={handleNext}
-            />
-          </S.StepButtons>
+            handleNext={handleNext}
+            handleBack={handleBack}
+          >
+            {sections[activeStep] && (
+              <SectionWithItemsTableComponent
+                isMandatory={isMandatory}
+                sections={[sections[activeStep]]}
+              />
+            )}
+          </StepperSectionsComponent>
         </>
       ) : (
         <SectionContainer style={{ marginTop: 32, marginBottom: 32 }}>

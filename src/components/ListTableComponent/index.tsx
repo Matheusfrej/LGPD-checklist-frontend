@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from 'react'
 import { SectionContainer } from '../../templates/SectionContainer'
-import * as S from './styles'
+import styled from 'styled-components'
 import { useAuth } from '../../contexts/AuthContext'
 import { ButtonComponent } from '../ButtonComponent'
 import { Pencil, Plus, Trash } from 'phosphor-react'
@@ -69,17 +69,17 @@ export function ListTableComponent({
   }, [user, updateListTrigger])
 
   return (
-    <S.ListTableContainer>
-      <S.TableHeader>
+    <ListTableContainer>
+      <TableHeader>
         <SectionTitleComponent text={title} />
         <ButtonComponent
           icon={<Plus size={16} />}
           text={addButtonLabel}
           action={() => handleCreateNewItem()}
         />
-      </S.TableHeader>
+      </TableHeader>
       <SectionContainer hasHeader style={{ overflow: 'auto' }}>
-        <S.Table>
+        <Table>
           <thead>
             <tr>
               {columns.map((h, idx) => {
@@ -96,7 +96,7 @@ export function ListTableComponent({
                     return <td key={idx + idx2}>{row[column.key]}</td>
                   })}
                   <td>
-                    <S.ActionsContainer>
+                    <ActionsContainer>
                       <ButtonComponent
                         icon={<Pencil size={16} />}
                         variant="outline"
@@ -107,14 +107,56 @@ export function ListTableComponent({
                         action={() => handleDeleteItem(row)}
                         variant="outline"
                       />
-                    </S.ActionsContainer>
+                    </ActionsContainer>
                   </td>
                 </tr>
               )
             })}
           </tbody>
-        </S.Table>
+        </Table>
       </SectionContainer>
-    </S.ListTableContainer>
+    </ListTableContainer>
   )
 }
+
+const ListTableContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+`
+
+const Table = styled.table`
+  padding: 8px 16px;
+  padding-bottom: 16px;
+  border-collapse: collapse;
+  border-radius: 10px;
+
+  tbody {
+    td {
+      padding: 0.75rem;
+      border-bottom: 1px solid ${({ theme }) => theme.colors.span};
+      white-space: pre-line;
+    }
+  }
+
+  thead {
+    color: ${({ theme }) => theme.colors['base-text']};
+
+    th {
+      padding: 0.5rem;
+      font-weight: bold;
+      border-bottom: 1px solid ${({ theme }) => theme.colors['base-text']};
+    }
+  }
+`
+
+const ActionsContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+`
+
+const TableHeader = styled.header`
+  display: flex;
+  justify-content: space-between;
+`

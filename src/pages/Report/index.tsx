@@ -3,7 +3,7 @@ import { MainContainer } from '../../templates/MainContainer'
 import { ReportActions } from './components/ReportActions'
 import { ReportContent } from './components/ReportContent'
 import { ReportHeader } from './components/ReportHeader'
-import * as S from './styles'
+import styled from 'styled-components'
 import {
   createChecklistService,
   createChecklistServiceDefaultErrorMessage,
@@ -114,10 +114,17 @@ export function Report() {
         downloadPDFAction={toPDF}
         saveChecklistAction={isLogged ? saveChecklist : undefined}
       />
-      <S.ReportMainContent ref={targetRef}>
+      <ReportMainContent ref={targetRef}>
         <ReportHeader />
         <ReportContent />
-      </S.ReportMainContent>
+      </ReportMainContent>
     </MainContainer>
   )
 }
+
+const ReportMainContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  background: ${({ theme }) => theme.colors['base-background']};
+`

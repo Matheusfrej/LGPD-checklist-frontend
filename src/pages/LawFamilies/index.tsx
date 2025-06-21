@@ -2,7 +2,6 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { ButtonComponent } from '../../components/ButtonComponent'
 import { MainContainer } from '../../templates/MainContainer'
 import { SectionContainer } from '../../templates/SectionContainer'
-import * as S from './styles'
 import { ActionsFooterContainer } from '../../templates/ActionsFooterContainer'
 import { useChecklists } from '../../contexts/ChecklistsContext'
 import { CheckboxComponent } from '../../components/CheckboxComponent'
@@ -14,6 +13,7 @@ import {
   listLawsServiceDefaultErrorMessage,
 } from '../../services/law/listLaws'
 import { LawDTO } from '../../dtos/lawDTO'
+import styled from 'styled-components'
 
 export function LawFamilies() {
   const { laws, onSetLaws } = useChecklists()
@@ -74,7 +74,7 @@ export function LawFamilies() {
   return (
     <MainContainer>
       <SectionContainer hasHeader>
-        <S.LawsContainer>
+        <LawsContainer>
           <p>Selecione abaixo quais leis você quer incluir nessa avaliação:</p>
           <form>
             {allLaws &&
@@ -89,7 +89,7 @@ export function LawFamilies() {
                 />
               ))}
           </form>
-        </S.LawsContainer>
+        </LawsContainer>
       </SectionContainer>
       <ActionsFooterContainer hasMessage>
         <ButtonComponent text="Voltar" action={() => navigate('/')} />
@@ -102,3 +102,22 @@ export function LawFamilies() {
     </MainContainer>
   )
 }
+
+const LawsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 1rem;
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    input[type='checkbox'] {
+      width: 1.25rem;
+      height: 1.25rem;
+      accent-color: ${({ theme }) => theme.colors.contrast};
+    }
+  }
+`

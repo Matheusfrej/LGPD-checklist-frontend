@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import { ActionsFooterContainer } from '../../../../templates/ActionsFooterContainer'
 import { ButtonComponent } from '../../../../components/ButtonComponent'
-import * as S from './styles'
+import styled from 'styled-components'
 import { CheckboxesAnswerComponent } from '../../../../components/CheckboxesAnswerComponent'
 
 interface ReportActionsProps {
@@ -16,13 +16,13 @@ export function ReportActions({
   const navigate = useNavigate()
 
   return (
-    <S.ReportActionsContainer>
+    <ReportActionsContainer>
       <CheckboxesAnswerComponent />
       <ActionsFooterContainer hasMessage inverted>
         <div>
           <ButtonComponent text="Voltar" action={() => navigate(-1)} />
         </div>
-        <S.SaveButtonsContainer>
+        <SaveButtonsContainer>
           {saveChecklistAction && (
             <ButtonComponent
               text="Salvar"
@@ -33,8 +33,21 @@ export function ReportActions({
             text="Baixar PDF"
             action={() => downloadPDFAction()}
           />
-        </S.SaveButtonsContainer>
+        </SaveButtonsContainer>
       </ActionsFooterContainer>
-    </S.ReportActionsContainer>
+    </ReportActionsContainer>
   )
 }
+
+const ReportActionsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+`
+
+const SaveButtonsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+  gap: 1rem;
+`

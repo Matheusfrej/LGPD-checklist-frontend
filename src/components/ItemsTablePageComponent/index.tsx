@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ActionsFooterContainer } from '../../templates/ActionsFooterContainer'
-import { ButtonComponent } from '../ButtonComponent'
 import { MainContainer } from '../../templates/MainContainer'
 import { SectionContainer } from '../../templates/SectionContainer'
 import { useTheme } from 'styled-components'
@@ -13,6 +12,7 @@ import { SectionDTO } from '../../dtos/sectionDTO'
 import { StepperSectionsComponent } from '../StepperSectionsComponent'
 import { useChecklists } from '../../contexts/ChecklistsContext'
 import { getItemValidationMessage } from '../../libs/business'
+import { ButtonComponent } from '../ButtonComponent'
 
 interface ItemsTablePageComponentProps {
   text: string

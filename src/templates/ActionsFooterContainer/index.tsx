@@ -1,5 +1,5 @@
 import { CSSProperties, ReactNode } from 'react'
-import * as S from './styles'
+import styled from 'styled-components'
 
 interface ActionsFooterContainerProps {
   style?: CSSProperties
@@ -15,9 +15,26 @@ export function ActionsFooterContainer({
   style,
 }: ActionsFooterContainerProps) {
   return (
-    <S.FooterContainer style={style} $inverted={inverted}>
+    <FooterContainer style={style} $inverted={inverted}>
       {hasMessage && <p>Ao voltar, você não perde o seu progresso</p>}
-      <S.MainFooter>{children}</S.MainFooter>
-    </S.FooterContainer>
+      <MainFooter>{children}</MainFooter>
+    </FooterContainer>
   )
 }
+
+interface FooterContainerProps {
+  $inverted: boolean
+}
+
+const FooterContainer = styled.div<FooterContainerProps>`
+  display: flex;
+  flex-direction: ${({ $inverted }) =>
+    $inverted ? 'column-reverse' : 'column'};
+  gap: 0.5rem;
+`
+
+const MainFooter = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+`

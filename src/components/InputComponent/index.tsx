@@ -6,7 +6,7 @@ import {
   useRef,
   useState,
 } from 'react'
-import * as S from './styles'
+import styled from 'styled-components'
 import { LabelComponent } from './LabelComponent'
 import { SectionContainer } from '../../templates/SectionContainer'
 import { FieldValues, Path, UseFormRegister } from 'react-hook-form'
@@ -65,9 +65,9 @@ export const InputComponent = <T extends FieldValues>({
     <SectionContainer style={style} hasHeader={hasHeader} hasBorder={!isNormal}>
       {labelText && <LabelComponent text={labelText} isRequired={isRequired} />}
 
-      <S.InputContainer>
+      <InputContainer>
         {isTextArea ? (
-          <S.TextArea
+          <TextArea
             $error={errorMessage}
             required={isRequired}
             $isNormal={isNormal}
@@ -75,8 +75,8 @@ export const InputComponent = <T extends FieldValues>({
             ref={textareaRef}
           />
         ) : isPassword ? (
-          <S.InputWithEye>
-            <S.Input
+          <InputWithEye>
+            <Input
               $error={errorMessage}
               $isNormal={isNormal}
               readOnly={isReadOnly}
@@ -95,9 +95,9 @@ export const InputComponent = <T extends FieldValues>({
                 onClick={() => setShowPassword((state) => !state)}
               />
             )}
-          </S.InputWithEye>
+          </InputWithEye>
         ) : (
-          <S.Input
+          <Input
             $error={errorMessage}
             $isNormal={isNormal}
             readOnly={isReadOnly}
@@ -106,10 +106,74 @@ export const InputComponent = <T extends FieldValues>({
             {...register(name)}
           />
         )}
-        {!!errorMessage && (
-          <S.ErrorMessageText>{errorMessage}</S.ErrorMessageText>
-        )}
-      </S.InputContainer>
+        {!!errorMessage && <ErrorMessageText>{errorMessage}</ErrorMessageText>}
+      </InputContainer>
     </SectionContainer>
   )
 }
+
+interface InputProps {
+  $error?: string
+  $isNormal: boolean
+}
+
+const TextArea = styled.textarea<InputProps>`
+  background: ${({ theme }) => theme.colors['header-background']};
+  border-width: 0;
+  border-bottom-width: 1px;
+  width: ${({ $isNormal }) => ($isNormal ? '100%' : '60%')};
+
+  @media (max-width: 1000px) {
+    width: 100%;
+  }
+  padding: 0.1rem;
+  resize: none;
+  overflow: hidden;
+
+  border-color: ${({ theme, $error }) =>
+    $error ? theme.colors.red : theme.colors.span};
+
+  &:focus {
+    border: none;
+  }
+`
+
+const Input = styled.input<InputProps>`
+  background: ${({ theme }) => theme.colors['header-background']};
+  border-width: 0;
+  border-bottom-width: 1px;
+  width: ${({ $isNormal }) => ($isNormal ? '100%' : '60%')};
+  padding: 0.5rem;
+  @media (max-width: 1000px) {
+    width: 100%;
+  }
+
+  border-color: ${({ theme, $error }) =>
+    $error ? theme.colors.red : theme.colors.black};
+
+  &:focus {
+    border: none;
+  }
+`
+
+const ErrorMessageText = styled.span`
+  font-size: 12px;
+  color: ${(props) => props.theme.colors.red};
+  margin-top: 4px;
+  font-weight: bold;
+`
+
+const InputContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+`
+
+const InputWithEye = styled.div`
+  display: flex;
+  align-items: center;
+
+  svg {
+    margin-left: -1.5rem;
+    cursor: pointer;
+  }
+`

@@ -1,10 +1,10 @@
 import { Moon, Sun, User } from 'phosphor-react'
-import * as S from './styles'
 import { ButtonComponent } from '../ButtonComponent'
 import { useTheme } from '../../contexts/ThemeContext'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthContext'
 import { ProfileComponent } from './ProfileComponent'
+import styled from 'styled-components'
 
 export function Header() {
   const { isLogged } = useAuth()
@@ -26,7 +26,7 @@ export function Header() {
   }
 
   return (
-    <S.HeaderContainer>
+    <HeaderContainer>
       <h2 onClick={() => navigateToHome()}>Checklist LGPD</h2>
       <div>
         <ButtonComponent
@@ -47,6 +47,35 @@ export function Header() {
           isLogged && <ProfileComponent />
         )}
       </div>
-    </S.HeaderContainer>
+    </HeaderContainer>
   )
 }
+
+const HeaderContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  background: ${({ theme }) => theme.colors['header-background']};
+  padding: 1rem 10rem;
+
+  @media (max-width: 1000px) {
+    padding: 1rem;
+  }
+
+  h2 {
+    font-weight: 500;
+    font-size: ${({ theme }) => theme.fonts.sizes.medium};
+    cursor: pointer;
+  }
+
+  > div {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+
+    @media (max-width: 1000px) {
+      gap: 1rem;
+    }
+  }
+`

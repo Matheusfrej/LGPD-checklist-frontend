@@ -2,7 +2,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { ButtonComponent } from '../../components/ButtonComponent'
 import { MainContainer } from '../../templates/MainContainer'
 import { SectionContainer } from '../../templates/SectionContainer'
-import * as S from './styles'
+import styled from 'styled-components'
 import { ActionsFooterContainer } from '../../templates/ActionsFooterContainer'
 import { useChecklists } from '../../contexts/ChecklistsContext'
 import { CheckboxComponent } from '../../components/CheckboxComponent'
@@ -80,7 +80,7 @@ export function ChecklistFamilies() {
   return (
     <MainContainer>
       <SectionContainer hasHeader>
-        <S.ChecklistFamiliesContainer>
+        <ChecklistFamiliesContainer>
           <p>
             Selecione abaixo quais famílias de checklists você quer incluir
             nessa avaliação:
@@ -98,7 +98,7 @@ export function ChecklistFamilies() {
                 />
               ))}
           </form>
-        </S.ChecklistFamiliesContainer>
+        </ChecklistFamiliesContainer>
       </SectionContainer>
       <ActionsFooterContainer hasMessage>
         <ButtonComponent text="Voltar" action={() => navigate(-1)} />
@@ -107,3 +107,22 @@ export function ChecklistFamilies() {
     </MainContainer>
   )
 }
+
+const ChecklistFamiliesContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 1rem;
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    input[type='checkbox'] {
+      width: 1.25rem;
+      height: 1.25rem;
+      accent-color: ${({ theme }) => theme.colors.contrast};
+    }
+  }
+`

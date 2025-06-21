@@ -1,4 +1,4 @@
-import * as S from './styles'
+import styled from 'styled-components'
 
 interface SectionTitleComponentProps {
   isSecondary?: boolean
@@ -10,12 +10,29 @@ export function SectionTitleComponent({
   text,
 }: SectionTitleComponentProps) {
   return (
-    <S.ItemsContainer>
+    <ItemsContainer>
       {isSecondary ? (
-        <S.ItemsSubtitle>{text}</S.ItemsSubtitle>
+        <ItemsSubtitle>{text}</ItemsSubtitle>
       ) : (
-        <S.ItemsTitle>{text}</S.ItemsTitle>
+        <ItemsTitle>{text}</ItemsTitle>
       )}
-    </S.ItemsContainer>
+    </ItemsContainer>
   )
 }
+
+const ItemsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+`
+
+const ItemsTitle = styled.h2`
+  padding: 8px 0;
+  font-weight: 500;
+`
+
+const ItemsSubtitle = styled.h3`
+  padding: 8px 0;
+  font-weight: 500;
+  color: ${({ theme }) => theme.colors.title};
+`

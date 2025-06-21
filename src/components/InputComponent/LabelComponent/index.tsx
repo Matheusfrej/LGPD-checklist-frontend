@@ -1,4 +1,4 @@
-import * as S from './styles'
+import styled from 'styled-components'
 
 interface LabelProps {
   isRequired?: boolean
@@ -7,9 +7,23 @@ interface LabelProps {
 
 export function LabelComponent({ isRequired, text }: LabelProps) {
   return (
-    <S.Label>
+    <Label>
       {text}
-      {isRequired && <S.After> *</S.After>}
-    </S.Label>
+      {isRequired && <After> *</After>}
+    </Label>
   )
 }
+
+const Label = styled.h3`
+  width: 100%;
+  font-size: 14px;
+  padding: 8px 0;
+  font-weight: normal;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+`
+
+const After = styled.span`
+  color: ${(props) => props.theme.colors.red};
+`

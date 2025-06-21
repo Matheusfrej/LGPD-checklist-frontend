@@ -1,6 +1,5 @@
 import { PolarAngleAxis, RadialBar, RadialBarChart } from 'recharts'
-import * as S from './styles'
-import { useTheme } from 'styled-components'
+import styled, { useTheme } from 'styled-components'
 
 interface ProgressBarChartComponentProps {
   title: string
@@ -17,7 +16,7 @@ export function ProgressBarChartComponent({
   const theme = useTheme()
   const circleSize = 250
   return (
-    <S.ProgressBarContainer>
+    <ProgressBarContainer>
       <h3>{title}</h3>
       <RadialBarChart
         width={circleSize}
@@ -54,6 +53,23 @@ export function ProgressBarChartComponent({
           {data[0].value.toFixed(0)}%
         </text>
       </RadialBarChart>
-    </S.ProgressBarContainer>
+    </ProgressBarContainer>
   )
 }
+
+const ProgressBarContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-left: -2rem;
+
+  @media (max-width: 1000px) {
+    margin-left: 0;
+  }
+
+  h3 {
+    font-weight: normal;
+    color: ${({ theme }) => theme.colors['base-text']};
+  }
+`

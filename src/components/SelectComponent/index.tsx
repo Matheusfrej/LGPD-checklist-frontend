@@ -2,6 +2,7 @@ import { CSSProperties } from 'react'
 import styled from 'styled-components'
 import { SectionContainer } from '../../templates/SectionContainer'
 import { FieldValues, Path, UseFormRegister } from 'react-hook-form'
+import { LabelComponent } from '../InputComponent/LabelComponent'
 
 interface SelectComponentProps<T extends FieldValues> {
   name: Path<T>
@@ -29,13 +30,26 @@ export const SelectComponent = <T extends FieldValues>({
   register,
   errorMessage,
 }: SelectComponentProps<T>) => {
+  const selectId = `select-${name}`
   return (
     <SectionContainer style={style} hasHeader={hasHeader}>
-      <Select $error={errorMessage} required={isRequired} {...register(name)}>
+      {exampleOptionText && (
+        <LabelComponent
+          text={exampleOptionText}
+          isRequired={isRequired}
+          htmlFor={selectId}
+        />
+      )}
+      <Select
+        id={selectId}
+        $error={errorMessage}
+        required={isRequired}
+        {...register(name)}
+      >
         <option value="">{exampleOptionText}</option>
         {items.map((item) => (
           <option
-            value={item.value}
+            value={String(item.value)}
             key={item.value}
             selected={item.value === selected}
           >

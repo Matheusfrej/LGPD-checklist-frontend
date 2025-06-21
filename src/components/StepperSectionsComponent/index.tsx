@@ -37,7 +37,7 @@ export function StepperSectionsComponent({
             {completedSteps[idx] ? (
               <StepContent>
                 <p style={{ margin: 0 }}>{section.name}</p>
-                <Check size={24} />
+                <Check size={24} alt="Seção totalmente preenchida" />
               </StepContent>
             ) : (
               <p style={{ margin: 0 }}>{section.name}</p>

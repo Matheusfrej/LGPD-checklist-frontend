@@ -5,9 +5,13 @@ interface LabelProps {
   text: string
 }
 
-export function LabelComponent({ isRequired, text }: LabelProps) {
+export function LabelComponent({
+  isRequired,
+  text,
+  htmlFor,
+}: LabelProps & { htmlFor?: string }) {
   return (
-    <Label>
+    <Label as="label" htmlFor={htmlFor}>
       {text}
       {isRequired && <After> *</After>}
     </Label>

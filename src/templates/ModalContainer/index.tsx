@@ -23,7 +23,7 @@ export function ModalContainer({
         <Content>
           <Dialog.Title>{title}</Dialog.Title>
           <CloseButton>
-            <X size={24} />
+            <X size={24} alt="Fechar" />
           </CloseButton>
           {children}
         </Content>

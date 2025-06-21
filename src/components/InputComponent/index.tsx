@@ -61,13 +61,21 @@ export const InputComponent = <T extends FieldValues>({
 
   useImperativeHandle(ref, () => textareaRef.current)
 
+  const inputId = `input-${name}`
+
   return (
     <SectionContainer style={style} hasHeader={hasHeader} hasBorder={!isNormal}>
-      {labelText && <LabelComponent text={labelText} isRequired={isRequired} />}
-
+      {labelText && (
+        <LabelComponent
+          text={labelText}
+          isRequired={isRequired}
+          htmlFor={inputId}
+        />
+      )}
       <InputContainer>
         {isTextArea ? (
           <TextArea
+            id={inputId}
             $error={errorMessage}
             required={isRequired}
             $isNormal={isNormal}
@@ -77,6 +85,7 @@ export const InputComponent = <T extends FieldValues>({
         ) : isPassword ? (
           <InputWithEye>
             <Input
+              id={inputId}
               $error={errorMessage}
               $isNormal={isNormal}
               readOnly={isReadOnly}
@@ -88,16 +97,19 @@ export const InputComponent = <T extends FieldValues>({
               <Eye
                 size={20}
                 onClick={() => setShowPassword((state) => !state)}
+                alt="Esconder senha"
               />
             ) : (
               <EyeSlash
                 size={20}
                 onClick={() => setShowPassword((state) => !state)}
+                alt="Mostrar senha"
               />
             )}
           </InputWithEye>
         ) : (
           <Input
+            id={inputId}
             $error={errorMessage}
             $isNormal={isNormal}
             readOnly={isReadOnly}

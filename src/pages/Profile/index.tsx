@@ -96,14 +96,14 @@ export function Profile() {
             <h2>Seu Perfil</h2>
             {editMode ? (
               <ButtonComponent
-                icon={<Check size={16} />}
+                icon={<Check size={16} aria-hidden />}
                 text="Salvar"
                 variant="outline"
                 action={handleSubmit(handleEditUserSubmit)}
               />
             ) : (
               <ButtonComponent
-                icon={<Pencil size={16} />}
+                icon={<Pencil size={16} aria-hidden />}
                 text="Editar"
                 variant="outline"
                 action={() => changeToEditMode()}

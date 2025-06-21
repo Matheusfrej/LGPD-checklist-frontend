@@ -73,7 +73,7 @@ export function ListTableComponent({
       <TableHeader>
         <SectionTitleComponent text={title} />
         <ButtonComponent
-          icon={<Plus size={16} />}
+          icon={<Plus size={16} aria-hidden />}
           text={addButtonLabel}
           action={() => handleCreateNewItem()}
         />
@@ -98,12 +98,12 @@ export function ListTableComponent({
                   <td>
                     <ActionsContainer>
                       <ButtonComponent
-                        icon={<Pencil size={16} />}
+                        icon={<Pencil size={16} alt="Editar" />}
                         variant="outline"
                         action={() => handleEditItem(row)}
                       />
                       <ButtonComponent
-                        icon={<Trash size={16} />}
+                        icon={<Trash size={16} alt="Excluir" />}
                         action={() => handleDeleteItem(row)}
                         variant="outline"
                       />

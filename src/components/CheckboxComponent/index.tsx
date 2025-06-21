@@ -18,7 +18,7 @@ export function CheckboxComponent({
       <label htmlFor={value}>{labelText}</label>
       <input
         type="checkbox"
-        itemID={value}
+        id={value}
         value={value}
         checked={checked}
         onChange={onChange}

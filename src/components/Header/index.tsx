@@ -30,14 +30,20 @@ export function Header() {
       <h2 onClick={() => navigateToHome()}>Checklist LGPD</h2>
       <div>
         <ButtonComponent
-          icon={theme === 'dark' ? <Moon size={24} /> : <Sun size={24} />}
+          icon={
+            theme === 'dark' ? (
+              <Moon size={24} alt="Lua representando modo escuro" />
+            ) : (
+              <Sun size={24} alt="Sol representando modo claro" />
+            )
+          }
           action={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
           variant="outline"
           style={{ minWidth: 0, padding: '0.25rem 0.5rem' }}
         />
         {!isLogged && !pathNamesToExclude.includes(pathname) ? (
           <ButtonComponent
-            icon={<User size={24} />}
+            icon={<User size={24} aria-hidden />}
             action={() => navigate('/login')}
             text="Entrar"
             style={{ border: 0, gap: 4 }}

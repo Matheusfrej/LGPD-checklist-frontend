@@ -9,7 +9,7 @@ import {
   storageAuthTokenGet,
   storageAuthTokenRemove,
   storageAuthTokenSave,
-} from '../storage/storageAuthToken'
+} from '../storage/authToken'
 import { UserDTO } from '../dtos/userDTO'
 import { useToast } from './ToastContext'
 import { AppError } from '../utils/AppError'

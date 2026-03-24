@@ -3,12 +3,10 @@ import { ChartsContainer } from '../../../../components/ChartsContainer'
 import { SectionContainer } from '../../../../templates/SectionContainer'
 import { SectionTitleComponent } from '../../../../components/SectionTitleComponent'
 import { SectionWithItemsTableComponent } from '../../../../components/SectionWithItemsTableComponent'
-import {
-  mandatoryItemsClassifications,
-  nonMandatoryItemsClassifications,
-} from '../../../../utils/constants/classifications'
+import { useChecklists } from '../../../../contexts/ChecklistsContext'
 
 export function ReportContent() {
+  const { uniqueSections } = useChecklists()
   const theme = useTheme()
 
   const colors = [
@@ -18,39 +16,72 @@ export function ReportContent() {
     theme.colors.contrast,
   ]
 
+  const mandatorySections = uniqueSections(true)
+  const nonMandatorySections = uniqueSections(false)
+  const hasMandatory = mandatorySections.length > 0
+  const hasNonMandatory = nonMandatorySections.length > 0
+
   return (
     <>
       <SectionContainer>
         <SectionTitleComponent text="Gráficos" isSecondary />
-        <SectionContainer style={{ marginBottom: 20 }}>
+        {hasMandatory && (
+          <SectionContainer style={{ marginBottom: 20 }}>
+            <SectionTitleComponent
+              text="Gráficos Itens Obrigatórios"
+              isSecondary
+            />
+            <ChartsContainer isMandatory={true} colors={colors} />
+          </SectionContainer>
+        )}
+        {hasNonMandatory && (
+          <SectionContainer>
+            <SectionTitleComponent
+              text="Gráficos Itens Não Obrigatórios"
+              isSecondary
+            />
+            <ChartsContainer isMandatory={false} colors={colors} />
+          </SectionContainer>
+        )}
+        {!hasMandatory && !hasNonMandatory && (
           <SectionTitleComponent
-            text="Gráficos Itens Obrigatórios"
+            text="Nenhum item disponível para exibir gráficos."
             isSecondary
           />
-          <ChartsContainer isMandatory={true} colors={colors} />
-        </SectionContainer>
-        <SectionContainer>
-          <SectionTitleComponent
-            text="Gráficos Itens Não Obrigatórios"
-            isSecondary
-          />
-          <ChartsContainer isMandatory={false} colors={colors} />
-        </SectionContainer>
+        )}
       </SectionContainer>
       <SectionContainer>
+        <SectionTitleComponent
+          text="Tabelas de Itens Obrigatórios"
+          isSecondary
+        />
+        {!hasMandatory && (
+          <SectionTitleComponent
+            text="Nenhum item obrigatório disponível."
+            isSecondary
+          />
+        )}
         <SectionWithItemsTableComponent
-          classifications={mandatoryItemsClassifications}
+          sections={mandatorySections}
           isMandatory
           isReport
-          title="Tabelas de Itens Obrigatórios"
         />
       </SectionContainer>
       <SectionContainer>
+        <SectionTitleComponent
+          text="Tabelas de Itens Não Obrigatórios"
+          isSecondary
+        />
+        {!hasNonMandatory && (
+          <SectionTitleComponent
+            text="Nenhum item não obrigatório disponível."
+            isSecondary
+          />
+        )}
         <SectionWithItemsTableComponent
-          classifications={nonMandatoryItemsClassifications}
+          sections={nonMandatorySections}
           isMandatory={false}
           isReport
-          title="Tabelas de Itens Não Obrigatórios"
         />
       </SectionContainer>
     </>

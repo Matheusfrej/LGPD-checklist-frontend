@@ -1,7 +1,7 @@
 import { SectionContainer } from '../../../../templates/SectionContainer'
 import { SectionTitleComponent } from '../../../../components/SectionTitleComponent'
 import { useUsers } from '../../../../contexts/UsersContext'
-import * as S from './styles'
+import styled from 'styled-components'
 import { LineComponent } from '../../../../components/LineComponent'
 import { SystemDTO } from '../../../../dtos/systemDTO'
 import { useEffect, useState } from 'react'
@@ -46,7 +46,7 @@ export function ReportHeader() {
       <SectionContainer hasHeader>
         <SectionTitleComponent text="Relatório LGPD" />
         <LineComponent />
-        <S.UserInfoContainer>
+        <UserInfoContainer>
           <div>
             <span>Nome do avaliador</span>
             <p>{user.name}</p>
@@ -63,8 +63,27 @@ export function ReportHeader() {
             <span>Descrição do sistema</span>
             <p>{system ? system.description : user.systemDesc}</p>
           </div>
-        </S.UserInfoContainer>
+        </UserInfoContainer>
       </SectionContainer>
     </>
   )
 }
+
+const UserInfoContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 70%;
+  gap: 1rem;
+  padding-top: 1rem;
+
+  div {
+    span {
+      font-weight: 500;
+      font-size: 1.2rem;
+    }
+
+    p {
+      white-space: pre-line;
+    }
+  }
+`

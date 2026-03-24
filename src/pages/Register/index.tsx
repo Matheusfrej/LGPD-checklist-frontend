@@ -1,16 +1,25 @@
 import { MainContainer } from '../../templates/MainContainer'
 import { SectionContainer } from '../../templates/SectionContainer'
 import { RegisterForm } from './components/RegisterForm'
-import * as S from './styles'
+import styled from 'styled-components'
 
 export function Register() {
   return (
     <MainContainer>
-      <S.RegisterContainer>
+      <RegisterContainer>
         <SectionContainer>
           <RegisterForm />
         </SectionContainer>
-      </S.RegisterContainer>
+      </RegisterContainer>
     </MainContainer>
   )
 }
+
+const RegisterContainer = styled.div`
+  width: 60%;
+  margin: auto;
+
+  @media (max-width: 1000px) {
+    width: 80%;
+  }
+`

@@ -1,4 +1,4 @@
-import * as S from './styles'
+import styled from 'styled-components'
 import { ReactElement, CSSProperties } from 'react'
 
 interface ButtonProps {
@@ -8,6 +8,7 @@ interface ButtonProps {
   form?: string
   action?: () => void
   variant?: 'default' | 'outline' | 'danger'
+  disabled?: boolean
   style?: CSSProperties
 }
 
@@ -18,18 +19,68 @@ export function ButtonComponent({
   form,
   type = 'button',
   variant = 'default',
+  disabled = false,
   style,
 }: ButtonProps) {
   return (
-    <S.ButtonContainer
+    <ButtonContainer
       onClick={action ? () => action() : undefined}
       $variant={variant}
       style={style}
       type={type}
       form={form}
+      disabled={disabled}
     >
       {icon}
       {text}
-    </S.ButtonContainer>
+    </ButtonContainer>
   )
 }
+
+const ButtonContainer = styled.button<{
+  $variant: 'default' | 'outline' | 'danger'
+}>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 0.5rem;
+  font-size: 0.9rem;
+  border: 1px solid
+    ${({ theme, $variant }) =>
+      $variant === 'default'
+        ? theme.colors['base-background']
+        : $variant === 'outline'
+          ? theme.colors.contrast
+          : theme.colors.red};
+  border-radius: 8px;
+  cursor: pointer;
+  background: ${({ theme, $variant }) =>
+    $variant === 'default' ? theme.colors.contrast : 'transparent'};
+  color: ${({ theme, $variant }) =>
+    $variant === 'default'
+      ? theme.colors['base-background']
+      : $variant === 'outline'
+        ? theme.colors.contrast
+        : theme.colors.red};
+
+  &:hover {
+    background-color: ${({ theme, $variant }) =>
+      $variant === 'default'
+        ? theme.colors['strong-contrast']
+        : $variant === 'outline'
+          ? theme.colors.contrast
+          : theme.colors.red};
+    color: ${({ theme, $variant }) =>
+      $variant === 'danger'
+        ? theme.colors.white
+        : theme.colors['base-background']};
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    background: ${({ theme }) => theme.colors['header-background']};
+    color: ${({ theme }) => theme.colors['base-text']};
+    border-color: ${({ theme }) => theme.colors.span};
+  }
+`

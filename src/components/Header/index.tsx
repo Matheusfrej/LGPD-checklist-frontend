@@ -1,10 +1,10 @@
 import { Moon, Sun, User } from 'phosphor-react'
-import * as S from './styles'
 import { ButtonComponent } from '../ButtonComponent'
 import { useTheme } from '../../contexts/ThemeContext'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthContext'
 import { ProfileComponent } from './ProfileComponent'
+import styled from 'styled-components'
 
 export function Header() {
   const { isLogged } = useAuth()
@@ -18,7 +18,7 @@ export function Header() {
   const navigateToHome = () => {
     if (id) {
       navigate(`/checklist/${id}`)
-    } else if (state && state.id) {
+    } else if (state?.id) {
       navigate(`/checklist/${state.id}`)
     } else {
       navigate('/')
@@ -26,18 +26,24 @@ export function Header() {
   }
 
   return (
-    <S.HeaderContainer>
+    <HeaderContainer>
       <h2 onClick={() => navigateToHome()}>Checklist LGPD</h2>
       <div>
         <ButtonComponent
-          icon={theme === 'dark' ? <Moon size={24} /> : <Sun size={24} />}
+          icon={
+            theme === 'dark' ? (
+              <Moon size={24} alt="Lua representando modo escuro" />
+            ) : (
+              <Sun size={24} alt="Sol representando modo claro" />
+            )
+          }
           action={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
           variant="outline"
           style={{ minWidth: 0, padding: '0.25rem 0.5rem' }}
         />
         {!isLogged && !pathNamesToExclude.includes(pathname) ? (
           <ButtonComponent
-            icon={<User size={24} />}
+            icon={<User size={24} aria-hidden />}
             action={() => navigate('/login')}
             text="Entrar"
             style={{ border: 0, gap: 4 }}
@@ -47,6 +53,35 @@ export function Header() {
           isLogged && <ProfileComponent />
         )}
       </div>
-    </S.HeaderContainer>
+    </HeaderContainer>
   )
 }
+
+const HeaderContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  background: ${({ theme }) => theme.colors['header-background']};
+  padding: 1rem 10rem;
+
+  @media (max-width: 1000px) {
+    padding: 1rem;
+  }
+
+  h2 {
+    font-weight: 500;
+    font-size: ${({ theme }) => theme.fonts.sizes.medium};
+    cursor: pointer;
+  }
+
+  > div {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+
+    @media (max-width: 1000px) {
+      gap: 1rem;
+    }
+  }
+`

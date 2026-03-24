@@ -1,3 +1,4 @@
+import { AnswerType, SeverityDegreeType } from '../../@types'
 import api from '../../libs/api'
 
 const editChecklistServiceDefaultErrorMessage =
@@ -6,10 +7,14 @@ const editChecklistServiceDefaultErrorMessage =
 export interface EditChecklistServiceRequest {
   id: number
   systemId: number
-  isGeneral: boolean
-  isIot: boolean
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  checklistData: any
+  items: {
+    id: number
+    answer: AnswerType
+    severityDegree: SeverityDegreeType
+    userComment?: string
+  }[]
+  laws: number[]
+  devices: number[]
 }
 
 async function editChecklistService(
@@ -17,9 +22,9 @@ async function editChecklistService(
 ): Promise<void> {
   await api.put(`/checklists/${data.id}`, {
     systemId: data.systemId,
-    checklistData: data.checklistData,
-    isGeneral: data.isGeneral,
-    isIot: data.isIot,
+    items: data.items,
+    laws: data.laws,
+    devices: data.devices,
   })
 }
 

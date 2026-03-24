@@ -1,13 +1,13 @@
 import { LineComponent } from '../../../../components/LineComponent'
 import { SectionContainer } from '../../../../templates/SectionContainer'
-import * as S from './styles'
+import styled from 'styled-components'
 
 export function Instructions() {
   return (
     <SectionContainer hasHeader>
-      <S.InstructionsTitle>Instruções Gerais</S.InstructionsTitle>
+      <InstructionsTitle>Instruções Gerais</InstructionsTitle>
       <LineComponent />
-      <S.InstructionsParagraph>
+      <InstructionsParagraph>
         Este Checklist tem o objetivo de avaliar a adequação dos sistemas à Lei
         Geral de Proteção de Dados LGPD, e possui alguns itens adicionais
         específicos para IoT. O checklist está dividido em 2 partes:{' '}
@@ -44,8 +44,17 @@ export function Instructions() {
         itens não aplicados, e taxa de itens não preenchidos). No final, o{' '}
         <strong>Relatório</strong> apresenta os dados totais do checklist de
         inspeção.
-      </S.InstructionsParagraph>
+      </InstructionsParagraph>
       <LineComponent />
     </SectionContainer>
   )
 }
+
+const InstructionsTitle = styled.h2`
+  padding: 8px 0;
+  font-weight: 500;
+`
+
+const InstructionsParagraph = styled.p`
+  padding: 12px 0;
+`

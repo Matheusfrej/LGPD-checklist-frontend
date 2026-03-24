@@ -6,7 +6,7 @@ import { InputComponent } from '../../../../components/InputComponent'
 import { ButtonComponent } from '../../../../components/ButtonComponent'
 import { useAuth } from '../../../../contexts/AuthContext'
 import { useNavigate } from 'react-router-dom'
-import * as S from './styles'
+import styled from 'styled-components'
 
 const passwordValidation =
   /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).*$/
@@ -62,7 +62,7 @@ export function RegisterForm() {
   }
 
   return (
-    <S.RegisterFormContainer>
+    <RegisterFormContainer>
       <FormContainer
         title="Criar uma nova conta"
         onSubmit={handleSubmit(handleRegisterSubmit)}
@@ -116,6 +116,15 @@ export function RegisterForm() {
         </p>
         <ButtonComponent type="submit" text="Cadastrar" />
       </FormContainer>
-    </S.RegisterFormContainer>
+    </RegisterFormContainer>
   )
 }
+
+const RegisterFormContainer = styled.div`
+  p > span {
+    color: ${({ theme }) => theme.colors.contrast};
+    font-weight: 500;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+`

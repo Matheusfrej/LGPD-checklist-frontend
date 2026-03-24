@@ -1,5 +1,5 @@
 import { ReactNode, createContext, useContext, useEffect } from 'react'
-import { storageThemeGet, storageThemeSave } from '../storage/storageTheme'
+import { storageThemeGet, storageThemeSave } from '../storage/theme'
 
 export type ThemeType = 'light' | 'dark'
 

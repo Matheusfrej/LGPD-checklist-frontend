@@ -6,7 +6,7 @@ import { InputComponent } from '../../../../components/InputComponent'
 import { ButtonComponent } from '../../../../components/ButtonComponent'
 import { useAuth } from '../../../../contexts/AuthContext'
 import { useNavigate } from 'react-router-dom'
-import * as S from './styles'
+import styled from 'styled-components'
 
 const loginFormSchema = z.object({
   email: z
@@ -38,7 +38,7 @@ export function LoginForm() {
   }
 
   return (
-    <S.LoginFormContainer>
+    <LoginFormContainer>
       <FormContainer
         title="Entrar na sua conta"
         onSubmit={handleSubmit(handleLoginSubmit)}
@@ -65,6 +65,15 @@ export function LoginForm() {
         </p>
         <ButtonComponent type="submit" text="Entrar" />
       </FormContainer>
-    </S.LoginFormContainer>
+    </LoginFormContainer>
   )
 }
+
+const LoginFormContainer = styled.div`
+  p > span {
+    color: ${({ theme }) => theme.colors.contrast};
+    font-weight: 500;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+`

@@ -1,6 +1,6 @@
 import { Cell, Legend, Pie, PieChart, Tooltip } from 'recharts'
 import { Payload } from 'recharts/types/component/DefaultLegendContent'
-import * as S from './styles'
+import styled from 'styled-components'
 
 interface PieChartComponentProps {
   title: string
@@ -52,7 +52,7 @@ export function PieChartComponent({
   }
 
   return (
-    <S.PieContainer>
+    <PieContainer>
       <h3>{title}</h3>
 
       <PieChart width={250} height={250}>
@@ -82,6 +82,18 @@ export function PieChartComponent({
         />
         <Tooltip />
       </PieChart>
-    </S.PieContainer>
+    </PieContainer>
   )
 }
+
+const PieContainer = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  h3 {
+    font-weight: normal;
+    color: ${({ theme }) => theme.colors['base-text']};
+  }
+`

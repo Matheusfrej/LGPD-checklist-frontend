@@ -1,16 +1,13 @@
-import { CSSProperties } from 'styled-components'
+import styled, { CSSProperties } from 'styled-components'
 import { ItemsTableComponent } from '../ItemsTableComponent'
 import { SectionContainer } from '../../templates/SectionContainer'
 import { SectionTitleComponent } from '../SectionTitleComponent'
-import * as S from './styles'
 import { useChecklists } from '../../contexts/ChecklistsContext'
+import { SectionDTO } from '../../dtos/sectionDTO'
 
 interface SectionWithItemsTableComponentProps {
   isMandatory: boolean
-  classifications: {
-    name: string
-    tag: string
-  }[]
+  sections: SectionDTO[]
   style?: CSSProperties
   title?: string
   isReport?: boolean
@@ -18,36 +15,59 @@ interface SectionWithItemsTableComponentProps {
 
 export function SectionWithItemsTableComponent({
   isMandatory,
-  classifications,
+  sections,
   style,
   title,
   isReport = false,
 }: SectionWithItemsTableComponentProps) {
   const { filteredChecklist } = useChecklists()
 
-  const hasAnyItemInClassification = (tag: string) => {
-    return filteredChecklist(isMandatory, tag).length > 0
+  const hasAnyItemInSection = (sectionId: number) => {
+    return filteredChecklist(isMandatory, sectionId).length > 0
   }
 
   return (
-    <S.SectionWithItemsTable $isReport={isReport}>
+    <SectionWithItemsTable $isReport={isReport}>
       {title && <SectionTitleComponent text={title} isSecondary />}
-      {classifications.map((item, idx) => {
-        return hasAnyItemInClassification(item.tag) ? (
-          <SectionContainer key={item.tag + isMandatory + idx} style={style}>
+      {sections.map((item, idx) => {
+        return hasAnyItemInSection(item.id) ? (
+          <SectionContainer
+            key={item.id + String(isMandatory) + idx}
+            style={style}
+          >
             <SectionTitleComponent text={item.name} isSecondary />
-            <S.ItemsContainer>
+            <ItemsContainer>
               <ItemsTableComponent
                 isMandatory={isMandatory}
-                tag={item.tag}
+                sectionId={item.id}
                 isReport={isReport}
               />
-            </S.ItemsContainer>
+            </ItemsContainer>
           </SectionContainer>
         ) : (
           <></>
         )
       })}
-    </S.SectionWithItemsTable>
+    </SectionWithItemsTable>
   )
 }
+
+const ItemsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  @media (max-width: 1000px) {
+    overflow: scroll;
+  }
+`
+
+interface SectionWithItemsTableProps {
+  $isReport: boolean
+}
+
+const SectionWithItemsTable = styled.div<SectionWithItemsTableProps>`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: ${({ $isReport }) => ($isReport ? '2rem' : '0')};
+`

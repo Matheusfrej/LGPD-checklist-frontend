@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from 'react'
-import * as S from './styles'
 import { useAuth } from '../../../contexts/AuthContext'
 import { LineComponent } from '../../LineComponent'
 import { useOutsideAlerter } from '../../../hooks/clickedOutside'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { useChecklists } from '../../../contexts/ChecklistsContext'
 import { useUsers } from '../../../contexts/UsersContext'
+import styled from 'styled-components'
 
 type ActionOptionType = 'checklists' | 'systems' | 'profile' | 'signOut'
 
@@ -57,25 +57,63 @@ export function ProfileComponent() {
   }, [clickedOutside])
 
   return (
-    <S.ProfileContainer ref={wrapperRef}>
-      <S.Avatar onClick={() => setIsOpen((state) => !state)}>
+    <ProfileContainer ref={wrapperRef}>
+      <Avatar onClick={() => setIsOpen((state) => !state)}>
         {getUserNameFirstLetter()}
-      </S.Avatar>
+      </Avatar>
       {isOpen && (
-        <S.ProfileOpenedContainer>
-          <S.Option onClick={() => handleAction('checklists')}>
+        <ProfileOpenedContainer>
+          <Option onClick={() => handleAction('checklists')}>
             Minhas checklists
-          </S.Option>
-          <S.Option onClick={() => handleAction('systems')}>
-            Meus sistemas
-          </S.Option>
-          <S.Option onClick={() => handleAction('profile')}>
+          </Option>
+          <Option onClick={() => handleAction('systems')}>Meus sistemas</Option>
+          <Option onClick={() => handleAction('profile')}>
             Gerenciar Perfil
-          </S.Option>
+          </Option>
           <LineComponent />
-          <S.Option onClick={() => handleAction('signOut')}>Sair</S.Option>
-        </S.ProfileOpenedContainer>
+          <Option onClick={() => handleAction('signOut')}>Sair</Option>
+        </ProfileOpenedContainer>
       )}
-    </S.ProfileContainer>
+    </ProfileContainer>
   )
 }
+
+const ProfileContainer = styled.div``
+
+const Avatar = styled.div`
+  border-radius: 10px;
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: ${({ theme }) => theme.colors.contrast};
+  color: ${({ theme }) => theme.colors['base-background']};
+  font-weight: bold;
+  font-size: 1.25rem;
+  cursor: pointer;
+`
+
+const ProfileOpenedContainer = styled.div`
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  margin-top: 1rem;
+  margin-left: -8.5rem;
+  border-radius: 6px;
+  gap: 0.5rem;
+  box-shadow: 1px 1px 1px 1px ${({ theme }) => theme.colors.span};
+  padding: 1rem;
+
+  background: ${({ theme }) => theme.colors['header-background']};
+`
+
+const Option = styled.div`
+  padding: 0.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  &:hover {
+    background: ${({ theme }) => theme.colors['base-background']};
+  }
+`

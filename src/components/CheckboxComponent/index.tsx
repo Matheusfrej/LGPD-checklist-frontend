@@ -1,4 +1,4 @@
-import * as S from './styles'
+import styled from 'styled-components'
 
 interface CheckboxComponentProps {
   value: string
@@ -14,15 +14,29 @@ export function CheckboxComponent({
   onChange,
 }: CheckboxComponentProps) {
   return (
-    <S.CheckboxComponentContainer>
+    <CheckboxComponentContainer>
       <label htmlFor={value}>{labelText}</label>
       <input
         type="checkbox"
-        itemID={value}
+        id={value}
         value={value}
         checked={checked}
         onChange={onChange}
       />
-    </S.CheckboxComponentContainer>
+    </CheckboxComponentContainer>
   )
 }
+
+const CheckboxComponentContainer = styled.div`
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 0.5rem;
+
+  input[type='checkbox'] {
+    width: 1.25rem;
+    height: 1.25rem;
+    accent-color: ${({ theme }) => theme.colors.contrast};
+  }
+`

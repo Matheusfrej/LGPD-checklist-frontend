@@ -43,3 +43,11 @@ O npm já vem por padrão na instalação do Node.
     npm run dev
     ```
     para rodar. Acesse seu navegador no **localhost:3000** (porta padrão) para ver a aplicação.
+
+### Rodando com Docker
+
+**Pré-requisitos**
+
+- [Docker](https://www.docker.com/)
+
+1. Rode o comando **docker-compose up --build** para fazer o build e subir a sua aplicação.

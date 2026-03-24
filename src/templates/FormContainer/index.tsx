@@ -1,6 +1,5 @@
 import { ReactNode } from 'react'
-import * as S from './styles'
-import { CSSProperties } from 'styled-components'
+import styled, { CSSProperties } from 'styled-components'
 
 interface FormContainerProps {
   title?: string
@@ -18,9 +17,15 @@ export function FormContainer({
   style,
 }: FormContainerProps) {
   return (
-    <S.FormContainer id={id} onSubmit={onSubmit} style={style}>
+    <FormWrapper id={id} onSubmit={onSubmit} style={style}>
       {title && <h3>{title}</h3>}
       {children}
-    </S.FormContainer>
+    </FormWrapper>
   )
 }
+
+const FormWrapper = styled.form`
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+`

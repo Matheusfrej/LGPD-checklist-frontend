@@ -1,5 +1,5 @@
 import { CSSProperties, ReactNode } from 'react'
-import * as S from './styles'
+import styled from 'styled-components'
 
 interface MainContainerProps {
   children: ReactNode
@@ -13,8 +13,25 @@ export function MainContainer({
   style,
 }: MainContainerProps) {
   return (
-    <S.Main style={style} $hasTable={hasTable}>
+    <Main style={style} $hasTable={hasTable}>
       {children}
-    </S.Main>
+    </Main>
   )
 }
+
+interface MainProps {
+  $hasTable: boolean
+}
+
+const Main = styled.div<MainProps>`
+  width: 80%;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: ${(props) => (props.$hasTable ? '2rem' : '2rem 10rem')};
+
+  @media (max-width: 1000px) {
+    padding: 1rem 0;
+  }
+`

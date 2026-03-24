@@ -3,7 +3,7 @@ import { MainContainer } from '../../templates/MainContainer'
 import { ReportActions } from './components/ReportActions'
 import { ReportContent } from './components/ReportContent'
 import { ReportHeader } from './components/ReportHeader'
-import * as S from './styles'
+import styled from 'styled-components'
 import {
   createChecklistService,
   createChecklistServiceDefaultErrorMessage,
@@ -24,7 +24,8 @@ export function Report() {
   const { user: userLogged, isLogged } = useAuth()
   const { user } = useUsers()
   const { toastSuccess, toastError } = useToast()
-  const { checklist, familiesSelected } = useChecklists()
+  const { filteredChecklist, removeDisabledItems, devices, laws } =
+    useChecklists()
   const { id } = useLoadChecklist()
   const navigate = useNavigate()
 
@@ -39,11 +40,17 @@ export function Report() {
         await editChecklistService({
           id,
           systemId: user.system,
-          checklistData: checklist,
-          isGeneral: familiesSelected.general,
-          isIot: familiesSelected.IoT,
+          items: filteredChecklist().map((item) => ({
+            id: item.item.id,
+            answer: item.answer || undefined,
+            severityDegree: item.severityDegree || undefined,
+            userComment: item.userComment || undefined,
+          })),
+          laws: laws.map((law) => law.id),
+          devices: devices.map((device) => device.id),
         })
 
+        removeDisabledItems()
         toastSuccess('Checklist salva com sucesso!')
       } else {
         toastError(editChecklistServiceDefaultErrorMessage)
@@ -62,14 +69,21 @@ export function Report() {
   const createChecklist = async () => {
     try {
       if (userLogged?.id && user.system) {
+        // Remove disabled items from memory before sending and after saving
         const data = await createChecklistService({
           userId: userLogged?.id,
           systemId: user.system,
-          checklistData: checklist,
-          isGeneral: familiesSelected.general,
-          isIot: familiesSelected.IoT,
+          items: filteredChecklist().map((item) => ({
+            id: item.item.id,
+            answer: item.answer || undefined,
+            severityDegree: item.severityDegree || undefined,
+            userComment: item.userComment || undefined,
+          })),
+          laws: laws.map((law) => law.id),
+          devices: devices.map((device) => device.id),
         })
 
+        removeDisabledItems()
         toastSuccess('Checklist salva com sucesso!')
         navigate(`/report/${data.checklist.id}`)
       } else {
@@ -100,10 +114,17 @@ export function Report() {
         downloadPDFAction={toPDF}
         saveChecklistAction={isLogged ? saveChecklist : undefined}
       />
-      <S.ReportMainContent ref={targetRef}>
+      <ReportMainContent ref={targetRef}>
         <ReportHeader />
         <ReportContent />
-      </S.ReportMainContent>
+      </ReportMainContent>
     </MainContainer>
   )
 }
+
+const ReportMainContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  background: ${({ theme }) => theme.colors['base-background']};
+`

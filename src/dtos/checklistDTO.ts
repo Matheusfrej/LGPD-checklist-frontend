@@ -1,27 +1,29 @@
-import { ChecklistItemType } from '../@types'
+import { AnswerType, SeverityDegreeType } from '../@types'
+import { DeviceDTO } from './deviceDTO'
+import { ItemDTO } from './itemDTO'
+import { LawDTO } from './lawDTO'
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
+export type ChecklistItemType = {
+  item: ItemDTO
+  answer?: AnswerType
+  severityDegree?: SeverityDegreeType
+  userComment?: string
+  disabled?: boolean
+}
+
 export type ChecklistDTO = {
   id: number
   userId: number
   systemId: number
-  isGeneral: boolean
-  isIot: boolean
-  checklistData: ChecklistItemType[]
+  checklistItems: ChecklistItemType[]
+  laws: LawDTO[]
+  devices: DeviceDTO[]
   createdAt: Date
   updatedAt: Date
 }
 
-export type ParsedChecklistDTO = {
-  id: number
-  userId: number
+export type ParsedChecklistDTO = ChecklistDTO & {
   name: string
-  systemId: number
-  isGeneral: boolean
-  isIot: boolean
-  checklistData: any
-  createdAt: Date
-  updatedAt: Date
   createdAtParsed: string
   updatedAtParsed: string
 }

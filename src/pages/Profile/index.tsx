@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useAuth } from '../../contexts/AuthContext'
 import { MainContainer } from '../../templates/MainContainer'
 import { SectionContainer } from '../../templates/SectionContainer'
-import * as S from './styles'
+import styled from 'styled-components'
 import * as z from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
@@ -91,32 +91,32 @@ export function Profile() {
   return (
     <MainContainer>
       <SectionContainer hasHeader>
-        <S.UserProfileContainer>
-          <S.ProfileHeader>
+        <UserProfileContainer>
+          <ProfileHeader>
             <h2>Seu Perfil</h2>
             {editMode ? (
               <ButtonComponent
-                icon={<Check size={16} />}
+                icon={<Check size={16} aria-hidden />}
                 text="Salvar"
                 variant="outline"
                 action={handleSubmit(handleEditUserSubmit)}
               />
             ) : (
               <ButtonComponent
-                icon={<Pencil size={16} />}
+                icon={<Pencil size={16} aria-hidden />}
                 text="Editar"
                 variant="outline"
                 action={() => changeToEditMode()}
               />
             )}
-          </S.ProfileHeader>
+          </ProfileHeader>
           {!editMode && (
-            <S.InfoContainer>
+            <InfoContainer>
               <strong>Email</strong>
               <p>{user?.email}</p>
-            </S.InfoContainer>
+            </InfoContainer>
           )}
-          <S.InfoContainer>
+          <InfoContainer>
             {editMode ? (
               <InputComponent
                 isRequired
@@ -131,8 +131,8 @@ export function Profile() {
                 <p>{user?.name}</p>
               </>
             )}
-          </S.InfoContainer>
-          <S.InfoContainer>
+          </InfoContainer>
+          <InfoContainer>
             {editMode ? (
               <InputComponent
                 isRequired
@@ -147,11 +147,11 @@ export function Profile() {
                 <p>{user?.office}</p>
               </>
             )}
-          </S.InfoContainer>
-        </S.UserProfileContainer>
+          </InfoContainer>
+        </UserProfileContainer>
       </SectionContainer>
       <SectionContainer>
-        <S.UserProfileContainer>
+        <UserProfileContainer>
           <h3>Deletar Conta</h3>
           <p>
             Deletar sua conta irá excluir todos os seus sistemas e checklists
@@ -163,7 +163,7 @@ export function Profile() {
             style={{ width: '7rem' }}
             action={() => setIsDeleteModalOpen(true)}
           />
-        </S.UserProfileContainer>
+        </UserProfileContainer>
       </SectionContainer>
       <DeleteUserModal
         isVisible={isDeleteModalOpen}
@@ -172,3 +172,22 @@ export function Profile() {
     </MainContainer>
   )
 }
+
+const UserProfileContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+`
+
+const InfoContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+`
+
+const ProfileHeader = styled.header`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`

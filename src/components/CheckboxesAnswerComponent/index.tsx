@@ -1,7 +1,7 @@
+import styled from 'styled-components'
 import { CategoriesType } from '../../@types'
 import { useChecklists } from '../../contexts/ChecklistsContext'
 import { CheckboxComponent } from '../CheckboxComponent'
-import * as S from './styles'
 
 export function CheckboxesAnswerComponent() {
   const { categoriesSelected, onCategoriesSelectedUpdate } = useChecklists()
@@ -16,7 +16,7 @@ export function CheckboxesAnswerComponent() {
   return (
     <div>
       <p>Mostrar itens com resposta:</p>
-      <S.CheckboxesForm>
+      <CheckboxesForm>
         <CheckboxComponent
           value={'Sim'}
           checked={categoriesSelected.Sim}
@@ -49,7 +49,14 @@ export function CheckboxesAnswerComponent() {
             updateCategoriesSelected(e.target.value as keyof CategoriesType)
           }
         />
-      </S.CheckboxesForm>
+      </CheckboxesForm>
     </div>
   )
 }
+
+const CheckboxesForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-top: 1rem;
+`

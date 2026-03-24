@@ -10,9 +10,9 @@ export interface ThemeInterface {
     span: string
     white: '#FFFFFF'
     black: '#000000'
-    red: '#CE3B3B'
-    green: 'green'
-    wheat: 'wheat'
+    red: string
+    green: string
+    wheat: string
   }
   fonts: {
     family: 'Roboto'

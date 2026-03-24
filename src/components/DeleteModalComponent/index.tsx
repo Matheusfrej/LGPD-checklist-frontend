@@ -1,6 +1,6 @@
 import { ButtonComponent } from '../ButtonComponent'
 import { ModalContainer } from '../../templates/ModalContainer'
-import * as S from './styles'
+import styled from 'styled-components'
 
 interface DeleteModalComponentProps {
   title: string
@@ -24,7 +24,7 @@ export function DeleteModalComponent({
       isVisible={isVisible}
       handleModalOpenChange={handleModalOpenChange}
     >
-      <S.DeleteModalContainer>
+      <DeleteModalContainer>
         <h3>{title}</h3>
         <div>
           <ButtonComponent
@@ -38,7 +38,18 @@ export function DeleteModalComponent({
             action={() => handleModalOpenChange(false)}
           />
         </div>
-      </S.DeleteModalContainer>
+      </DeleteModalContainer>
     </ModalContainer>
   )
 }
+
+const DeleteModalContainer = styled.div`
+  padding: 0 1rem;
+
+  div {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    margin-top: 2rem;
+  }
+`

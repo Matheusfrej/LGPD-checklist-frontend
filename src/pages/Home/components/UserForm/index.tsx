@@ -46,9 +46,9 @@ export function UserForm({ submitted }: UserFormProps) {
       onUserUpdate(data)
 
       if (id) {
-        navigate(`/checklist-families/${id}`)
+        navigate(`/laws/${id}`)
       } else {
-        navigate('/checklist-families')
+        navigate('/laws')
       }
     }
   }

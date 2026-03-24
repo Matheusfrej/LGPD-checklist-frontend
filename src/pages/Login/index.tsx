@@ -1,16 +1,25 @@
 import { MainContainer } from '../../templates/MainContainer'
 import { SectionContainer } from '../../templates/SectionContainer'
 import { LoginForm } from './components/LoginForm'
-import * as S from './styles'
+import styled from 'styled-components'
 
 export function Login() {
   return (
     <MainContainer>
-      <S.LoginContainer>
+      <LoginContainer>
         <SectionContainer>
           <LoginForm />
         </SectionContainer>
-      </S.LoginContainer>
+      </LoginContainer>
     </MainContainer>
   )
 }
+
+export const LoginContainer = styled.div`
+  width: 60%;
+  margin: auto;
+
+  @media (max-width: 1000px) {
+    width: 80%;
+  }
+`
